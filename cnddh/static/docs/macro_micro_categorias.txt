@@ -1,0 +1,87 @@
+A esclarecer, A esclarecer
+Violência física,Homicídio
+Violência física,Lesão corporal
+Violência física,Tentativa de homicídio
+Violência física,Maus tratos
+Violência física,Chacina/massacre
+Violência física,Genocídio
+Violência física,Sequestro
+Violência física,Auto-agressão
+Violência física,Latrocínio
+Violência física,Cárcere privado
+Violência institucional,Remoção forçada
+Violência institucional,Violência policial/violência praticada por instituições de segurança
+Violência institucional,Abuso de autoridade
+Violência institucional,Recusa de atendimento
+Violência institucional,Demora excessiva ou desídia no atendimento
+Violência institucional,Ausência de acesso à serviços
+Violência institucional,Assédio moral
+Violência institucional,Assédio sexual
+Violência institucional,Falta de acessibilidade/meios de informação e comunicação
+Violência institucional,Execução sumária
+Violência institucional,Prisão ilegal
+Violência institucional,Homofobia institucional
+Violência institucional,Omissão
+Violência institucional,Superlotação
+Violência institucional,Desrespeito à prioridade legal 
+Violência institucional,Falta de acessibilidade/meio físico
+Violência psicológica,Hostilização
+Violência psicológica,Ameaça
+Violência psicológica,Chantagem
+Violência psicológica,Infantilização
+Violência psicológica,Perseguição
+Violência psicológica,Subtração de incapaz
+Violência psicológica,Humilhação
+Violência psicológica,Calúnia/injúria/difamação
+Negligência,Em assistência social
+Negligência,Em medicamentos/assistência à saúde
+Negligência,Autonegligência
+Negligência,Em amparo e responsabilização
+Negligência,Em limpeza/higiene
+Negligência,Em alimentação
+Negligência,Abandono
+Abuso financeiro e econômico/violência patrimonial,Expropriação/apropriação de bens
+Abuso financeiro e econômico/violência patrimonial,Retenção de salário/renda/bens
+Abuso financeiro e econômico/violência patrimonial,Subtração/invalidação/ocultação de documentos
+Abuso financeiro e econômico/violência patrimonial,Estelionato
+Abuso financeiro e econômico/violência patrimonial,Extorsão
+Abuso financeiro e econômico/violência patrimonial,Destruição de bens
+Abuso financeiro e econômico/violência patrimonial,Furto
+Abuso financeiro e econômico/violência patrimonial,Desvio de doação
+Abuso financeiro e econômico/violência patrimonial,Roubo
+Discriminação,Por condição social
+Discriminação,Por identidade de gênero
+Discriminação,Contra a pessoa com deficiência
+Discriminação,Geracional
+Discriminação,Por orientação religiosa
+Discriminação,Em virtude de compleição física
+Discriminação,Bullying
+Discriminação,Por orientação sexual
+Discriminação,Racial/étnica
+Discriminação,Por origem
+Violência sexual,Abuso sexual
+Violência sexual,Estupro
+Violência sexual,Sexting
+Violência sexual,Grooming
+Violência sexual,Pornografia infantil
+Violência sexual,Exploração sexual no turismo
+Violência sexual,Exploração sexual
+Trabalho escravo,Condições degradantes de trabalho
+Trabalho escravo,Trabalho escravo infantil
+Trabalho escravo,Jornada exaustiva de trabalho
+Trabalho escravo,Aprisionamento/cerceamento da liberdade do trabalhador
+Trabalho escravo,Trabalho forçado
+Tortura,Tortura (sem informação sobre finalidade)
+Tortura,Por discriminação racial ou religiosa
+Tortura,Para aplicar castigo pessoal ou medida de caráter preventivo
+Tortura,Para obter informação/declaração/confissão
+Tortura,Para provocar ação ou omissão criminosa
+Tráfico de Pessoas,Internacional para fins de exploração do trabalho
+Tráfico de Pessoas,Internacional para fins de exploração sexual
+Tráfico de Pessoas,Internacional para remoção de órgãos
+Tráfico de Pessoas,Internacional para fins de adoção
+Outras violações,Violação de direito de imagem
+Outras violações,Apologia/incitação ao crime
+Outras violações,Adoção ilegal
+Outras violações,Conflitos em terras indígenas
+Outras violações,Conflitos agrários

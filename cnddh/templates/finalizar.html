@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block titulo %}Finalizar denúncia (denúncia nº {{d.numero}}){% endblock %}
+
+{% block paginatitulo %}Finalizar denúncia (denúncia nº {{d.numero}}){% endblock %}
+
+{% block scripts %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='css/jquery-ui.css') }}">
+<script type="text/javascript" src="{{url_for('.static', filename='js/jquery-ui.js')}}"></script>
+<script type="text/javascript" src="{{url_for('.static', filename='js/jquery.ui.datepicker-pt-BR.js')}}"></script>
+<style type="text/css">
+.ui.left.floated.header{
+	margin-top: 0.5em;
+	margin-left: 0.5em;
+}
+</style>
+{% endblock %}
+{% block header %}{% endblock %}
+
+{% block conteudo %}
+    <div id="main" class="main container">
+		<div class="ui five ordered steps">
+			<div class="completed step">
+				<a href="{{url_for('denuncia_edit',denuncia_id=f.denuncia_id.data)}}">
+					<div class="content">
+						<div class="title">Início</div>
+						<div class="description">Dados gerais</div>
+					</div>
+				</a>
+			</div>
+			<div class="completed step">
+				<a href="{{url_for('vitima_edit',denuncia_id=f.denuncia_id.data)}}">
+					<div class="content">
+						<div class="title">Vítimas</div>
+						<div class="description">Insira as vítimas</div>
+					</div>
+				</a>
+			</div>		  
+			<div class="completed step">
+				<a href="{{url_for('suspeito_edit',denuncia_id=f.denuncia_id.data)}}">			
+					<div class="content">
+						<div class="title">Suspeitos</div>
+						<div class="description">Insira os suspeitos</div>
+					</div>				
+				</a>	
+			</div>
+			<div class="completed step">
+				<a href="{{url_for('relacionar_vitima_suspeito',denuncia_id=f.denuncia_id.data)}}">			
+					<div class="content">
+						<div class="title">Violações</div>
+						<div class="description">Relate as violações</div>
+					</div>				
+				</a>
+			</div>		
+			<div class="active step">				
+				<div class="content">
+					<div class="title">Finalizar</div>
+					<div class="description">Insira os anexos</div>
+				</div>
+			</div>
+		</div>			
+		<div class="ui form segment">		
+			<form action="" method="post" id="cform" name="cform" name="form" enctype="multipart/form-data">
+			<h2 class="ui left floated header">Finalizar a denúncia nº {{d.numero}}</h2>
+			<div class="ui clearing divider"></div>	
+			
+			<div class="two fields">	
+				<div class="field {% if f.descricaoanexo.errors %} error {% endif %}">
+				<label>{{f.descricaoanexo.label}}</label>
+				{{f.descricaoanexo}}
+				{% if f.descricaoanexo.errors %}<div class="ui red pointing above ui label">{{';'.join(f.descricaoanexo.errors)}}</div>{% endif %}
+				</div>	
+				<div class="field {% if f.arquivo.errors %} error {% endif %}">
+				<label>{{f.arquivo.label}}</label>
+				{{f.arquivo}}
+				{% if f.arquivo.errors %}<div class="ui red pointing left ui label">{{';'.join(f.arquivo.errors)}}</div>{% endif %}
+				</div>								
+			</div>		
+
+			<input type="submit" class="ui small blue submit button" name="acao" id="acao" value="Salvar" />
+			<input type="submit" class="ui small blue submit button" name="acao" id="acao" value="Concluir" />				
+			{% if objs%}
+			<table class="ui small table segment" id="table-anexos">
+				<thead>
+				<tr>
+					<th>Descricão</th>
+					<th>Anexo</th>
+					<th>Ação</th>
+				</tr>
+				</thead>
+				<tbody>
+					{% for a, url in objs %}
+					<tr id="anexo-tr-{{a.id}}">
+						<td>{{a.descricaoanexo}}</td>
+						<td><a href="{{url}}">{{a.arquivo}}</a></td>	
+						<td>
+							<div class="large icon ui buttons">	
+								<a href="{{url_for('exclui_anexo',denuncia_id=d.id,anexo_id=a.id)}}" class="small ui icon button">
+									<i class="trash icon"></i>
+								</a>																	
+							</div>
+							
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>				
+			</table>
+			{% endif%}
+			
+			</form>
+		</div>	
+	</div>	
+{% endblock %}

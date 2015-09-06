@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block titulo %}Gráfico de violações por tempo{% endblock %}
+
+{% block paginatitulo %}Gráfico de violações por tempo{% endblock %}
+
+{% block scripts %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='css/jquery-ui.css') }}">
+<script type="text/javascript" src="{{url_for('.static', filename='js/jquery-ui.js')}}"></script>
+<script type="text/javascript" src="{{url_for('.static', filename='js/jquery.ui.datepicker-pt-BR.js')}}"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<style type="text/css">
+#dtocorinicio,#dtocorfim{
+	width: 150px;
+}
+.ui.left.floated.header{
+	margin-top: 0.5em;
+	margin-left: 0.5em;
+}
+#container {
+	width: 900px; 
+	height: 500px;
+	position: relative;
+	display:table; 
+ }
+#container p {
+	*position: absolute; 
+	top: 50%; 
+	display: table-cell; 
+	vertical-align: middle;
+ }
+#container span {
+	display:block; 
+	*position: relative; 
+	top: -50%;
+	text-align: center;
+ }
+
+</style>
+ <script type="text/javascript">
+  google.load("visualization", "1", {packages:["corechart"]});
+  google.setOnLoadCallback();
+  
+$(function(){	
+
+	$("#container").hide();
+	
+    $.datepicker.setDefaults($.datepicker.regional['pt-BR']);
+    $('input[name^="dt"]').datepicker( $.datepicker.regional[ 'pt-BR' ] );
+
+    $("select#macrocategoria").change(function(){		
+		var macrocategoria = $(this).val();
+        if(macrocategoria != "") {
+            $("select#microcategoria").html("<option value=\"\">Carregando microcategoria...</option>");			
+            $.getJSON('{{url_for(".ajax_microcategoria")}}',{macrocategoria: macrocategoria, ajax: 'true'}, function(j){
+              var options = '';
+              var r = j.result;
+              for (var i = 0; i < r.length; i++) {
+                options += '<option value="' + r[i][0] + '">' + r[i][1] + '</option>';
+              }
+              $("select#microcategoria").html(options);
+            })						
+        } else {
+            $("select#microcategoria").html("<option value=\"\"> </option>");
+        }
+    });
+
+	$("select#microcategoria").change(function(){	
+		var microcategoria = $(this).val();
+		
+		var dtocorinicio = $("#dtocorinicio").val();
+		var dtocorfim = $("#dtocorfim").val();						
+		
+		$.getJSON('{{url_for(".ajax_violacaoportempo")}}',{microcategoria: microcategoria,  dtocorinicio:dtocorinicio, dtocorfim:dtocorfim, ajax: 'true'}, function(j){
+		
+			var r = j.result;
+			
+			if(r.length >0)	{
+			
+				$("#chart_div").show();
+				$("#container").hide();
+				
+				var data = google.visualization.arrayToDataTable(r);
+
+				var options = {
+				  title: 'Violações por tempo',
+				  hAxis: {title: 'Meses', titleTextStyle: {color: 'black'}}
+				};
+
+				var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+				chart.draw(data, options);	 
+				
+			}
+			else{
+				$("#chart_div").hide();
+				$("#container").show();
+			}
+				
+		});	
+	
+	});
+});  
+</script>
+
+{% endblock %}
+{% block header %}{% endblock %}
+
+{% block conteudo %}
+    <div id="main" class="main container">	
+		
+		
+		<div class="ui form segment">		
+			<form action="" method="post" id="cform" name="cform">
+			<input type="hidden" name="pagina" value="1">
+			<h2 class="ui left floated header">Gráfico de violações por tempo</h2>
+			<div class="ui clearing divider"></div>
+			
+				<div class="field {% if f.dtocorinicio.errors %} error {% endif %}">
+					  <label>{{f.dtocorinicio.label}}</label>
+							 {{f.dtocorinicio}}{% if f.dtocorinicio.errors %}<div class="ui red pointing left ui label">{{';'.join(f.dtocorinicio.errors)}}</div>{% endif %} 
+						a {{f.dtocorfim}}{% if f.dtocorfim.errors %}<div class="ui red pointing left ui label">{{';'.join(f.dtocorfim.errors)}}</div>{% endif %}
+				</div>				
+					
+				<div class="two fields">
+					<div class="field {% if f.macrocategoria.errors %} error {% endif %}">
+					  <label>{{f.macrocategoria.label}}</label>
+						{{f.macrocategoria}}
+						{% if f.macrocategoria.errors %}<div class="ui red pointing left ui label">{{';'.join(f.macrocategoria.errors)}}</div>{% endif %}
+					</div>	
+
+					<div class="field {% if f.microcategoria.errors %} error {% endif %}">
+					  <label>{{f.microcategoria.label}}</label>
+						{{f.microcategoria}}
+						{% if f.microcategoria.errors %}<div class="ui red pointing left ui label">{{';'.join(f.microcategoria.errors)}}</div>{% endif %}
+					</div>						
+				</div>			
+				
+			<div id="chart_div" style="width: 900px; height: 500px;"></div>						
+			<div id="container"><p><span>Nenhum dado encontrado</span></p></div> 			
+		</div>	
+	</div>	
+{% endblock %}

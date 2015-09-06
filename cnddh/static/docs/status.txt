@@ -1,0 +1,5 @@
+Rascunho,A denúncia não foi cadastrada; mas não foi finalizada
+Aberta,A denúncia está aberta; 
+Em processamento, A denúncia está fazendo encaminhamentos e recebendo retornos
+Cancelada,A denúncia está cancelada;
+Fechada,A denúncia está fechada; e não será mais atualizada

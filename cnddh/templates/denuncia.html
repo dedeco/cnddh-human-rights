@@ -1,0 +1,298 @@
+{% extends "base.html" %}
+
+
+{% block titulo %}Criar denúncia{% endblock %}
+
+{% block paginatitulo %}Criar denúncia{% endblock %}
+
+{% block scripts %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='css/jquery-ui.css') }}">
+<script type="text/javascript" src="{{url_for('.static', filename='js/jquery-ui.js')}}"></script>
+<script type="text/javascript" src="{{url_for('.static', filename='js/jquery.ui.datepicker-pt-BR.js')}}"></script>
+<script type="text/javascript">
+$(function(){	
+
+    $.datepicker.setDefaults($.datepicker.regional['pt-BR']);
+    $('input[name$="dtdenuncia"]').datepicker( $.datepicker.regional[ 'pt-BR' ] );
+
+    $("select#endereco-estado").change(function(){		
+        var estado = $(this).val();
+        if(estado != "") {
+            $("select#endereco-cidade").html("<option value=\"\">Carregando cidades...</option>");			
+            $.getJSON('{{url_for(".ajax_cidades")}}',{estado: estado, ajax: 'true'}, function(j){
+              var options = '';
+              var r = j.result;
+              if(r.length > 0) {
+                options += '<option value="0">Escolha a cidade</option>';
+              }
+              for (var i = 0; i < r.length; i++) {
+                options += '<option value="' + r[i][0] + '">' + r[i][1] + '</option>';
+              }
+              $("select#endereco-cidade").html(options);
+            })						
+        } else {
+            $("select#endereco-cidade").html("<option value=\"\"> </option>");
+        }
+    });
+
+	$('.ui.selection.dropdown').dropdown();
+	
+	if($('select#tipofonte_id').val()==10) {
+		$("#divprotocolo").show();
+	}
+	else{
+		$("#divprotocolo").hide();
+	}	
+	
+    $("select#tipofonte_id").change(function(){		
+        var tipofonte = $(this).val();
+        if(tipofonte != "") {         			
+            $.getJSON('{{url_for(".ajax_exemplofonte")}}',{tipofonte: tipofonte, ajax: 'true'}, function(j){
+              var options = '';
+              var r = j.result;
+			
+              if(r.length > 0) {
+				$('#fonte').attr("placeholder",r[0]);
+              }
+			  //alert(tipofonte);
+			  if(tipofonte==10) { 
+				$("#divprotocolo").show();
+			  }
+			  else{
+				$("#protocolo").val(0);
+				$("#divprotocolo").hide();				
+			  }
+            })						
+        }
+    });
+	
+});
+</script>
+<style type="text/css">
+#numero,#dtdenuncia, #protocolo{
+	width: 150px;
+}
+#resumo, #descricao, #observacao{
+    width: 80%;
+}
+#endereco-referencia{
+    width: 500px;
+}
+#endereco-bairro, #endereco-complemento{
+    width: 200px;
+}
+#endereco-cep{
+	width: 100px;
+}
+#endereco-num{
+	width: 75px;	
+}
+.ui.left.floated.header{
+	margin-top: 0.5em;
+	margin-left: 0.5em;
+}
+
+</style>
+{% endblock %}
+{% block header %}{% endblock %}
+
+{% block conteudo %}
+    <div class="main container">
+		<div class="ui five ordered steps">
+			{% if novo == False %}
+			<div class="active step">				
+				<div class="content">
+					<div class="title">Início</div>
+					<div class="description">Dados gerais</div>
+				</div>
+			</div>
+			<div class="disabled step">
+				<a href="{{url_for('vitima_edit',denuncia_id=denuncia.id)}}">
+					<div class="content">
+						<div class="title">Vítimas</div>
+						<div class="description">Insira as vítimas</div>
+					</div>
+				</a>
+			</div>		  
+			<div class="disabled step">
+				<a href="{{url_for('suspeito_edit',denuncia_id=denuncia.id)}}">
+					<div class="content">
+						<div class="title">Suspeitos</div>
+						<div class="description">Insira os suspeitos</div>
+					</div>
+				</a>
+			</div>
+			<div class="disabled step">
+				<a href="{{url_for('relacionar_vitima_suspeito',denuncia_id=denuncia.id)}}">
+					<div class="content">
+						<div class="title">Violações</div>
+						<div class="description">Relate as violações</div>
+					</div>
+				</a>
+			</div>		
+			<div class="disabled step">
+				<a href="{{url_for('finalizar_denuncia',denuncia_id=denuncia.id)}}">
+					<div class="content">
+						<div class="title">Finalizar</div>
+						<div class="description">Insira os anexos</div>
+					</div>
+				</a>
+			</div>
+		{% else %}
+			<div class="active step">				
+				<div class="content">
+					<div class="title">Início</div>
+					<div class="description">Dados gerais</div>
+				</div>
+			</div>
+			<div class="disabled step">
+				<div class="content">
+					<div class="title">Vítimas</div>
+					<div class="description">Insira as vítimas</div>
+				</div>
+			</div>		  
+			<div class="disabled step">
+				<div class="content">
+					<div class="title">Suspeitos</div>
+					<div class="description">Insira os suspeitos</div>
+				</div>
+			</div>
+			<div class="disabled step">
+				<div class="content">
+					<div class="title">Violações</div>
+					<div class="description">Relate as violações</div>
+				</div>
+			</div>		
+			<div class="disabled step">
+				<div class="content">
+					<div class="title">Finalizar</div>
+					<div class="description">Insira os anexos</div>
+				</div>
+			</div>			
+		{% endif%}  
+		</div>			
+		<div class="ui form segment">		
+			<form action="" method="post" id="cform" name="cform">
+			<h2 class="ui left floated header">Registrar denúncia</h2>
+			<div class="ui clearing divider"></div>	
+			
+				<div class="two fields">	
+					<div class="field {% if form.numero.errors %} error {% endif %}">
+						  <label>{{form.numero.label}}</label>
+							{{form.numero}}
+							{% if form.numero.errors %}<div class="ui red pointing above ui label">{{';'.join(form.numero.errors)}}</div>{% endif %}
+					</div>	
+					<div class="field {% if form.dtdenuncia.errors %} error {% endif %}">
+					<label>{{form.dtdenuncia.label}}</label>
+					{{form.dtdenuncia}}
+					{% if form.dtdenuncia.errors %}<div class="ui red pointing left ui label">{{';'.join(form.dtdenuncia.errors)}}</div>{% endif %}
+					</div>								
+				</div>						
+				
+				<div class="field {% if form.resumo.errors %} error {% endif %}">
+					<label>{{form.resumo.label}}</label>
+					{{form.resumo}}
+					{% if form.resumo.errors %}<div class="ui red pointing left ui label">{{';'.join(form.resumo.errors)}}</div>{% endif %}
+				</div>	
+				
+				<div class="field {% if form.descricao.errors %} error {% endif %}">
+					<label>{{form.descricao.label}}</label>
+					{{form.descricao}}
+					{% if form.descricao.errors %}<div class="ui red pointing left ui label">{{';'.join(form.descricao.errors)}}</div>{% endif %}
+				</div>			
+			
+				<div class="two fields">					
+					<div class="field {% if form.tipofonte_id.errors %} error {% endif %}">
+						<label>{{form.tipofonte_id.label}}</label>
+						{{form.tipofonte_id}}
+						{% if form.tipofonte_id.errors %}<div class="ui red pointing above ui label">{{';'.join(form.tipofonte_id.errors)}}</div>{% endif %}
+					</div>						
+					<div class="field {% if form.fonte.errors %} error {% endif %}">
+						<label>{{form.fonte.label}}</label>
+						{{form.fonte}}
+						{% if form.fonte.errors %}<div class="ui red pointing left ui label">{{';'.join(form.fonte.errors)}}</div>{% endif %}
+					</div>								
+				</div>
+				
+				<div id="divprotocolo" class="field {% if form.protocolo.errors %} error {% endif %}">
+					<label>{{form.protocolo.label}}</label>
+					{{form.protocolo}}
+					{% if form.protocolo.errors %}<div class="ui red pointing left ui label">{{';'.join(form.protocolo.errors)}}</div>{% endif %}
+				</div>					
+				
+				<div class="ui clearing divider"></div>
+				
+				<div class="ui segment">
+					<p>Localização</p>
+				{% for f in form %}
+					{% if f.form.__class__.__name__ == "EnderecoSomenteForm" %}
+						<div class="three fields">	
+							<div class="field {% if f.tipolocal.errors %} error {% endif %}">
+							<label>{{f.tipolocal.label}}</label>
+							{{f.tipolocal}}
+							{% if f.tipolocal.errors %}<div class="ui red pointing above ui label">{{';'.join(f.tipolocal.errors)}}</div>{% endif %}
+							</div>						
+							<div class="field {% if f.endereco.errors %} error {% endif %}">
+							<label>{{f.endereco.label}}</label>
+							{{f.endereco}}
+							{% if f.endereco.errors %}<div class="ui red pointing above ui label">{{';'.join(f.endereco.errors)}}</div>{% endif %}
+							</div>
+							<div class="field {% if f.num.errors %} error {% endif %}">
+							<label>{{f.num.label}}</label>
+							{{f.num}}
+							{% if f.num.errors %}<div class="ui red pointing left ui label">{{';'.join(f.num.errors)}}</div>{% endif %}
+							</div>								
+						</div>
+						<div class="field {% if f.complemento.errors %} error {% endif %}">
+						  <label>{{f.complemento.label}}</label>
+							{{f.complemento}}
+							{% if f.complemento.errors %}<div class="ui red pointing left ui label">{{';'.join(f.complemento.errors)}}</div>{% endif %}
+						</div>		
+						<div class="field {% if f.referencia.errors %} error {% endif %}">
+						  <label>{{f.referencia.label}}</label>
+							{{f.referencia(placeholder=f.referencia.description)}}
+							{% if f.referencia.errors %}<div class="ui red pointing left ui label">{{';'.join(f.referencia.errors)}}</div>{% endif %}
+						</div>							
+						<div class="field {% if f.bairro.errors %} error {% endif %}">
+						  <label>{{f.bairro.label}}</label>
+							{{f.bairro}}
+							{% if f.bairro.errors %}<div class="ui red pointing left ui label">{{';'.join(f.bairro.errors)}}</div>{% endif %}
+						</div>	
+						
+						<div class="two fields">						
+							<div class="field {% if f.estado.errors %} error {% endif %}">
+							  <label>{{f.estado.label}}</label>
+								{{f.estado}}
+								{% if f.estado.errors %}<div class="ui red pointing left ui label">{{';'.join(f.estado.errors)}}</div>{% endif %}
+							</div>	
+							<div class="field {% if f.cidade.errors %} error {% endif %}">
+							  <label>{{f.cidade.label}}</label>
+								{{f.cidade}}
+								{% if f.cidade.errors %}<div class="ui red pointing left ui label">{{';'.join(f.cidade.errors)}}</div>{% endif %}
+							</div>	
+						</div>	
+						
+						<div class="field {% if f.cep.errors %} error {% endif %}">
+						  <label>{{f.cep.label}}</label>
+							{{f.cep}}
+							{% if f.cep.errors %}<div class="ui red pointing left ui label">{{';'.join(f.cep.errors)}}</div>{% endif %}
+						</div>								
+					{% endif%}													
+				{% endfor %}
+				</div>
+				
+				<div class="field {% if form.observacao.errors %} error {% endif %}">
+					<label>{{form.observacao.label}}</label>
+					{{form.observacao}}
+					{% if form.observacao.errors %}<div class="ui red pointing left ui label">{{';'.join(form.observacao.errors)}}</div>{% endif %}
+				</div>		
+				
+			{% if novo == False %}
+			<a class="ui small blue submit button" href="{{url_for('index')}}" title="Cancelar">Cancelar</a>
+			<input type="submit" class="ui small blue submit button" name="acao" id="acao" value="Salvar" />
+			{% endif %}
+			<input type="submit" class="ui small blue submit button" name="acao" id="acao" value="Continuar" />
+			</form>			
+		</div>	
+	</div>	
+{% endblock %}

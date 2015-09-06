@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block titulo %}CNDDH{% endblock %}
+
+{% block paginatitulo %}CNDDH{% endblock %}
+
+{% block scripts %}
+{% endblock %}  
+
+{% block conteudo %}
+
+	<img id="logocnddh" src="{{url_for('.static', filename='images/HRLogoCMYK.png')}}" class="ui medium image">
+    <div class="ui hidden transition information">
+		<h2>Quem somos?</h2>
+		<p style="text-align:justify;">O <b>Centro Nacional de Defesa dos Direitos Humanos da População em Situação de Rua e dos Catadores de Materiais Recicláveis (CNDDH)</b> é um projeto não governamental, sem fins lucrativos, criado a partir da Política Nacional para a População em Situação de Rua, Decreto 7.053 de 2009, art. 15º, destinado a promover e proteger os direitos da população em situação de rua e catadores de material reciclável. O CNDDH foi constituído como um espaço de ação política direcionado a assegurar a promoção e defesa dos direitos humanos desses dois grupos populacionais, em face de todas as formas de violência pessoal e social a que estão submetidos em razão da sua precária condição de vida nas cidades brasileiras. </p>
+		<p style="text-align:justify;">O CNDDH foi instituído por meio da Secretaria Nacional de Direitos Humanos da Presidência da República e é executado em parceria com o Movimento Nacional da População de Rua, Movimento Nacional dos Catadores de Materiais Recicláveis, Conferência Nacional dos Bispos do Brasil, Pastoral Nacional do Povo da Rua e Ministério Público de Minas Gerais.</p>
+		<p style="text-align:justify;">Com o desenvolvimento de um trabalho pioneiro, o CNDDH está direcionado em atividades de assessoramento político e técnico pela defesa e garantia de direitos, tendo como eixos principais de ação: enfrentamento às violações, sistematização de dados, produção de conhecimento e formação. O CNDDH tem como missão ser referência na defesa dos direitos humanos da população em situação de rua e catadores de materiais recicláveis, a fim de efetivar seus direitos fundamentais como cidadãos que constroem e participam do poder popular.</p> 
+    </div>
+
+{% endblock %}

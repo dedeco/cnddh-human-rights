@@ -1,0 +1,160 @@
+/*******************************
+            Global
+*******************************/
+
+html {
+  font-size: 14px;
+}
+
+
+/*******************************
+            Global
+*******************************/
+
+#home .menu .right.menu > .mobile.item {
+  display: none;
+}
+
+#menusuperior  {
+	margin-top: 0.5rem;
+	margin-bottom: 0.2rem;
+}
+
+/*--------------
+    Masthead
+---------------*/
+
+#home .masthead {
+  margin: 0em;
+  padding: 5rem 0rem;
+}
+#home .masthead .column {
+  position: relative;
+}
+#home .masthead .information {
+  margin: 0em 8em 0em 350px;
+}
+#home .masthead .information p {
+  max-width: 600px;
+}
+#logocnddh {
+  position: absolute;
+  left: 0%;
+  margin-top: 50px;
+}
+#logogoverno {
+  display: block;
+  margin-left: auto;
+  margin-right: auto; 
+}
+
+i.circular.icon {  
+  box-shadow: 0em 0em 0em 0.0em rgba(0, 0, 0, 0.0) inset; 
+  margin: 0.1em 0.1em 0.1em 0.1em;	  
+}
+
+.ui.inverted.menu .item {
+  height: 41px;
+}
+
+.ui.menu .item > .input input {
+  font-size: 0.875em;
+}
+
+.ui.accordion,
+.ui.accordion .accordion {
+  margin-top: 7px;
+}
+
+.ui.buttons .or:before{
+content: 'ou';
+}
+
+/*--------------
+    Ribbons
+---------------*/
+
+#home .vertical.segment {
+  padding: 6rem 0rem;
+}
+
+#home .feature.segment {
+  margin: 0em;
+  padding: 2rem 0rem;
+}
+#home .feature.segment p {
+  min-height: 50px;
+}
+
+#home .selection.list {
+  margin: 0em -0.5em;
+}
+
+#home .logo.row {
+  height: 10rem;
+}
+
+/*--------------
+    Footer
+---------------*/
+
+#home .footer {
+  background-color: #000000;
+}
+
+
+/*******************************
+          Responsive
+*******************************/
+
+/* Mobile Only */
+
+@media only screen and (max-width : 768px) {
+
+  #home .menu .right.menu > .item {
+    display: none;
+  }
+
+  #home .menu .right.menu > .mobile.item {
+    display: block;
+  }
+
+  #home h1 {
+    font-size: 1.5em;
+  }
+  #home .masthead.segment .information {
+    margin-left: 170px;
+  }
+
+  #home .masthead.segment .image {
+    width: 170px;
+  }
+
+  #home .masthead.segment .button {
+    font-size: 1rem;
+  }
+
+  #home .overview .divided.grid .header .icon {
+    font-size: 1.5em;
+  }
+
+  #home .overview .divided.grid .header + p {
+    min-height: 0px;
+  }
+
+  #home .masthead.segment .column {
+    font-size: 0.7rem;
+  }
+
+  #home .masthead.segment .column p {
+    display: none;
+  }
+
+  #home .selection.list .right.floated {
+    display: none;
+  }
+}
+
+@media only screen and (max-width : 1000px) {
+
+}

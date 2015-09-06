@@ -1,0 +1,5 @@
+Oficio
+Telefonema
+Reunião
+Email
+Genérico

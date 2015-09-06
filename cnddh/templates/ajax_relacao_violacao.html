@@ -1,0 +1,45 @@
+				{% for vs in vitsup: %}	
+					 <table class="ui small table segment">
+						  <thead>
+							<tr>
+								<th style="width:27%">Vitima</th>
+								<th style="width:27%">Suspeito</th>
+								<th style="width:40%">Microcategoria</th>
+								<th style="width:6%">Ação</th>
+							</tr>
+						  </thead>
+						<tbody>		
+							<tr>
+								<td rowspan="{{vitsup[vs]|tamanho}}">
+									<b>{{vitsup[vs][0].vitima.nome or 'Não identificado'}}</b>, <b>{{vitsup[vs][0].vitima.idade}}</b> anos, sexo: <b>{{vitsup[vs][0].vitima.sexo}}</b>, cor: <b>{{vitsup[vs][0].vitima.cor}}</b>, tipo: <b>{{vitsup[vs][0].vitima.tipovitima.tipo}}</b>
+								</td>
+							</tr>
+							<tr>
+								<td rowspan="{{vitsup[vs]|tamanho}}">
+									<b>{{vitsup[vs][0].suspeito.nome or 'Não identificado'}}</b>, <b>{{vitsup[vs][0].suspeito.idade}}</b> anos, sexo: <b>{{vitsup[vs][0].suspeito.sexo}}</b>, cor: <b>{{vitsup[vs][0].suspeito.cor}}</b>, tipo: <b>{{vitsup[vs][0].suspeito.tiposuspeito.tipo}}</b>, instituição: <b>{{vitsup[vs][0].suspeito.tiposuspeito.instituicao}}</b>, classificação: <b>{{vitsup[vs][0].suspeito.tiposuspeito.instituicao}}</b>
+								</td>
+							</tr>						
+						{% for v in vitsup[vs]: %}
+							<tr id="violacao-tr-{{v.id}}">						
+								<td>{{v.tipoviolacao.macrocategoria}}: 
+								{% if v.tipoviolacao.id == 2 %}
+									<div class="ui labeled icon button">
+										<i class="hospital icon"></i>
+											<a href="{{url_for('homicidio_edit',denuncia_id=denuncia.id, homicidio_id=v.id)}}" title="Complementar detalhes">{{v.tipoviolacao.microcategoria}}</a>
+									</div>								
+								{% else %}
+									{{v.tipoviolacao.microcategoria}}
+								{% endif %}
+								</td>
+								<td>
+									<div class="large icon ui buttons">	
+										<button class="ui button" id="violacao-remove_{{v.id}}" value="{{v.id}}">											
+											<i class="trash icon"></i>
+										</button>																			
+									</div>			
+								</td>								  
+							</tr>
+						{% endfor %}  
+						</tbody>						 
+					</table>	
+				{% endfor %}

@@ -1,0 +1,43 @@
+﻿{% extends "base.html" %}
+
+{% block titulo %}Cancelar a denúncia{% endblock %}
+
+{% block paginatitulo %}Cancelar a denúncia{% endblock %}
+
+{% from '_macros.html' import paginator_footer %}
+
+{% block scripts %}
+<style type="text/css">
+#motivo{
+    width: 80%;
+}
+.ui.left.floated.header{
+	margin-top: 0.5em;
+	margin-left: 0.5em;
+}
+</style>
+{% endblock %}
+{% block header %}{% endblock %}
+
+{% block conteudo %}
+    <div id="main" class="main container">
+		
+		<div class="ui form segment">		
+			<form action="" method="post" id="cform" name="cform" name="form" enctype="multipart/form-data">
+			<input type="hidden" name="pagina" value="1">
+			<h2 class="ui left floated header">Cancelar denúncia <b>{{d.resumo}}</b> ({{d.id}})</h2>	
+			
+			<div class="ui clearing divider"></div>		
+			
+				<div class="field {% if f.motivo.errors %} error {% endif %}">
+				<label>{{f.motivo.label}}</label>
+				{{f.motivo}}
+				{% if f.motivo.errors %}<div class="ui red pointing left ui label">{{';'.join(f.motivo.errors)}}</div>{% endif %}
+				</div>									
+				
+				<input type="submit" class="ui small blue submit button" name="salvar" value="Salvar" />			
+				
+			</form>
+		</div>	
+	</div>	
+{% endblock %}

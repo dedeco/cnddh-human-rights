@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block titulo %}Cadastrar ou alterar perfis{% endblock %}
+
+{% block paginatitulo %}Cadastrar ou alterar perfis{% endblock %}
+
+{% block scripts %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='css/jquery-ui.css') }}">
+<script type="text/javascript" src="{{url_for('.static', filename='js/jquery-ui.js')}}"></script>
+<script type="text/javascript" src="{{url_for('.static', filename='js/jquery.ui.datepicker-pt-BR.js')}}"></script>
+<style type="text/css">
+.ui.left.floated.header{
+	margin-top: 0.5em;
+	margin-left: 0.5em;
+}
+</style>
+{% endblock %}
+{% block header %}{% endblock %}
+
+{% block conteudo %}
+    <div id="main" class="main container">	
+		<div class="ui form segment">					
+		<form action="" method="post" id="cform" name="cform">
+
+			{% if checa_permissao('cria-perfil') %}
+			<h2 class="ui left floated header">Criar novo perfil</h2>
+			<div class="ui clearing divider"></div>				
+				<div class="two fields">						
+					<div class="field {% if f.nome.errors %} error {% endif %}">
+					  <label>{{f.nome.label}}</label>
+						{{f.nome}}									
+						{% if f.nome.errors %}<div class="ui red pointing left ui label">{{';'.join(f.nome.errors)}}</div>{% endif %}
+					</div>		
+					<div class="field {% if f.descricao.errors %} error {% endif %}">
+					  <label>{{f.descricao.label}}</label>
+						{{f.descricao}}									
+						{% if f.descricao.errors %}<div class="ui red pointing left ui label">{{';'.join(f.descricao.errors)}}</div>{% endif %}
+					</div>							
+				</div>	
+
+			<input type="submit" class="ui small blue submit button" name="acao" id="acao" value="Salvar" />			
+			{%else%}
+			<h2 class="ui left floated header">Alterar perfil</h2>
+			<div class="ui clearing divider"></div>		
+			{% endif %}
+
+			{% if perfis%}
+			<table class="ui small table segment">
+				<thead>
+				<tr>
+					<th>ID</th>
+					<th>Perfil</th>
+					<th>Descrição</th>
+					<th>Ação</th>
+				</tr>
+				</thead>
+				<tbody>
+					{% for p in perfis %}
+					<tr>
+						<td>{{p.id}}</td>
+						<td>{{p.nome}}</td>
+						<td>{{p.descricao}}</td>
+						<td>
+							<div class="large icon ui buttons">
+								<div class="ui button">	
+									<a href="{{url_for('.permissoes_perfis_edit', perfil=p.id)}}"><i class="setting icon"></i></a>
+								</div>	
+							</div>	
+						</td>					
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			{% endif%}
+		</form>
+		</div>	
+	</div>	
+{% endblock %}

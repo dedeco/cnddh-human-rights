@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block titulo %}Retorno{% endblock %}
+
+{% block paginatitulo %}Retorno{% endblock %}
+
+{% from '_macros.html' import paginator_footer %}
+
+{% block scripts %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='css/jquery-ui.css') }}">
+<script type="text/javascript" src="{{url_for('.static', filename='js/jquery-ui.js')}}"></script>
+<script type="text/javascript" src="{{url_for('.static', filename='js/jquery.ui.datepicker-pt-BR.js')}}"></script>
+<script type="text/javascript">
+$(function(){	
+    $.datepicker.setDefaults($.datepicker.regional['pt-BR']);
+    $('input[name$="dtretorno"]').datepicker( $.datepicker.regional[ 'pt-BR' ] );
+});
+</script>
+<style type="text/css">
+#dtretorno{
+	width: 150px;
+}
+#resumo, #obs{
+    width: 80%;
+}
+
+.ui.left.floated.header{
+	margin-top: 0.5em;
+	margin-left: 0.5em;
+}
+</style>
+{% endblock %}
+{% block header %}{% endblock %}
+
+{% block conteudo %}
+    <div id="main" class="main container">
+		
+		<div class="ui form segment">		
+			<form action="" method="post" id="cform" name="cform" name="form" enctype="multipart/form-data">
+			<input type="hidden" name="pagina" value="1">
+			<h2 class="ui left floated header">Receber retorno</h2>		
+			
+			<div class="ui clearing divider"></div>			
+			
+				<div class="two fields">					
+					<div class="field {% if f.retorno.errors %} error {% endif %}">
+						<label>{{f.retorno.label}}</label>
+						{{f.retorno}}
+						{% if f.retorno.errors %}<div class="ui red pointing left ui label">{{';'.join(f.retorno.errors)}}</div>{% endif %}
+					</div>						
+					<div class="field {% if f.dtretorno.errors %} error {% endif %}">
+						<label>{{f.dtretorno.label}}</label>
+						{{f.dtretorno}}
+						{% if f.dtretorno.errors %}<div class="ui red pointing left ui label">{{';'.join(f.dtretorno.errors)}}</div>{% endif %}
+					</div>								
+				</div>					
+				
+				<div class="field {% if f.descricao.errors %} error {% endif %}">
+					<label>{{f.descricao.label}}</label>
+					{{f.descricao}}
+					{% if f.descricao.errors %}<div class="ui red pointing left ui label">{{';'.join(f.descricao.errors)}}</div>{% endif %}
+				</div>	
+				
+				{% if retorno.url %}	
+				<div class="two fields">					
+					<div class="ui icon button">
+						<a href="{{retorno.url}}" target="_blank">Download<i class="download icon"></i></a>																													
+					</div>				
+					<div class="field {% if f.arquivo.errors %} error {% endif %}">
+						<label>Faça upload de um novo arquivo</label>
+						{{f.arquivo}}
+						{% if f.arquivo.errors %}<div class="ui red pointing left ui label">{{';'.join(f.arquivo.errors)}}</div>{% endif %}
+					</div>		
+				</div>						
+				{% else %}		
+					<div class="field {% if f.arquivo.errors %} error {% endif %}">
+					<label>{{f.arquivo.label}}</label>
+					{{f.arquivo}}
+					{% if f.arquivo.errors %}<div class="ui red pointing left ui label">{{';'.join(f.arquivo.errors)}}</div>{% endif %}
+					</div>
+				{% endif %}
+				<input type="submit" class="ui small blue submit button" name="salvar" value="salvar" />
+			</form>
+		</div>	
+	</div>	
+{% endblock %}

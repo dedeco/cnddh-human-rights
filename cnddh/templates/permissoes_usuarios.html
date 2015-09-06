@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block titulo %}Alteração de permissões de usuários{% endblock %}
+
+{% block paginatitulo %}Alteração de permissões de usuários{% endblock %}
+
+{% block scripts %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='css/jquery-ui.css') }}">
+<script type="text/javascript" src="{{url_for('.static', filename='js/jquery-ui.js')}}"></script>
+<script type="text/javascript" src="{{url_for('.static', filename='js/jquery.ui.datepicker-pt-BR.js')}}"></script>
+<style type="text/css">
+#login, #nome, #email{
+	width:200px;
+}
+.ui.left.floated.header{
+	margin-top: 0.5em;
+	margin-left: 0.5em;
+}
+</style>
+{% endblock %}
+{% block header %}{% endblock %}
+
+{% block conteudo %}
+    <div id="main" class="main container">	
+		<div class="ui form segment">					
+		<form action="" method="post" id="cform" name="cform">
+			<h2 class="ui left floated header">Buscar usuário</h2>
+			<div class="ui clearing divider"></div>	
+				
+				{% for f in form %}					
+					<div class="field {% if f.errors %} error {% endif %}">
+					  <label>{{f.label}}</label>
+						{{f}}									
+						{% if f.errors %}<div class="ui red pointing left ui label">{{';'.join(f.errors)}}</div>{% endif %}
+					</div>		
+				{% endfor %}
+
+			<input type="submit" class="ui small blue submit button" name="acao" id="acao" value="Pesquisar" />			
+
+			{% if usuarios %}
+			<table class="ui small table segment">
+				<thead>
+				<tr>
+					<th>Login</th>
+					<th>Nome</th>
+					<th>Email</th>
+					<th style="text-align:center;">Ação</th>
+				</tr>
+				</thead>
+				<tbody>
+					{% for usuario in usuarios %}
+					<tr>
+						<td>{{usuario.login}}</td>
+						<td>{{usuario.nome}}</td>
+						<td>{{usuario.email}}</td>
+						<td style="text-align:center;">
+							<div class="large icon ui buttons">
+								<div class="ui button">	
+									<a href="{{url_for('.usuario_edit',usuario_id=usuario.id)}}" title="Editar os dados do usuário"><i class="user icon"></i></a>
+								</div>	
+								<div class="ui button">	
+									<a href="{{url_for('.permissoes_usuarios_perfis_edit', usuario=usuario.id)}}" title="Editar o perfil"><i class="setting icon"></i></a>
+								</div>									
+								<div class="ui button">	
+									<a href="{{url_for('.permissoes_usuarios_permissoes_edit', usuario=usuario.id)}}" title="Editar as permissões"><i class="settings icon"></i></a>
+								</div>
+							</div>						
+						</td>					
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			{% endif%}
+		</form>
+		</div>	
+	</div>	
+{% endblock %}

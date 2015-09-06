@@ -1,0 +1,571 @@
+Sem informação,Sem informação,Sem informação
+ONGs,Associação de Moradores,Função não identificada
+ONGs,Associação de Moradores,Membro
+ONGs,Associação de Moradores,Presidente
+ONGs,Associação ou Entidade Empresarial,Função não identificada
+ONGs,Associação ou Entidade Empresarial,Membro
+ONGs,Associação ou Entidade Empresarial,Presidente
+ONGs,Associação ou Entidade Empresarial,Diretor
+ONGs,Conselho de Segurança,Função não identificada
+ONGs,Conselho de Segurança,Membro
+ONGs,Conselho de Segurança,Presidente
+ONGs,Associação,Função não identificada
+ONGs,Associação,Membro
+ONGs,Associação,Presidente
+ONGs,Associação,Diretor
+ONGs,Associação,Coordenador
+ONGs,Fundação,Função não identificada
+ONGs,Fundação,Membro
+ONGs,Fundação,Presidente
+ONGs,Fundação,Diretor
+ONGs,Fundação,Coordenador
+ONGs,OSCIP,Função não identificada
+ONGs,OSCIP,Membro
+ONGs,OSCIP,Presidente
+ONGs,OSCIP,Diretor
+ONGs,OSCIP,Coordenador
+ONGs,Entidade Beneficente,Função não identificada
+ONGs,Entidade Beneficente,Assistente/Auxiliar administrativo
+ONGs,Entidade Beneficente,Gerente/Gestor(a)
+ONGs,Entidade Beneficente,Segurança
+ONGs,Entidade Beneficente,Presidente
+ONGs,Entidade Beneficente,Diretor
+ONGs,Entidade Beneficente,Coordenador
+ONGs,Entidade Beneficente,Motorista
+ONGs,Instituto Beneficente,Função não identificada
+ONGs,Instituto Beneficente,Assistente/Auxiliar administrativo
+ONGs,Instituto Beneficente,Gerente/Gestor(a)
+ONGs,Instituto Beneficente,Segurança
+ONGs,Instituto Beneficente,Presidente
+ONGs,Instituto Beneficente,Diretor
+ONGs,Instituto Beneficente,Coordenador
+ONGs,Instituto Beneficente,Motorista
+Instituição Religiosa,Comunidade Terapêutica,Função não identificada
+Instituição Religiosa,Comunidade Terapêutica,Assistente/Auxiliar administrativo
+Instituição Religiosa,Comunidade Terapêutica,Guarda Municipal
+Instituição Religiosa,Comunidade Terapêutica,Gerente/Gestor(a)
+Instituição Religiosa,Comunidade Terapêutica,Segurança
+Instituição Religiosa,Comunidade Terapêutica,Assistente Social
+Instituição Religiosa,Comunidade Terapêutica,Psicólogo(a)
+Instituição Religiosa,Comunidade Terapêutica,Médico(a)
+Instituição Religiosa,Comunidade Terapêutica,Padre
+Instituição Religiosa,Comunidade Terapêutica,Pastor
+Instituição Religiosa,Igreja,Função não identificada
+Instituição Religiosa,Igreja,Padre
+Instituição Religiosa,Igreja,Pastor
+Setor Privado,Clínica de Recuperação,Função não identificada
+Setor Privado,Clínica de Recuperação,Gerente/Gestor(a)
+Setor Privado,Clínica de Recuperação,Assistente/Auxiliar administrativo
+Setor Privado,Clínica de Recuperação,Segurança
+Setor Privado,Clínica de Recuperação,Guarda Municipal
+Setor Privado,Clínica de Recuperação,Assistente social
+Setor Privado,Clínica de Recuperação,Psicólogo(a)
+Setor Privado,Clínica de Recuperação,Médico(a)
+Setor Privado,Clínica de Recuperação,Pastor
+Setor Privado,Clínica de Recuperação,Padre
+Setor Privado,Banco,Função não identificada
+Setor Privado,Banco,Assistente/Auxiliar administrativo
+Setor Privado,Banco,Caixa
+Setor Privado,Banco,Gerente
+Setor Privado,Banco,Segurança
+Setor Privado,Biblioteca,Função não identificada
+Setor Privado,Biblioteca,Assistente/Auxiliar administrativo
+Setor Privado,Biblioteca,Bibliotecário(a)
+Setor Privado,Biblioteca,Segurança
+Setor Privado,Biblioteca,Gerente/Gestor(a)
+Setor Privado,Cartório,Função não identificada
+Setor Privado,Cartório,Segurança
+Setor Privado,Cartório,Caixa
+Setor Privado,Cartório,Gerente/Gestor(a)
+Setor Privado,Cartório,Assistente/Auxiliar administrativo
+Setor Privado,Cartório,Escrivão
+Setor Privado,Comunidade Terapêutica,Função não identificada
+Setor Privado,Comunidade Terapêutica,Assistente/Auxiliar administrativo
+Setor Privado,Comunidade Terapêutica,Guarda Municipal
+Setor Privado,Comunidade Terapêutica,Gerente/Gestor(a)
+Setor Privado,Comunidade Terapêutica,Segurança
+Setor Privado,Comunidade Terapêutica,Assistente Social
+Setor Privado,Comunidade Terapêutica,Psicólogo(a)
+Setor Privado,Comunidade Terapêutica,Médico(a)
+Setor Privado,Comunidade Terapêutica,Padre
+Setor Privado,Comunidade Terapêutica,Pastor
+Setor Privado,Empresa (outros tipos),Função não identificada
+Setor Privado,Empresa (outros tipos),Assistente/Auxiliar administrativo
+Setor Privado,Empresa (outros tipos),Caixa
+Setor Privado,Empresa (outros tipos),Atendente
+Setor Privado,Empresa (outros tipos),Gerente
+Setor Privado,Empresa (outros tipos),Empresário(a)
+Setor Privado,Empresa (outros tipos),Segurança
+Setor Privado,Empresa de construção civil,Função não identificada
+Setor Privado,Empresa de construção civil,Assistente/Auxiliar administrativo
+Setor Privado,Empresa de construção civil,Gerente/Gestor(a)
+Setor Privado,Empresa de construção civil,Empresário(a)
+Setor Privado,Empresa de construção civil,Segurança
+Setor Privado,Empresa de construção civil,Engenheiro(a)
+Setor Privado,Empresa de transporte,Função não identificada
+Setor Privado,Empresa de transporte,Empresário(a)
+Setor Privado,Empresa de transporte,Assistente/Auxiliar administrativo
+Setor Privado,Empresa de transporte,Gerente/Gestor(a)
+Setor Privado,Empresa de transporte,Cobrador(a)
+Setor Privado,Empresa de transporte,Motorista
+Setor Privado,Empresa de segurança privada,Função não identificada
+Setor Privado,Empresa de segurança privada,Empresário(a)
+Setor Privado,Empresa de segurança privada,Segurança
+Setor Privado,Hospital,Função não identificada
+Setor Privado,Hospital,Assistente/Auxiliar administrativo,
+Setor Privado,Hospital,Enfermeiro(a)
+Setor Privado,Hospital,Médico(a)
+Setor Privado,Hospital,Farmacêutico(a)
+Setor Privado,Hospital,Nutricionista
+Setor Privado,Hospital,Fisioterapeuta
+Setor Privado,Instituto de Pesquisa,Função não identificada
+Setor Privado,Instituto de Pesquisa,Pesquisador(a)
+Setor Privado,Mídia,Função não identificada
+Setor Privado,Mídia,Jornalista
+Setor Público,Pronto-Socorro,Função não identificada
+Setor Público,Pronto-Socorro,Guarda Municipal
+Setor Público,Pronto-Socorro,Segurança
+Setor Público,Pronto-Socorro,Enfermeiro(a)
+Setor Público,Pronto-Socorro,Médico(a)
+Setor Privado,Pronto-Socorro,Nutricionista
+Setor Privado,Pronto-Socorro,Fisioterapeuta
+Setor Privado,Pronto-Socorro,Dentista
+Setor Privado,Shopping Center,Função não identificada
+Setor Privado,Shopping Center,Empresário(a)
+Setor Privado,Shopping Center,Atendente
+Setor Privado,Shopping Center,Segurança
+Setor Privado,Shopping Center,Assistente/Auxiliar administrativo
+Setor Privado,Supermercado,Função não identificada
+Setor Privado,Supermercado,Empresário(a)
+Setor Privado,Supermercado,Segurança
+Setor Privado,Supermercado,Fiscal
+Setor Privado,Supermercado,Caixa
+Setor Privado,Supermercado,Gerente
+Setor Público,Agência da Previdência Social,Função não identificada
+Setor Público,Agência da Previdência Social,Assistente/Auxiliar administrativo
+Setor Público,Agência da Previdência Social,Guarda Municipal
+Setor Público,Agência da Previdência Social,Gerente/Gestor(a)
+Setor Público,Agência da Previdência Social,Segurança
+Setor Público,Agência da Previdência Social,Técnico
+Setor Público,Assembleia Legislativa,Função não identificada
+Setor Público,Assembleia Legislativa,Assistente/Auxiliar administrativo
+Setor Público,Assembleia Legislativa,Guarda Municipal
+Setor Público,Assembleia Legislativa,Gerente/Gestor(a)
+Setor Público,Assembleia Legislativa,Segurança
+Setor Público,Assembleia Legislativa,Deputado(a) Estadual
+Setor Público,Assembleia Legislativa,Técnico(a)
+Setor Público,Banco,Função não identificada
+Setor Público,Banco,Assistente/Auxiliar administrativo
+Setor Público,Banco,Gerente/Gestor(a)
+Setor Público,Banco,Segurança
+Setor Público,Banco,Caixa
+Setor Público,Banco,Técnico(a)
+Setor Público,Biblioteca,Função não identificada
+Setor Público,Biblioteca,Assistente/Auxiliar administrativo
+Setor Público,Biblioteca,Guarda Municipal
+Setor Público,Biblioteca,Gerente/Gestor(a)
+Setor Público,Biblioteca,Bibliotecário(a)
+Setor Público,Biblioteca,Segurança
+Setor Público,Biblioteca,Técnico(a)
+Setor Público,Câmara dos Deputados,Função não identificada
+Setor Público,Câmara dos Deputados,Assistente/Auxiliar administrativo
+Setor Público,Câmara dos Deputados,Guarda Municipal
+Setor Público,Câmara dos Deputados,Gerente/Gestor(a)
+Setor Público,Câmara dos Deputados,Segurança
+Setor Público,Câmara dos Deputados,Deputado(a) Federal
+Setor Público,Câmara dos Deputados,Técnico(a)
+Setor Público,Câmara Municipal,Função não identificada
+Setor Público,Câmara Municipal,Assistente/Auxiliar administrativo
+Setor Público,Câmara Municipal,Guarda Municipal
+Setor Público,Câmara Municipal,Gerente/Gestor(a)
+Setor Público,Câmara Municipal,Segurança
+Setor Público,Câmara Municipal,Vereador(a)
+Setor Público,Câmara Municipal,Técnico(a)
+Setor Público,Centro de Referência em Direitos Humanos,Função não identificada
+Setor Público,Centro de Referência em Direitos Humanos,Assistente/Auxiliar administrativo
+Setor Público,Centro de Referência em Direitos Humanos,Gerente/Gestor(a)
+Setor Público,Centro de Referência em Direitos Humanos,Assistente Social
+Setor Público,Centro de Referência em Direitos Humanos,Psicólogo(a)
+Setor Público,Centro de Referência em Direitos Humanos,Advogado(a)
+Setor Público,Centro de Referência em Direitos Humanos,Coordenador
+Setor Público,Centro de Referência em Direitos Humanos,Técnico(a)
+Setor Público,Centro Pop/Creas Pop,Função não identificada
+Setor Público,Centro Pop/Creas Pop,Assistente/Auxiliar administrativo
+Setor Público,Centro Pop/Creas Pop,Guarda Municipal
+Setor Público,Centro Pop/Creas Pop,Gerente/Gestor(a)
+Setor Público,Centro Pop/Creas Pop,Segurança
+Setor Público,Centro Pop/Creas Pop,Assistente Social
+Setor Público,Centro Pop/Creas Pop,Psicólogo(a)
+Setor Público,Centro Pop/Creas Pop,Técnico(a)
+Setor Público,Clínica de Recuperação,Função não identificada
+Setor Público,Clínica de Recuperação,Assistente/Auxiliar administrativo
+Setor Público,Clínica de Recuperação,Guarda Municipal
+Setor Público,Clínica de Recuperação,Gerente/Gestor(a)
+Setor Público,Clínica de Recuperação,Segurança
+Setor Público,Clínica de Recuperação,Assistente Social
+Setor Público,Clínica de Recuperação,Psicólogo(a)
+Setor Público,Clínica de Recuperação,Médico(a)
+Setor Público,Clínica de Recuperação,Pastor(a)
+Setor Público,Clínica de Recuperação,Padre
+Setor Público,Clínica de Recuperação,Técnico(a)
+Setor Público,Companhia Urbanizadora,Função não identificada
+Setor Público,Companhia Urbanizadora,Assistente/Auxiliar administrativo
+Setor Público,Companhia Urbanizadora,Guarda Municipal
+Setor Público,Companhia Urbanizadora,Gerente/Gestor(a)
+Setor Público,Companhia Urbanizadora,Técnico(a)
+Setor Público,Conselho Estadual de Assistência Social,Membro do Conselho
+Setor Público,Conselho Estadual de Assistência Social,Função não identificada
+Setor Público,Conselho Estadual de Assistência Social,Assistente/Auxiliar administrativo
+Setor Público,Conselho Estadual de Assistência Social,Gerente/Gestor(a)
+Setor Público,Conselho Estadual de Assistência Social,Assistente Social
+Setor Público,Conselho Estadual de Assistência Social,Técnico(a)
+Setor Público,Conselho Estadual de Saúde,Membro do Conselho
+Setor Público,Conselho Estadual de Saúde,Função não identificada
+Setor Público,Conselho Estadual de Saúde,Assistente/Auxiliar administrativo
+Setor Público,Conselho Estadual de Saúde,Gerente/Gestor(a)
+Setor Público,Conselho Estadual de Saúde,Técnico(a)
+Setor Público,Conselho Municipal de Assistência Social,Membro do Conselho
+Setor Público,Conselho Municipal de Assistência Social,Função não identificada
+Setor Público,Conselho Municipal de Assistência Social,Assistente/Auxiliar administrativo
+Setor Público,Conselho Municipal de Assistência Social,Gerente/Gestor(a)
+Setor Público,Conselho Municipal de Assistência Social,Assistente Social
+Setor Público,Conselho Municipal de Assistência Social,Técnico(a)
+Setor Público,Conselho Municipal de Saúde,Membro do Conselho
+Setor Público,Conselho Municipal de Saúde,Função não identificada
+Setor Público,Conselho Municipal de Saúde,Assistente/Auxiliar administrativo
+Setor Público,Conselho Municipal de Saúde,Gerente/Gestor(a)
+Setor Público,Conselho Municipal de Saúde,Técnico(a)
+Setor Público,Conselho Tutelar,Função não identificada
+Setor Público,Conselho Tutelar,Conselheiro(a) Tutelar
+Setor Público,Conselho Tutelar,Técnico(a)
+Setor Público,Corpo de Bombeiros,Função não identificada
+Setor Público,Corpo de Bombeiros,Bombeiro(a)
+Setor Público,Corpo de Bombeiros,Técnico(a)
+Setor Público,CRAS/CREAS,Função não identificada
+Setor Público,CRAS/CREAS,Assistente/Auxiliar administrativo
+Setor Público,CRAS/CREAS,Guarda Municipal
+Setor Público,CRAS/CREAS,Gerente/Gestor(a)
+Setor Público,CRAS/CREAS,Segurança
+Setor Público,CRAS/CREAS,Assistente Social
+Setor Público,CRAS/CREAS,Psicólogo(a)
+Setor Público,CRAS/CREAS,Educador(a) Social
+Setor Público,CRAS/CREAS,Monitor(a) Social
+Setor Público,CRAS/CREAS,Técnico(a)
+Setor Público,Embaixada/Consulado,Função não identificada
+Setor Público,Embaixada/Consulado,Assistente/Auxiliar administrativo
+Setor Público,Embaixada/Consulado,Gerente/Gestor(a)
+Setor Público,Embaixada/Consulado,Embaixador
+Setor Público,Embaixada/Consulado,Cônsul
+Setor Público,Embaixada/Consulado,Técnico(a)
+Setor Público,Empresa de transporte público,Função não identificada
+Setor Público,Empresa de transporte público,Assistente/Auxiliar administrativo
+Setor Público,Empresa de transporte público,Gerente/Gestor(a)
+Setor Público,Empresa de transporte público,Cobrador(a)
+Setor Público,Empresa de transporte público,Motorista
+Setor Público,Empresa de transporte público,Técnico(a)
+Setor Público,Fiscalização Municipal,Função não identificada
+Setor Público,Fiscalização Municipal,Gerente/Gestor(a)
+Setor Público,Fiscalização Municipal,Coordenador(a)
+Setor Público,Fiscalização Municipal,Fiscal
+Setor Público,Fiscalização Municipal,Técnico(a)
+Setor Público,Força Nacional de Segurança Pública,Função não identificada
+Setor Público,Força Nacional de Segurança Pública,Soldado
+Setor Público,Forças Armadas do Brasil,Função não identificada
+Setor Público,Forças Armadas do Brasil,Recruta
+Setor Público,Forças Armadas do Brasil,Aspirante
+Setor Público,Forças Armadas do Brasil,Cadete
+Setor Público,Forças Armadas do Brasil,Cabo
+Setor Público,Forças Armadas do Brasil,Soldado
+Setor Público,Forças Armadas do Brasil,Sargento
+Setor Público,Forças Armadas do Brasil,Tenente
+Setor Público,Forças Armadas do Brasil,Marinheiro
+Setor Público,Forças Armadas do Brasil,Comandante
+Setor Público,Forças Armadas do Brasil,Brigadeiro
+Setor Público,Forças Armadas do Brasil,Almirante
+Setor Público,Forças Armadas do Brasil,Marechal
+Setor Público,Governo do Distrito Federal,Função não identificada
+Setor Público,Governo do Distrito Federal,Governador(a)
+Setor Público,Governo do Distrito Federal,Técnico(a)
+Setor Público,Governo Estadual,Função não identificada
+Setor Público,Governo Estadual,Governador(a)
+Setor Público,Governo Estadual,Técnico(a)
+Setor Público,Governo Federal,Função não identificada
+Setor Público,Governo Federal,Presidente
+Setor Público,Governo Federal,Técnico(a)
+Setor Público,Guarda Municipal (ou similar),Função não identificada
+Setor Público,Guarda Municipal (ou similar),Inspetor(a)
+Setor Público,Guarda Municipal (ou similar),Assistente/Auxiliar administrativo
+Setor Público,Guarda Municipal (ou similar),Guarda Municipal
+Setor Público,Guarda Municipal (ou similar),Coordenador(a)
+Setor Público,Guarda Municipal (ou similar),Gerente/Gestor(a)
+Setor Público,Guarda Municipal (ou similar),Técnico(a)
+Setor Público,Hospital,Função não identificada
+Setor Público,Hospital,Assistente/Auxiliar administrativo
+Setor Público,Hospital,Enfermeiro(a)
+Setor Público,Hospital,Farmacêutico(a)
+Setor Público,Hospital,Nutricionista
+Setor Público,Hospital,Fisioterapeuta
+Setor Público,Hospital,Médico(a)
+Setor Público,Hospital,Técnico(a)
+Setor Público,Instituto de Pesquisa,Função não identificada
+Setor Público,Instituto de Pesquisa,Pesquisador(a)
+Setor Público,Instituto de Pesquisa,Técnico(a)
+Setor Público,Instituto Médico Legal (IML),Função não identificada
+Setor Público,Instituto Médico Legal (IML),Perito
+Setor Público,Instituto Médico Legal (IML),Assistente/Auxiliar administrativo
+Setor Público,Instituto Médico Legal (IML),Médico(a) Legista
+Setor Público,Instituto Médico Legal (IML),Coordenador(a)
+Setor Público,Instituto Médico Legal (IML),Gerente/Gestor(a)
+Setor Público,Instituto Médico Legal (IML),Técnico(a)
+Setor Público,Instituto de Previdência e Seguridade Social,Função não identificada
+Setor Público,Instituto de Previdência e Seguridade Social,Assistente/Auxiliar administrativo
+Setor Público,Instituto de Previdência e Seguridade Social,Guarda Municipal
+Setor Público,Instituto de Previdência e Seguridade Social,Gerente/Gestor(a)
+Setor Público,Instituto de Previdência e Seguridade Social,Segurança
+Setor Público,Instituto de Previdência e Seguridade Social,Psicológo Perito
+Setor Público,Instituto de Previdência e Seguridade Social,Médico Perito
+Setor Público,Instituto de Previdência e Seguridade Social,Técnico(a)
+Setor Público,Outras Secretarias e Superintendências Estaduais,Função não identificada
+Setor Público,Outras Secretarias e Superintendências Estaduais,Assistente/Auxiliar administrativo
+Setor Público,Outras Secretarias e Superintendências Estaduais,Gerente/Gestor(a)
+Setor Público,Outras Secretarias e Superintendências Estaduais,Superintendente
+Setor Público,Outras Secretarias e Superintendências Estaduais,Secretário(a)
+Setor Público,Outras Secretarias e Superintendências Municipais,Assistente/Auxiliar administrativo
+Setor Público,Outras Secretarias e Superintendências Municipais,Gerente/Gestor(a)
+Setor Público,Outras Secretarias e Superintendências Municipais,Técnico(a)
+Setor Público,Ouvidoria,Função não identificada
+Setor Público,Ouvidoria,Ouvidor(a)
+Setor Público,Ouvidoria,Assistente/Auxiliar administrativo
+Setor Público,Ouvidoria,Gerente/Gestor(a)
+Setor Público,Ouvidoria,Gerente/Técnico(a)
+Setor Público,Poder Judiciário,Desembargador
+Setor Público,Poder Judiciário,Perito
+Setor Público,Poder Judiciário,Oficial de Justiça
+Setor Público,Poder Judiciário,Função não identificada
+Setor Público,Poder Judiciário,Juiz
+Setor Público,Poder Judiciário,Promotor
+Setor Público,Poder Judiciário,Assistente/Auxiliar administrativo
+Setor Público,Poder Judiciário,Técnico(a)
+Setor Público,Ministério Público,Função não identificada
+Setor Público,Ministério Público,Promotor
+Setor Público,Ministério Público,Procurador
+Setor Público,Ministério Público,Assistente/Auxiliar administrativo
+Setor Público,Ministério Público,Assistente/Auxiliar administrativo
+Setor Público,Ministério Público,Técnico(a)
+Setor Público,Procuradoria,Função não identificada
+Setor Público,Procuradoria,Procurador
+Setor Público,Procuradoria,Assistente/Auxiliar administrativo
+Setor Público,Procuradoria,Técnico(a)
+Setor Público,Polícia Civil,Função não identificada
+Setor Público,Polícia Civil,Delegado
+Setor Público,Polícia Civil,Investigador
+Setor Público,Polícia Civil,Inspetor
+Setor Público,Polícia Civil,Agente
+Setor Público,Polícia Civil,Escrivão
+Setor Público,Polícia Civil,Perito
+Setor Público,Polícia Civil,Técnico(a)
+Setor Público,Polícia Federal,Função não identificada
+Setor Público,Polícia Federal,Delegado
+Setor Público,Polícia Federal,Agente
+Setor Público,Polícia Federal,Escrivão
+Setor Público,Polícia Federal,Técnico(a)
+Setor Público,Polícia Militar,Função não identificada
+Setor Público,Polícia Militar,Capitão
+Setor Público,Polícia Militar,Coronel
+Setor Público,Polícia Militar,Tenente-Coronel
+Setor Público,Polícia Militar,Tenente
+Setor Público,Polícia Militar,Sargento
+Setor Público,Polícia Militar,Cabo
+Setor Público,Polícia Militar,Soldado
+Setor Público,Polícia Militar,Major
+Setor Público,Polícia Militar,Técnico(a)
+Setor Público,Polícia Rodoviária Federal,Função não identificada
+Setor Público,Polícia Rodoviária Federal,Inspetor
+Setor Público,Polícia Rodoviária Federal,Agente
+Setor Público,Polícia Rodoviária Federal,Técnico(a)
+Setor Público,Postos e Centros de Saúde,Função não identificada
+Setor Público,Postos e Centros de Saúde,Guarda Municipal
+Setor Público,Postos e Centros de Saúde,Segurança
+Setor Público,Postos e Centros de Saúde,Enfermeiro(a)
+Setor Público,Postos e Centros de Saúde,Médico(a)
+Setor Público,Postos e Centros de Saúde,Fisioterapeuta
+Setor Público,Postos e Centros de Saúde,Nutricionista
+Setor Público,Postos e Centros de Saúde,Psicólogo(a)
+Setor Público,Postos e Centros de Saúde,Farmacêutico(a)
+Setor Público,Postos e Centros de Saúde,Dentista
+Setor Público,Postos e Centros de Saúde,Técnico(a)
+Setor Público,Prefeitura Municipal,Função não identificada
+Setor Público,Prefeitura Municipal,Prefeito(a)
+Setor Público,Prefeitura Municipal,Assistente/Auxiliar administrativo
+Setor Público,Prefeitura Municipal,Gerente/Gestor(a)
+Setor Público,Prefeitura Municipal,Guarda Municipal
+Setor Público,Prefeitura Municipal,Motorista
+Setor Público,Prefeitura Municipal,Segurança
+Setor Público,Prefeitura Municipal,Técnico(a)
+Setor Público,Promotoria de Justiça,Função não identificada
+Setor Público,Promotoria de Justiça,Promotor
+Setor Público,Promotoria de Justiça,Técnico(a)
+Setor Público,Pronto-Socorro,Função não identificada
+Setor Público,Pronto-Socorro,Guarda Municipal
+Setor Público,Pronto-Socorro,Segurança
+Setor Público,Pronto-Socorro,Enfermeiro(a)
+Setor Público,Pronto-Socorro,Nutricionista
+Setor Público,Pronto-Socorro,Fisioterapeuta
+Setor Público,Pronto-Socorro,Dentista
+Setor Público,Pronto-Socorro,Médico(a)
+Setor Público,Pronto-Socorro,Técnico(a)
+Setor Público,Restaurante Popular,Função não identificada
+Setor Público,Restaurante Popular,Assistente/Auxiliar administrativo
+Setor Público,Restaurante Popular,Guarda Municipal
+Setor Público,Restaurante Popular,Gerente/Gestor(a)
+Setor Público,Restaurante Popular,Segurança
+Setor Público,Restaurante Popular,Nutricionista
+Setor Público,Restaurante Popular,Cozinheiro(a)
+Setor Público,SAMU,Função não identificada
+Setor Público,SAMU,Enfermeiro(a)
+Setor Público,SAMU,Médico(a)
+Setor Público,SAMU,Paramédico(a)
+Setor Público,SAMU,Técnico(a)
+Setor Público,Secretaria de Assistência Social do Distrito Federal,Função não identificada
+Setor Público,Secretaria de Assistência Social do Distrito Federal,Assessor
+Setor Público,Secretaria de Assistência Social do Distrito Federal,Secretário de Assistência Social
+Setor Público,Secretaria de Assistência Social do Distrito Federal,Assistente/Auxiliar administrativo
+Setor Público,Secretaria de Assistência Social do Distrito Federal,Técnico(a)
+Setor Público,Secretaria Estadual de Assistência Social,Função não identificada
+Setor Público,Secretaria Estadual de Assistência Social,Secretário de Assistência Social
+Setor Público,Secretaria Estadual de Assistência Social,Assessor
+Setor Público,Secretaria Estadual de Assistência Social,Assistente/Auxiliar administrativo
+Setor Público,Secretaria Estadual de Assistência Social,Técnico(a)
+Setor Público,Secretaria Estadual de Saúde,Função não identificada
+Setor Público,Secretaria Estadual de Saúde,Secretário de Saúde
+Setor Público,Secretaria Estadual de Saúde,Assessor
+Setor Público,Secretaria Estadual de Saúde,Assistente/Auxiliar administrativo
+Setor Público,Secretaria Estadual de Saúde,Técnico(a)
+Setor Público,Secretaria Estadual de Segurança Pública ou Urbana,Função não identificada
+Setor Público,Secretaria Estadual de Segurança Pública ou Urbana,Secretário de Segurança Pública/Urbana
+Setor Público,Secretaria Estadual de Segurança Pública ou Urbana,Assessor
+Setor Público,Secretaria Estadual de Segurança Pública ou Urbana,Assistente/Auxiliar administrativo
+Setor Público,Secretaria Estadual de Segurança Pública ou Urbana,Técnico(a)
+Setor Público,Secretaria Municipal de Assistência Social (ou similar),Função não identificada
+Setor Público,Secretaria Municipal de Assistência Social (ou similar),Secretário de Assistência Social
+Setor Público,Secretaria Municipal de Assistência Social (ou similar),Assessor
+Setor Público,Secretaria Municipal de Assistência Social (ou similar),Assistente/Auxiliar administrativo
+Setor Público,Secretaria Municipal de Assistência Social (ou similar),Técnico(a)
+Setor Público,Secretaria Municipal de Habitação,Função não identificada
+Setor Público,Secretaria Municipal de Habitação,Secretário de Habitação
+Setor Público,Secretaria Municipal de Habitação,Assessor
+Setor Público,Secretaria Municipal de Habitação,Assistente/Auxiliar administrativo
+Setor Público,Secretaria Municipal de Habitação,Técnico(a)
+Setor Público,Secretaria Municipal de Saúde,Função não identificada
+Setor Público,Secretaria Municipal de Saúde,Secretário de Saúde
+Setor Público,Secretaria Municipal de Saúde,Assessor
+Setor Público,Secretaria Municipal de Saúde,Assistente/auxiliar administrativo
+Setor Público,Secretaria Municipal de Saúde,Técnico(a)
+Setor Público,Secret. Munic. de Segurança Pública ou Urbana (ou similar),Função não identificada
+Setor Público,Secret. Munic. de Segurança Pública ou Urbana (ou similar),Secretário de Segurança Pública/Urbana
+Setor Público,Secret. Munic. de Segurança Pública ou Urbana (ou similar),Assessor
+Setor Público,Secret. Munic. de Segurança Pública ou Urbana (ou similar),Assistente/Auxiliar administrativo
+Setor Público,Secret. Munic. de Segurança Pública ou Urbana (ou similar),Técnico(a)
+Setor Público,Secret./órgão de Limpeza Urbana Municipal (ou similar),Função não identificada
+Setor Público,Secret./órgão de Limpeza Urbana Municipal (ou similar),Secretário/responsável pela Limpeza Urbana Municipal
+Setor Público,Secret./órgão de Limpeza Urbana Municipal (ou similar),Assessor
+Setor Público,Secret./órgão de Limpeza Urbana Municipal (ou similar),Gari
+Setor Público,Secret./órgão de Limpeza Urbana Municipal (ou similar),Assistente/Auxiliar administrativo
+Setor Público,Secret./órgão de Limpeza Urbana Municipal (ou similar),Técnico(a)
+Setor Público,Senado Federal,Função não identificada
+Setor Público,Senado Federal,Segurança
+Setor Público,Senado Federal,Senador
+Setor Público,Senado Federal,Técnico(a)
+Setor Público,Serviços de Acolhimento para Crianças e Adolescentes,Função não identificada
+Setor Público,Serviços de Acolhimento para Crianças e Adolescentes,Assistente/Auxiliar administrativo
+Setor Público,Serviços de Acolhimento para Crianças e Adolescentes,Guarda Municipal
+Setor Público,Serviços de Acolhimento para Crianças e Adolescentes,Gerente/Gestor(a)
+Setor Público,Serviços de Acolhimento para Crianças e Adolescentes,Segurança
+Setor Público,Serviços de Acolhimento para Crianças e Adolescentes,Assistente Social
+Setor Público,Serviços de Acolhimento para Crianças e Adolescentes,Educador(a) Social
+Setor Público,Serviços de Acolhimento para Crianças e Adolescentes,Cuidador(a) Social
+Setor Público,Serviços de Acolhimento para Crianças e Adolescentes,Monitor(a) Social
+Setor Público,Serviços de Acolhimento para Crianças e Adolescentes,Psicólogo(a)
+Setor Público,Serviços de Acolhimento para Crianças e Adolescentes,Técnico(a)
+Setor Público,Serviços de Acolhimento p/ Pessoas Adultas e Fam. em Sit. de Rua,Função não identificada
+Setor Público,Serviços de Acolhimento p/ Pessoas Adultas e Fam. em Sit. de Rua,Assistente/Auxiliar administrativo
+Setor Público,Serviços de Acolhimento p/ Pessoas Adultas e Fam. em Sit. de Rua,Guarda Municipal
+Setor Público,Serviços de Acolhimento p/ Pessoas Adultas e Fam. em Sit. de Rua,Gerente/Gestor(a)
+Setor Público,Serviços de Acolhimento p/ Pessoas Adultas e Fam. em Sit. de Rua,Segurança
+Setor Público,Serviços de Acolhimento p/ Pessoas Adultas e Fam. em Sit. de Rua,Assistente Social
+Setor Público,Serviços de Acolhimento p/ Pessoas Adultas e Fam. em Sit. de Rua,Educador(a) Social
+Setor Público,Serviços de Acolhimento p/ Pessoas Adultas e Fam. em Sit. de Rua,Cuidador(a) Social
+Setor Público,Serviços de Acolhimento p/ Pessoas Adultas e Fam. em Sit. de Rua,Monitor(a) Social
+Setor Público,Serviços de Acolhimento p/ Pessoas Adultas e Fam. em Sit. de Rua,Técnico(a) Social (Assistente Social)
+Setor Público,Serviços de Acolhimento p/ Pessoas Adultas e Fam. em Sit. de Rua,Técnico(a) Social (Psicólogo)
+Setor Público,Serviços de Acolhimento p/ Pessoas Adultas e Fam. em Sit. de Rua,Técnico(a)
+Setor Público,Serviços de Acolhimento p/ Pessoas Adultas e Fam. em Sit. de Rua,Coordenador(a)
+Setor Público,Serviços de Atendimento ao Migrante,Função não identificada
+Setor Público,Serviços de Atendimento ao Migrante,Assistente/Auxiliar administrativo
+Setor Público,Serviços de Atendimento ao Migrante,Guarda Municipal
+Setor Público,Serviços de Atendimento ao Migrante,Gerente/Gestor(a)
+Setor Público,Serviços de Atendimento ao Migrante,Segurança
+Setor Público,Serviços de Atendimento ao Migrante,Técnico(a) Social (Assistente Social)
+Setor Público,Serviços de Atendimento ao Migrante,Técnico(a) Social (Psicólogo)
+Setor Público,Serviços de Atendimento ao Migrante,Técnico(a)
+Setor Público,Serviços de Saúde Mental,Função não identificada
+Setor Público,Serviços de Saúde Mental,Assistente/Auxiliar administrativo
+Setor Público,Serviços de Saúde Mental,Enfermeiro(a)
+Setor Público,Serviços de Saúde Mental,Guarda Municipal
+Setor Público,Serviços de Saúde Mental,Gerente/Gestor(a)
+Setor Público,Serviços de Saúde Mental,Segurança
+Setor Público,Serviços de Saúde Mental,Assistente Social
+Setor Público,Serviços de Saúde Mental,Psicólogo(a)
+Setor Público,Serviços de Saúde Mental,Médico(a)
+Setor Público,Serviços de Saúde Mental,Monitor(a)
+Setor Público,Serviços de Saúde Mental,Farmacêutico(a)
+Setor Público,Serviços de Saúde Mental,Fisioterapeuta
+Setor Público,Serviços de Saúde Mental,Nutricionista
+Setor Público,Serviços de Saúde Mental,Técnico(a)
+Setor Público,Unidade de Pronto Atendimento (UPA),Função não identificada
+Setor Público,Unidade de Pronto Atendimento (UPA),Guarda Municipal
+Setor Público,Unidade de Pronto Atendimento (UPA),Segurança
+Setor Público,Unidade de Pronto Atendimento (UPA),Enfermeiro(a)
+Setor Público,Unidade de Pronto Atendimento (UPA),Médico(a)
+Setor Público,Unidade de Pronto Atendimento (UPA),Assistente Social
+Setor Público,Unidade de Pronto Atendimento (UPA),Nutricionista
+Setor Público,Unidade de Pronto Atendimento (UPA),Farmacêutico(a)
+Setor Público,Unidade de Pronto Atendimento (UPA),Fisioterapeuta
+Setor Público,Unidade de Pronto Atendimento (UPA),Dentista
+Setor Público,Unidade de Pronto Atendimento (UPA),Técnico(a)
+Setor Público,Unidade Penitenciária,Função não identificada
+Setor Público,Unidade Penitenciária,Diretor do Presídio
+Setor Público,Unidade Penitenciária,Agente Penitenciário
+Setor Público,Unidade Penitenciária,Psicólogo(a)
+Setor Público,Unidade Penitenciária,Farmacêutico(a)
+Setor Público,Unidade Penitenciária,Médico(a)
+Setor Público,Unidade Penitenciária,Nutricionista
+Setor Público,Unidade Penitenciária,Cozinheiro(a)
+Setor Público,Unidade Penitenciária,Técnico(a)
+Setor Público,Serviço Municipal de Abordagem Social,Função não identificada
+Setor Público,Serviço Municipal de Abordagem Social,Técnico(a) Social (Assistente Social)
+Setor Público,Serviço Municipal de Abordagem Social,Técnico(a) Social (Psicólogo)
+Setor Público,Serviço Municipal de Abordagem Social,Técnico(a)
+Setor Público,Serviço Municipal de Abordagem Social,Educador(a) Social
+Setor Público,Serviço Municipal de Abordagem Social,Agente
+Setor Público,Universidade,Função não identificada
+Setor Público,Universidade,Reitor(a)
+Setor Público,Universidade,Professor(a)
+Setor Público,Universidade,Assistente/Auxiliar administrativo
+Setor Público,Universidade,Aluno(a)
+Setor Público,Universidade,Técnico(a)
+Sociedade Civil Organizada,Movimento Social,Função não especificada
+Sociedade Civil Organizada,Movimento Social,Manifestante
+Sociedade Civil Organizada,Mobilização Social,Função não especificada
+Sociedade Civil Organizada,Mobilização Social,Manifestante
+Sem vínculo institucional,Sem vínculo,Pessoa física
+Sem vínculo institucional,Sem vínculo,Catador de Material Reciclável
+Sem vínculo institucional,Sem vínculo,Criança/Adolescente
+Sem vínculo institucional,Sem vínculo,Parente da vítima
+Sem vínculo institucional,Sem vínculo,Pessoa em Situação de Rua
+Sem vínculo institucional,Sem vínculo,Pessoa em Situação de Rua e Catador de Material Reciclável
+Setor Público,Outras Secretarias e Superintendências Municipais,Função não identificada
+Setor Público,Defensoria Pública,Função não identificada
+Setor Público,Defensoria Pública,Defensor Público
+Setor Público,Defensoria Pública,Assistente/Auxiliar administrativo
+Setor Público,Defensoria Pública,Técnico(a)

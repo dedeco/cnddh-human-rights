@@ -1,0 +1,20 @@
+Pessoa(s) assistida(s), retornopessoasassistidas, O órgão ou entidade responsável informou que conhece a pessoa ou grupo de pessoas e que já presta assistência
+Sem informação,  retornogenerico, O órgão ou entidade responsável comunicou que nada tem a informar acerca do caso ou manteve-se silente
+Inquérito Instaurado, retornoinquerito, A Polícia Civil ou o Ministério Público informou que foi instaurado inquérito e enviou (ou não) o respectivo número
+Aguardando diligências investigatórias, retornogenerico,A Polícia Civil; o Ministério Público ou o Poder Judiciário (Juiz ou servidor) informou que o inquérito ou o processo encontra-se aguardando a realização de alguma providência para seguir com seu andamento
+Inquérito arquivado, retornoinquerito, A Polícia Civil ou o Ministério Público informou que por algum motivo o inquérito foi arquivado
+Denúncia oferecida pelo MP, retornogenerico, O Ministério Público informou que ofereceu denúncia (início do processo criminal)
+Processo Instaurado, retornoprocesso, O Ministério Público; a Defensoria pública ou outra entidade parceira informou que acerca da denúncia foi instaurado processo judicial
+Realizado audiência, retornogenerico, O Ministério Público; a Defensoria pública ou outra entidade informou que acerca do processo judicial, foi realizada audiência
+Acusado preso, retornogenerico, O Ministério Público; a Defensoria pública ou outra entidade informou que o acusado encontra-se preso
+Feito Boletim de ocorrência, retornobo, A vítima; a Policia Civil; a Defensoria Pública ou o Ministério Público informou que foi feito Boletim de Ocorrência.
+Feito Relatório Circunstanciado de Ocorrência (RCO), retornorco, A vítima; a Polícia Civil; a Defensoria Pública ou o Ministério Público informou que foi feito RCO.
+Feito Registro de Eventos de Defesa Social (REDS), retornoreds, A vítima; a Polícia Civil; a Defensoria Pública ou o Ministério Público informou que foi feito RCO
+Início de providências, retornogenerico, O órgão ou entidade responsável informou que instaurou procedimento administrativo ou judicial para apurar a denúncia
+Apuração da denúncia, retornogenerico, O órgão ou entidade responsável informou que apurou a denúncia; apresentando (ou não) o resultado
+Informações insuficientes para apuração da denúncia, retornogenerico,O órgão ou entidade responsável comunicou que as informações apresentadas pelo CNDDH não foram suficientes para a apuração da denúncia.
+Pessoa(s) não acompanhada(s), retornogenerico, O órgão ou entidade responsável informou que a pessoa ou grupo de pessoas; vítimas da violação; ainda não são atendidos pelos serviços.
+Vítima(s) não encontrada (s), retornogenerico, O órgão ou entidade responsável informou que não localizou a(s) pessoa(s) a partir das informações apresentadas
+Políticas para Catadores, retornogenerico, Perguntado (ou não) pelo CNDDH sobre as políticas existentes no município ou estado para os catadores; o órgão ou entidade responsável informou quais políticas possuem
+Políticas para PSR, retornopoliticapsr, Perguntado (ou não) pelo CNDDH sobre as políticas existentes no município ou estado para a PSR; o órgão ou entidade responsável informou quais políticas possuem.
+

@@ -1,0 +1,20 @@
+Artefato explosivo
+Atropelamento
+Empurrão
+Envenenamento
+Esmagamento
+Espancamento
+Estrangulamento
+Instrumento Contundente (Barra de ferro)
+Instrumento Contundente (Martelo)
+Instrumento Contundente (Não identificado)
+Instrumento Contundente (Pauladas)
+Instrumento Contundente (Pedradas)
+Instrumento Contundente (Tijolo)
+Instrumento Perfuro Contundente (Arma de fogo e similar)
+Instrumento Perfuro Contundente (Não identificado)
+Instrumento Perfuro Cortante (Faca e similar)
+Instrumento Perfuro Cortante (Não identificado)
+Outros tipos
+Queimadura
+Sem informação

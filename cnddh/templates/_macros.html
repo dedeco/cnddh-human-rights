@@ -1,0 +1,20 @@
+{% macro paginator_footer(paginator, pagerange=4) -%}
+{% if paginator.num_pages > 1 %}
+<div class="paginator">
+{% if paginator.has_more_previous(pagerange) %} <a href="#" onclick="javascript:return Pagina(1)">1</a> ... {% endif %}
+{% for pagenum in paginator.previous_range(pagerange) %}
+<a href="#" onclick="javascript:return Pagina({{pagenum}})">{{pagenum}}</a>
+{% endfor %}
+{{ paginator.cur_page }}
+{% for pagenum in paginator.next_range(pagerange) %}
+<a href="#" onclick="javascript:return Pagina({{pagenum}})">{{pagenum}}</a>
+{% endfor %}
+{% if paginator.has_more_next(pagerange) %} ... <a href="#" onclick="javascript:return Pagina({{paginator.num_pages}})">{{paginator.num_pages}}</a>{% endif %}
+</div>
+{% endif %}
+{%- endmacro %}
+
+{% macro trunca_separa(text, length=40, excess=10, killwords=False, default='-') -%}
+{%- set t1, t2 = truncate_split(text, length, excess, killwords) -%}
+{% if t1 %}{{t1}}{% else %}{{default}}{% endif %}{% if t2 %}<span class="complementotruncado">{{t2}}</span>{% endif %}
+{%- endmacro %}

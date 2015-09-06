@@ -1,0 +1,18 @@
+					<div class="field {% if f.orgao.errors %} error {% endif %}">
+						<label>{{f.orgao.label}}</label>
+							{{f.orgao}}
+							{% if f.orgao.errors %}<div class="ui red pointing above ui label">{{';'.join(f.orgao.errors)}}</div>{% endif %}
+					</div>					
+
+					<div class="two fields">	
+						<div class="field {% if f.dtenvio.errors %} error {% endif %}">
+						<label>{{f.dtenvio.label}}</label>
+						{{f.dtenvio}}
+						{% if f.dtenvio.errors %}<div class="ui red pointing left ui label">{{';'.join(f.dtenvio.errors)}}</div>{% endif %}
+						</div>		
+						<div class="field {% if f.dtlimite.errors %} error {% endif %}">
+						<label>{{f.dtlimite.label}}</label>
+						{{f.dtlimite}}
+						{% if f.dtlimite.errors %}<div class="ui red pointing left ui label">{{';'.join(f.dtlimite.errors)}}</div>{% endif %}
+						</div>	
+					</div>

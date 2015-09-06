@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+
+{% block titulo %}Retorno da denúncia nº {{d.numero}}{% endblock %}
+
+{% block paginatitulo %}Retorno da denúncia nº {{d.numero}}{% endblock %}
+
+{% from '_macros.html' import paginator_footer %}
+
+{% block scripts %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='css/jquery-ui.css') }}">
+<script type="text/javascript" src="{{url_for('.static', filename='js/jquery-ui.js')}}"></script>
+<script type="text/javascript" src="{{url_for('.static', filename='js/jquery.ui.datepicker-pt-BR.js')}}"></script>
+<script type="text/javascript">
+$(function(){	
+    $.datepicker.setDefaults($.datepicker.regional['pt-BR']);
+    $('input[name$="dtretorno"]').datepicker( $.datepicker.regional[ 'pt-BR' ] );
+
+	$('div[id^="divretorno"]').hide();
+
+	showhide($("select#retorno").val());
+
+    $("select#retorno").change(function() {
+		showhide($(this).val());
+	});
+	
+	function showhide(id){		
+			var retorno = id;
+
+			switch( parseInt(retorno)) {
+
+				case 1:
+					$('div[id^="divretorno"]').hide();
+					$("#divretornopessoasassistidas").show();
+					break;
+				case 2:
+				case 4:
+				case 6:
+				case 8:
+				case 9:
+				case 13:
+				case 14:
+				case 15:
+				case 16:
+				case 17:
+				case 18:
+					$('div[id^="divretorno"]').hide();
+					$("#divretornogenerico").show();
+					break;				
+				case 3:
+				case 5:
+					$('div[id^="divretorno"]').hide();
+					$("#divretornoinquerito").show();
+					break;	
+				case 7:
+					$('div[id^="divretorno"]').hide();
+					$("#divretornoprocesso").show();
+					break;				
+				case 10:
+					$('div[id^="divretorno"]').hide();
+					$("#divretornobo").show();
+					break;
+				case 11:
+					$('div[id^="divretorno"]').hide();
+					$("#divretornorco").show();
+					break;	
+				case 12:
+					$('div[id^="divretorno"]').hide();
+					$("#divretornoreds").show();
+					break;	
+				case 19:
+					$('div[id^="divretorno"]').hide();
+					$("#divretornopoliticapsr").show();
+					break;	
+				default:
+					$('div[id^="divretorno"]').hide();
+					break;
+			}		   
+	};		
+		
+});
+</script>
+<style type="text/css">
+#dtretorno{
+	width: 150px;
+}
+#ip,#np,#bo,#rco,#reds{
+	width: 300px;
+}
+.ui.left.floated.header{
+	margin-top: 0.5em;
+	margin-left: 0.5em;
+}
+</style>
+{% endblock %}
+{% block header %}{% endblock %}
+
+{% block conteudo %}
+    <div id="main" class="main container">
+		
+		<div class="ui form segment">		
+			<form action="" method="post" id="cform" name="cform" name="form" enctype="multipart/form-data">
+			<input type="hidden" name="pagina" value="1">
+			<h2 class="ui left floated header">Receber retorno da denúncia nº {{d.numero}}</h2>		
+			
+			<div class="ui clearing divider"></div>			
+			
+				<div class="two fields">					
+					<div class="field {% if f.retorno.errors %} error {% endif %}">
+						<label>{{f.retorno.label}}</label>
+						{{f.retorno}}
+						{% if f.retorno.errors %}<div class="ui red pointing left ui label">{{';'.join(f.retorno.errors)}}</div>{% endif %}
+					</div>						
+					<div class="field {% if f.dtretorno.errors %} error {% endif %}">
+						<label>{{f.dtretorno.label}}</label>
+						{{f.dtretorno}}
+						{% if f.dtretorno.errors %}<div class="ui red pointing left ui label">{{';'.join(f.dtretorno.errors)}}</div>{% endif %}
+					</div>								
+				</div>					
+				
+				<div class="field {% if f.descricao.errors %} error {% endif %}">
+					<label>{{f.descricao.label}}</label>
+					{{f.descricao}}
+					{% if f.descricao.errors %}<div class="ui red pointing left ui label">{{';'.join(f.descricao.errors)}}</div>{% endif %}
+				</div>	
+
+				<div id="divretornogenerico" class="field {% if f.observacao.errors %} error {% endif %}">
+					<label>{{f.observacao.label}}</label>
+					{{f.observacao}}
+					{% if f.observacao.errors %}<div class="ui red pointing left ui label">{{';'.join(f.observacao.errors)}}</div>{% endif %}
+				</div>					
+				
+				<div id="divretornopessoasassistidas" class="field {% if f.tipoassistencia.errors %} error {% endif %}">
+					<label>{{f.tipoassistencia.label}}</label>
+					{{f.tipoassistencia}}
+					{% if f.tipoassistencia.errors %}<div class="ui red pointing left ui label">{{';'.join(f.tipoassistencia.errors)}}</div>{% endif %}
+				</div>	
+				
+				<div id="divretornoinquerito">
+					<div class="two fields">				
+						<div  class="field {% if f.ip.errors %} error {% endif %}">					
+							<label>{{f.ip.label}}</label>
+							{{f.ip}}
+							{% if f.ip.errors %}<div class="ui red pointing left ui label">{{';'.join(f.ip.errors)}}</div>{% endif %}					
+						</div>	
+						<div  class="field {% if f.situacaoip.errors %} error {% endif %}">					
+							<label>{{f.situacaoip.label}}</label>
+							{{f.situacaoip}}
+							{% if f.situacaoip.errors %}<div class="ui red pointing left ui label">{{';'.join(f.situacaoip.errors)}}</div>{% endif %}					
+						</div>	
+					</div>	
+					<div class="field {% if f.motivo.errors %} error {% endif %}">
+						<label>{{f.motivo.label}}</label>
+						{{f.motivo}}
+						{% if f.motivo.errors %}<div class="ui red pointing left ui label">{{';'.join(f.motivo.errors)}}</div>{% endif %}
+					</div>	
+				</div>
+				
+				<div id="divretornoprocesso">
+					<div class="two fields">				
+						<div  class="field {% if f.np.errors %} error {% endif %}">					
+							<label>{{f.np.label}}</label>
+							{{f.np}}
+							{% if f.np.errors %}<div class="ui red pointing left ui label">{{';'.join(f.np.errors)}}</div>{% endif %}					
+						</div>	
+						<div  class="field {% if f.situacaoip.errors %} error {% endif %}">					
+							<label>{{f.situacaop.label}}</label>
+							{{f.situacaop}}
+							{% if f.situacaop.errors %}<div class="ui red pointing left ui label">{{';'.join(f.situacaop.errors)}}</div>{% endif %}					
+						</div>	
+					</div>	
+				</div>			
+
+				<div id="divretornobo" class="field {% if f.bo.errors %} error {% endif %}">
+					<label>{{f.bo.label}}</label>
+					{{f.bo}}
+					{% if f.bo.errors %}<div class="ui red pointing left ui label">{{';'.join(f.bo.errors)}}</div>{% endif %}
+				</div>	
+
+				<div id="divretornorco" class="field {% if f.rco.errors %} error {% endif %}">
+					<label>{{f.rco.label}}</label>
+					{{f.rco}}
+					{% if f.rco.errors %}<div class="ui red pointing left ui label">{{';'.join(f.rco.errors)}}</div>{% endif %}
+				</div>	
+
+				<div id="divretornoreds" class="field {% if f.reds.errors %} error {% endif %}">
+					<label>{{f.reds.label}}</label>
+					{{f.reds}}
+					{% if f.reds.errors %}<div class="ui red pointing left ui label">{{';'.join(f.reds.errors)}}</div>{% endif %}
+				</div>			
+
+				<div id="divretornopoliticapsr" class="field {% if f.tipopolitica.errors %} error {% endif %}">
+					<label>{{f.tipopolitica.label}}</label>
+					{{f.tipopolitica}}
+					{% if f.tipopolitica.errors %}<div class="ui red pointing left ui label">{{';'.join(f.tipopolitica.errors)}}</div>{% endif %}
+				</div>					
+								
+				{% if retorno.url %}	
+				<div class="two fields">					
+					<div class="ui buttons">
+					  <div class="ui labeled icon button">
+						<i class="download icon"></i>
+						<a href="{{retorno.url}}" target="_blank">Download</a>
+					  </div>
+					  <button class="ui labeled icon button" type="submit" name="acao" id="acao" value="Remover anexo">
+						<i class="trash icon"></i>
+						Excluir
+					  </button>
+					</div>
+					<div class="field {% if f.arquivo.errors %} error {% endif %}">
+						<label>Faça upload de um novo arquivo</label>
+						{{f.arquivo}}
+						{% if f.arquivo.errors %}<div class="ui red pointing left ui label">{{';'.join(f.arquivo.errors)}}</div>{% endif %}
+					</div>	
+				</div>						
+				{% else %}		
+					<div class="field {% if f.arquivo.errors %} error {% endif %}">
+					<label>{{f.arquivo.label}}</label>
+					{{f.arquivo}}
+					{% if f.arquivo.errors %}<div class="ui red pointing left ui label">{{';'.join(f.arquivo.errors)}}</div>{% endif %}
+					</div>
+				{% endif %}
+				</br>
+				<a href="{{url_for('timeline',denuncia_id=d.id)}}" title="Ver linha do tempo da denúncia" class="ui small blue submit button">Voltar</a>
+				<input type="submit" class="ui small blue submit button" name="acao" id="acao" value="Salvar" />	
+			</form>
+		</div>	
+	</div>	
+{% endblock %}

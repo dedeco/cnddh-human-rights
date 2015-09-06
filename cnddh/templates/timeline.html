@@ -1,0 +1,452 @@
+{% extends "base.html" %}
+
+{% block titulo %}Linha do tempo denúncia nº{{denuncia.numero}}{% endblock %}
+
+{% block paginatitulo %}Linha do tempo denúncia nº {{denuncia.numero}}{% endblock %}
+
+{% from '_macros.html' import paginator_footer %}
+
+{% block scripts %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='css/reset.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='css/style.css') }}">
+<script type="text/javascript" src="{{url_for('.static', filename='js/modernizr.js')}}"></script>
+
+<script language="javascript">
+$(function(){	
+
+	$('.ui.accordion').accordion();
+	
+	$("a#voltar").click(function(e) {
+		e.preventDefault();
+		var targetUrl = $(this).attr("href");
+		
+		$('div#novo-encaminhamento').modal('setting', {
+						closable  : true,
+						onDeny    : function(){
+							window.location.href = $('#workflow').val();		
+						},
+						onApprove : function() {
+							window.location.href = targetUrl;					  
+						}}).modal('show');
+	  });	
+	
+	$("a#delete-encaminhamento").click(function(e) {
+		e.preventDefault();
+		var targetUrl = $(this).attr("href");
+		
+		$('div#deleta-encaminhamento').modal('setting', {
+						closable  : true,
+						onDeny    : function(){
+							return true;		
+						},
+						onApprove : function() {
+							window.location.href = targetUrl;					  
+						}}).modal('show');
+	  });	
+
+	$("a#delete-retorno").click(function(e) {
+		e.preventDefault();
+		var targetUrl = $(this).attr("href");
+		
+		$('div#deleta-retorno').modal('setting', {
+						closable  : true,
+						onDeny    : function(){
+							return true;		
+						},
+						onApprove : function() {
+							window.location.href = targetUrl;					  
+						}}).modal('show');
+	  });	 
+	  	  
+	  
+});
+</script>
+
+<style type="text/css">
+.ui.left.floated.header{
+	margin-top: 0.5em;
+	margin-left: 0.5em;
+}
+</style>
+{% endblock %}
+{% block header %}{% endblock %}
+
+{% block conteudo %}
+    <div id="main" class="main container">
+		
+		<div class="ui form segment">		
+			<form action="" method="post" id="cform" name="cform">
+			
+			<div id="novo-encaminhamento" class="ui small modal transition hidden" style="margin-top: -110px;">
+				<i class="close icon"></i>
+				<div class="header">
+				  Confirmação
+				</div>
+				<div class="content">
+				  <p>Deseja fazer um novo encaminhamento?</p>
+				</div>
+				<div class="actions">
+				  <div class="ui negative button">
+					Não
+				  </div>
+				  <div class="ui positive right labeled icon button">
+					Sim
+					<i class="checkmark icon"></i>
+				  </div>
+				</div>
+			</div>				
+			
+			<div id="deleta-encaminhamento" class="ui small modal transition hidden" style="margin-top: -110px;">
+				<i class="close icon"></i>
+				<div class="header">
+				  Confirmação
+				</div>
+				<div class="content">
+				  <p>Deseja deletar este ENCAMINHAMENTO e todos os RETORNOS associados a este encaminhamento?</p>
+				</div>
+				<div class="actions">
+				  <div class="ui negative button">
+					Não
+				  </div>
+				  <div class="ui positive right labeled icon button">
+					Sim
+					<i class="checkmark icon"></i>
+				  </div>
+				</div>
+			</div>				
+			
+			<div id="deleta-retorno" class="ui small modal transition hidden" style="margin-top: -110px;">
+				<i class="close icon"></i>
+				<div class="header">
+				  Confirmação
+				</div>
+				<div class="content">
+				  <p>Deseja deletar este RETORNO?</p>
+				</div>
+				<div class="actions">
+				  <div class="ui negative button">
+					Não
+				  </div>
+				  <div class="ui positive right labeled icon button">
+					Sim
+					<i class="checkmark icon"></i>
+				  </div>
+				</div>
+			</div>			
+			
+			<input type="hidden" name="pagina" value="1">
+			<h2 class="ui left floated header"><b>Linha do tempo</b> da denúncia nº {{denuncia.numero}}</h2>
+			<div class="ui clearing divider"></div>	
+
+			<div class="ui segment">
+				<p>{{denuncia.descricao}} </p>
+			</div>	
+			
+			{% if denuncia %}		
+			
+			<section id="cd-timeline" class="cd-container">	
+			
+					<div class="cd-timeline-block">
+						<div class="cd-timeline-img cd-inicio">	
+							<i class="big circular home icon"></i>
+						</div>
+						<div class="cd-timeline-content">
+							<h1>Denúncia cadastrada</h1>							
+							<p>{{denuncia.resumo}}</p>	
+							<div class="ui compact labeled icon button">
+								<i class="write icon"></i>
+								<a href="{{url_for('denuncia_edit',denuncia_id=denuncia.id)}}" title="Ver ou editar o denúncia">Editar denúncia</a>
+							</div>									
+							{% for a in denuncia.anexos %}
+							<span>								
+								<a href="{{a.url}}"><i class="download icon"></i>{{a.descricaoanexo}}</a></td>			
+							</span>
+							{% endfor %}	
+							<span class="cd-date">{{denuncia.dtcriacao|getdatelocalized}}</span>
+						</div> 
+					</div> 	
+				
+				{% for h in denuncia.historico %}
+				
+					{% if h.acao_id ==1%} 
+					<div class="cd-timeline-block">
+						<div class="cd-timeline-img cd-aberta">	
+							<i class="big circular play circle icon"></i>
+						</div>
+						<div class="cd-timeline-content">
+							<h2>Denúncia aberta</h2>
+							<p>Denuncia nº{{denuncia.numero}} ocorreu na  de {{denuncia.cidade}}-{{denuncia.estado}}.</p>																
+							<span class="cd-date">{{h.dtcriacao|getdatelocalized}}</span>
+						</div> 
+					</div> 						
+					{% endif %} 				
+				
+						{% for e in h.encaminhamento %} 
+							{% if e.tipo_encaminhamento.tipo =='Telefonema' %}
+								<div class="cd-timeline-block">
+									<div class="cd-timeline-img cd-telefonema">	
+										<i class="big circular call icon"></i>
+									</div>
+									<div class="cd-timeline-content">
+									<h2>Ligação efetuada para <b>{{e.numero}}</b></h2>																
+									<p>Falei com <b>{{e.destinatario}}</b> no orgão <b>{{e.orgao.orgao}}</b>. Discutimos o assunto <b>{{e.obs}}</b></p>
+									<div class="compact icon ui buttons">
+										<div class="ui button">										
+											<a href="{{url_for('encaminhamento_telefonema',denuncia_id=denuncia.id, telefonema_id=e.id)}}" title="Ver ou editar o encaminhamento"><i class="write icon"></i></a>
+										</div>
+										<div class="ui button">	
+											<a href="{{url_for('receber_retorno',denuncia_id=denuncia.id, encaminhamento_id=e.id)}}" title="Receber um retorno"><i class="arrow left icon"></i></a>
+										</div>
+									</div>																
+									{% if dtatual > e.dtlimite %}<span style="color:red;">{%else%}<span>{% endif %}								
+										<i class="calendar icon"></i>Limite: <b>{{e.dtlimite|datetimeformat('%d/%m/%Y')}}</b>
+									</span>				
+									<span class="cd-date">{{e.dtcriacao|getdatelocalized}}</span>
+									<div class="cd-close"><a href="{{url_for('timeline',denuncia_id=denuncia.id, historico_id=h.id)}}" title="Deletar encaminhamento" id="delete-encaminhamento"><i class="remove icon"></i></a></div>
+									
+									{% for e in h.encaminhamento %}
+									{% if e.retorno%}									
+										<div class="ui styled accordion">																
+										{% for r in e.retorno %}
+										  <div class="active title">
+											<i class="dropdown icon"></i>
+											Retorno {{r.tiporetorno.nome}}
+											<a href="{{url_for('timeline',denuncia_id=denuncia.id, historico_id=h.id, retorno_id=r.id)}}" title="Deletar retorno" id="delete-retorno"><i class="remove icon"></i></a>
+										  </div>										
+										  <div class="active content">
+											<p>Foi recebido o retorno {{r.tiporetorno.nome}}, <a href="{{url_for('receber_retorno',denuncia_id=denuncia.id, encaminhamento_id=e.id, retorno_id=r.id)}}" title="Ver ou editar um retorno">clique aqui</a> para visualizar ou editá-lo</p>
+										  </div>	
+										{% endfor %} 
+										</div>	
+									{% endif %}	
+									{% endfor %}
+									
+									</div> 
+								</div> 		
+							{% elif e.tipo_encaminhamento.tipo =='Oficio' %}
+								<div class="cd-timeline-block">
+									<div class="cd-timeline-img cd-oficio">	
+										<i class="big circular legal icon"></i>
+									</div>
+									<div class="cd-timeline-content">
+									<h2>Ofício nº <b>{{e.numero}}</b> encaminhado para <b>{{e.orgao.orgao}}</b></h2>																
+									<p>Assunto do ofício: <b>{{e.assunto}}</b> e observações <b>{{e.obs}}</b></p>											
+									<div class="compact icon ui buttons">
+										<div class="ui button">	
+											<a href="{{url_for('encaminhamento_oficio',denuncia_id=denuncia.id, oficio_id=e.id)}}" title="Ver ou editar o encaminhamento"><i class="write icon"></i></a>
+										</div>
+										<div class="ui button">	
+											<a href="{{url_for('receber_retorno',denuncia_id=denuncia.id, encaminhamento_id=e.id)}}" title="Receber um retorno"><i class="arrow left icon"></i></a>
+										</div>
+									</div>	
+									{% if e.url %}<a href="{{e.url}}" target="_blank"><i class="download icon"></i>Ofício</a>{% endif %}
+									{% if not e.dtretorno and dtatual > e.dtlimite %}<span style="color:red;">{%else%}<span>{% endif %}								
+										<i class="calendar icon"></i>Limite: <b>{{e.dtlimite|datetimeformat('%d/%m/%Y')}}</b>
+									</span>									
+									<span class="cd-date">{{e.dtcriacao|getdatelocalized}}</span>
+									<div class="cd-close"><a href="{{url_for('timeline',denuncia_id=denuncia.id, historico_id=h.id)}}" title="Deletar encaminhamento" id="delete-encaminhamento"><i class="remove icon"></i></a></div>
+									
+									{% for e in h.encaminhamento %}
+									{% if e.retorno%}									
+										<div class="ui styled accordion">																
+										{% for r in e.retorno %}
+										  <div class="active title">
+											<i class="dropdown icon"></i>
+											Retorno {{r.tiporetorno.nome}}
+											<a href="{{url_for('timeline',denuncia_id=denuncia.id, historico_id=h.id, retorno_id=r.id)}}" title="Deletar retorno" id="delete-retorno"><i class="remove icon"></i></a>
+										  </div>										
+										  <div class="active content">
+											<p>Foi recebido o retorno {{r.tiporetorno.nome}}, <a href="{{url_for('receber_retorno',denuncia_id=denuncia.id, encaminhamento_id=e.id, retorno_id=r.id)}}" title="Ver ou editar um retorno">clique aqui</a> para visualizar ou editá-lo</p>
+										  </div>	
+										{% endfor %} 
+										</div>	
+									{% endif %}	
+									{% endfor %}							
+									
+									</div> 
+								</div>														
+							{% elif e.tipo_encaminhamento.tipo =='Reunião' %}
+								<div class="cd-timeline-block">
+									<div class="cd-timeline-img cd-reuniao">	
+										<i class="big circular users icon"></i>
+									</div>
+									<div class="cd-timeline-content">
+									<h2>Reunião realizada com <b>{{e.orgao.orgao}}</b></h2>																
+									<p>Com a pauta: <b>{{e.pauta}}</b>. Participantes: <b>{{e.participantes}}</b></p>	
+									<div class="compact icon ui buttons">
+										<div class="ui button">	
+											<a href="{{url_for('encaminhamento_reuniao',denuncia_id=denuncia.id, reuniao_id=e.id)}}" title="Ver ou editar o encaminhamento"><i class="write icon"></i></a>
+										</div>
+										<div class="ui button">	
+											<a href="{{url_for('receber_retorno',denuncia_id=denuncia.id, encaminhamento_id=e.id)}}" title="Receber um retorno"><i class="arrow left icon"></i></a>
+										</div>
+									</div>	
+									{% if e.url %}<a href="{{e.url}}" target="_blank"><i class="download icon"></i>Ata</a>{% endif %}
+									{% if dtatual > e.dtlimite %}<span style="color:red;">{%else%}<span>{% endif %}								
+										<i class="calendar icon"></i>Limite: <b>{{e.dtlimite|datetimeformat('%d/%m/%Y')}}</b>
+									</span>
+									<span class="cd-date">{{e.dtcriacao|getdatelocalized}}</span>
+									<div class="cd-close"><a href="{{url_for('timeline',denuncia_id=denuncia.id, historico_id=h.id)}}" title="Deletar encaminhamento" id="delete-encaminhamento"><i class="remove icon"></i></a></div>
+									
+									{% for e in h.encaminhamento %}
+									{% if e.retorno%}									
+										<div class="ui styled accordion">																
+										{% for r in e.retorno %}
+										  <div class="active title">
+											<i class="dropdown icon"></i>
+											Retorno {{r.tiporetorno.nome}}
+											<a href="{{url_for('timeline',denuncia_id=denuncia.id, historico_id=h.id, retorno_id=r.id)}}" title="Deletar retorno" id="delete-retorno"><i class="remove icon"></i></a>
+										  </div>										
+										  <div class="active content">
+											<p>Foi recebido o retorno {{r.tiporetorno.nome}}, <a href="{{url_for('receber_retorno',denuncia_id=denuncia.id, encaminhamento_id=e.id, retorno_id=r.id)}}" title="Ver ou editar um retorno">clique aqui</a> para visualizar ou editá-lo</p>
+										  </div>	
+										{% endfor %} 
+										</div>	
+									{% endif %}	
+									{% endfor %}										
+									
+									</div> 
+								</div>														
+							{% elif e.tipo_encaminhamento.tipo =='Email' %}
+								<div class="cd-timeline-block">
+									<div class="cd-timeline-img cd-email">	
+										<i class="big circular mail icon"></i>
+									</div>
+									<div class="cd-timeline-content">
+									<h2>Email enviado de <b>{{e.de|emailfrom}}</b> para <b>{{e.para}}</b> no orgão <b>{{e.orgao.orgao}}</b></h2>
+									<p>Com assunto <b>{{e.assunto}}</b></p>																
+									<div class="compact icon ui buttons">
+										<div class="ui button">	
+											<a href="{{url_for('encaminhamento_email',denuncia_id=denuncia.id, email_id=e.id)}}" title="Ver ou editar o encaminhamento"><i class="write icon"></i></a>
+										</div>
+										<div class="ui button">	
+											<a href="{{url_for('receber_retorno',denuncia_id=denuncia.id, encaminhamento_id=e.id)}}" title="Receber um retorno"><i class="arrow left icon"></i></a>
+										</div>
+									</div>	
+									{% if e.url %}<a href="{{e.url}}" target="_blank"><i class="download icon"></i>Anexo</a>{% endif %}
+									{% if dtatual > e.dtlimite %}<span style="color:red;">{%else%}<span>{% endif %}								
+										<i class="calendar icon"></i>Limite: <b>{{e.dtlimite|datetimeformat('%d/%m/%Y')}}</b>
+									</span>
+									<span class="cd-date">{{e.dtcriacao|getdatelocalized}}</span>
+									<div class="cd-close"><a href="{{url_for('timeline',denuncia_id=denuncia.id, historico_id=h.id)}}" title="Deletar encaminhamento" id="delete-encaminhamento"><i class="remove icon"></i></a></div>
+									
+									{% for e in h.encaminhamento %}
+									{% if e.retorno%}									
+										<div class="ui styled accordion">																
+										{% for r in e.retorno %}
+										  <div class="active title">
+											<i class="dropdown icon"></i>
+											Retorno {{r.tiporetorno.nome}}
+											<a href="{{url_for('timeline',denuncia_id=denuncia.id, historico_id=h.id, retorno_id=r.id)}}" title="Deletar retorno" id="delete-retorno"><i class="remove icon"></i></a>
+										  </div>										
+										  <div class="active content">
+											<p>Foi recebido o retorno {{r.tiporetorno.nome}}, <a href="{{url_for('receber_retorno',denuncia_id=denuncia.id, encaminhamento_id=e.id, retorno_id=r.id)}}" title="Ver ou editar um retorno">clique aqui</a> para visualizar ou editá-lo</p>
+										  </div>	
+										{% endfor %} 
+										</div>	
+									{% endif %}	
+									{% endfor %}											
+									
+									</div> 
+								</div>	
+							{% elif e.tipo_encaminhamento.tipo =='Genérico' %}
+								<div class="cd-timeline-block">
+									<div class="cd-timeline-img cd-generico">	
+										<i class="big circular file icon"></i>
+									</div>
+									<div class="cd-timeline-content">
+									<h2>Foi feito um encaminhamento genérico para <b>{{e.orgao.orgao}}</b></h2>
+									<p><b>{{e.obs}}</b></p>
+									<div class="compact icon ui buttons">
+										<div class="ui button">										
+											<a href="{{url_for('encaminhamento_generico',denuncia_id=denuncia.id, generico_id=e.id)}}" title="Ver ou editar o encaminhamento"><i class="write icon"></i></a>
+										</div>
+										<div class="ui button">	
+											<a href="{{url_for('receber_retorno',denuncia_id=denuncia.id, encaminhamento_id=e.id)}}" title="Receber um retorno"><i class="arrow left icon"></i></a>
+										</div>
+									</div>									
+									{% if e.url %}<a href="{{e.url}}" target="_blank"><i class="download icon"></i>Anexo</a>{% endif %}
+									{% if dtatual > e.dtlimite %}<span style="color:red;">{%else%}<span>{% endif %}								
+										<i class="calendar icon"></i>Limite: <b>{{e.dtlimite|datetimeformat('%d/%m/%Y')}}</b>
+									</span>
+									<span class="cd-date">{{e.dtcriacao|getdatelocalized}}</span>
+									<div class="cd-close"><a href="{{url_for('timeline',denuncia_id=denuncia.id, historico_id=h.id)}}" title="Deletar encaminhamento" id="delete-encaminhamento"><i class="remove icon"></i></a></div>
+									
+									{% for e in h.encaminhamento %}
+									{% if e.retorno%}									
+										<div class="ui styled accordion">																
+										{% for r in e.retorno %}
+										  <div class="active title">
+											<i class="dropdown icon"></i>
+											Retorno {{r.tiporetorno.nome}}
+											<a href="{{url_for('timeline',denuncia_id=denuncia.id, historico_id=h.id, retorno_id=r.id)}}" title="Deletar retorno" id="delete-retorno"><i class="remove icon"></i></a>
+										  </div>										
+										  <div class="active content">
+											<p>Foi recebido o retorno {{r.tiporetorno.nome}}, <a href="{{url_for('receber_retorno',denuncia_id=denuncia.id, encaminhamento_id=e.id, retorno_id=r.id)}}" title="Ver ou editar um retorno">clique aqui</a> para visualizar ou editá-lo</p>
+										  </div>	
+										{% endfor %} 
+										</div>	
+									{% endif %}	
+									{% endfor %} 											
+									
+									</div> 
+								</div>								
+							{% endif %}										
+						{% endfor %}  										
+						
+					{% if h.acao_id ==5%} 
+					<div class="cd-timeline-block">
+						<div class="cd-timeline-img cd-fechada">	
+							<i class="big circular circle icon"></i>
+						</div>
+						<div class="cd-timeline-content">
+							<h2>Denúncia fechada</h2>
+							<p>Denuncia nº{{denuncia.numero}} foi fechada com o motivo <b>{{h.motivo}}</b> após <b>{{(h.dtcriacao - denuncia.dtcriacao).days}} dia(s).</b></p>																
+							<span class="cd-date">{{h.dtcriacao|getdatelocalized}}</span>
+						</div> 
+					</div> 						
+					{%else%}
+						{% if h.acao_id ==4%} 
+						<div class="cd-timeline-block">
+							<div class="cd-timeline-img cd-cancelada">	
+								<i class="big circular remove circle icon"></i>
+							</div>
+							<div class="cd-timeline-content">
+								<h2>Denúncia cancelada</h2>
+								<p>Denuncia nº{{denuncia.numero}} foi cancelada com o motivo <b>{{h.motivo}}</b> após <b>{{(h.dtcriacao - denuncia.dtcriacao).days}} dia(s).</b></p>																
+								<span class="cd-date">{{h.dtcriacao|getdatelocalized}}</span>
+							</div> 
+						</div>
+						{%else%} 
+							{% if h.acao_id ==6%} 
+							<div class="cd-timeline-block">
+								<div class="cd-timeline-img cd-reaberta">	
+									<i class="big circular repeat icon"></i>
+								</div>
+								<div class="cd-timeline-content">
+									<h2>Denúncia reaberta</h2>
+									<p>Denuncia nº{{denuncia.numero}} reaberta para receber novos encaminhamentos.</b></p>																
+									<span class="cd-date">{{h.dtcriacao|getdatelocalized}}</span>
+								</div> 
+							</div>						
+							{% endif %} 
+						{% endif %} 					
+					{% endif %} 						
+						
+				{% endfor %}  
+			</section>
+			{% endif %} 			
+			<div style="text-align: center;">	
+				<input type="hidden" value="{{url_for('workflow')}}" id="workflow" />
+				{% if denuncia.status_id ==4 or denuncia.status_id == 5 %} 
+					<a href="{{url_for('workflow')}}" class="ui small blue submit button" id="voltar_sem_msg">Voltar</a>
+				{%else%} 
+					<a href="{{url_for('fazer_encaminhamento',denuncia_id=denuncia.id)}}" class="ui small blue submit button" id="voltar">Voltar</a>
+				{% endif %} 				
+			</form>
+		</div>	
+	</div>	
+	
+	<script type="text/javascript" src="{{url_for('.static', filename='js/main.js')}}"></script>
+	
+{% endblock %}

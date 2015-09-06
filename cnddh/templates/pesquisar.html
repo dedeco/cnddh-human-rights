@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block titulo %}Pesquisar denúncia{% endblock %}
+
+{% block paginatitulo %}Pesquisar denúncia{% endblock %}
+
+{% from '_macros.html' import paginator_footer %}
+
+{% block scripts %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='css/jquery-ui.css') }}">
+<script type="text/javascript" src="{{url_for('.static', filename='js/jquery-ui.js')}}"></script>
+<script type="text/javascript" src="{{url_for('.static', filename='js/jquery.ui.datepicker-pt-BR.js')}}"></script>
+<script type="text/javascript" charset="utf-8">
+function Pagina(pagina)
+{	if(pagina != '')
+	{
+	document.cform.pagina.value = pagina;
+	document.cform.submit();
+	}
+	return false;
+}
+
+$(function(){	
+
+    $.datepicker.setDefaults($.datepicker.regional['pt-BR']);
+    $('input[name^="dt"]').datepicker( $.datepicker.regional[ 'pt-BR' ] );
+
+    $("select#estado").change(function(){		
+        var estado = $(this).val();
+        if(estado != "") {
+            $("select#cidade").html("<option value=\"\">Carregando cidades...</option>");			
+            $.getJSON('{{url_for(".ajax_cidades")}}',{estado: estado, ajax: 'true'}, function(j){
+              var options = '';
+			  options += '<option value="0">Qualquer cidade</option>';
+              var r = j.result;
+              for (var i = 0; i < r.length; i++) {
+                options += '<option value="' + r[i][0] + '">' + r[i][1] + '</option>';
+              }
+              $("select#cidade").html(options);
+            })						
+        } else {
+            $("select#cidade").html('<option value="0">Qualquer cidade</option>');
+        }
+    });
+});
+</script>
+
+<style type="text/css">
+#numerodenuncia, #dtcriacaoinicio, #dtcriacaofim, #dtocorinicio, #dtocorfim{
+	width: 150px;
+}
+.ui.left.floated.header{
+	margin-top: 0.5em;
+	margin-left: 0.5em;
+}
+</style>
+{% endblock %}
+{% block header %}{% endblock %}
+
+{% block conteudo %}
+    <div id="main" class="main container">
+		
+		<div class="ui form segment">		
+			<form action="" method="post" id="cform" name="cform">
+			<input type="hidden" name="pagina" value="1">
+			<h2 class="ui left floated header">Pesquisar</h2>
+			<div class="ui clearing divider"></div>
+				
+				<div class="ui form">
+				<h4 class="ui dividing header">Pesquise e filtre as denúncias</h4>	
+					<div class="field">
+						{{f.numerodenuncia.label}}
+						{{f.numerodenuncia}}{% if f.numerodenuncia.errors %}<div class="ui red pointing left ui label">{{';'.join(f.numerodenuncia.errors)}}</div>{% endif %}
+					</div>
+					<div class="two fields">					
+						<div class="field">
+							{{f.dtcriacaoinicio.label}}
+							{{f.dtcriacaoinicio}}{% if f.dtcriacaoinicio.errors %}<div class="ui red pointing left ui label">{{';'.join(f.dtcriacaoinicio.errors)}}</div>{% endif %} 
+							a {{f.dtcriacaofim}}{% if f.dtcriacaofim.errors %}<div class="ui red pointing left ui label">{{';'.join(f.dtcriacaofim.errors)}}</div>{% endif %}
+							
+						</div>		
+						<div class="field">
+							{{f.dtocorinicio.label}}
+							{{f.dtocorinicio}}{% if f.dtocorinicio.errors %}<div class="ui red pointing left ui label">{{';'.join(f.dtocorinicio.errors)}}</div>{% endif %} 
+							a {{f.dtocorfim}}{% if f.dtocorfim.errors %}<div class="ui red pointing left ui label">{{';'.join(f.dtocorfim.errors)}}</div>{% endif %}
+						</div>		
+					</div>		
+					<div class="two fields">		
+						<div class="field">
+							{{f.estado.label}}
+							{{f.estado}}
+							{% if f.estado.errors %}<div class="ui red pointing left ui label">{{';'.join(f.estado.errors)}}</div>{% endif %}
+							
+						</div>						
+						<div class="field">
+							{{f.cidade.label}}
+							{{f.cidade}}
+							{% if f.cidade.errors %}<div class="ui red pointing left ui label">{{';'.join(f.cidade.errors)}}</div>{% endif %}	
+												
+						</div>	
+					</div>
+					<div class="two fields">					
+						<div class="field">
+							{{f.palavrachave.label}}
+							{{f.palavrachave}}
+								{% if f.palavrachave.errors %}<div class="ui red pointing left ui label">{{';'.join(f.palavrachave.errors)}}</div>{% endif %}
+							
+						</div>
+						<div class="field">
+							{{f.status.label}}
+							{{f.status}}
+								{% if f.status.errors %}<div class="ui red pointing left ui label">{{';'.join(f.status.errors)}}</div>{% endif %}					
+						</div>						
+					</div>						
+				</div>
+				
+			<input type="submit" class="ui small blue submit button" name="acao" id="acao" value="Pesquisar" />			
+			<br/><br/>		
+			{% if paginator %}
+			{% if paginator.is_valid() %}	
+			<table class="ui small table segment">
+			<thead>
+				<tr>
+					<th style="width:5%">ID</th>
+					<th style="width:5%">Número</th>
+					<th style="width:30%">Resumo</th>
+					<th style="width:8%">Dt Registro</th>
+					<th style="width:8%">Dt Ocorrência</th>
+					<th style="width:10%">Cidade</th>
+					<th style="width:10%">Estado</th>
+					<th style="width:10%">Status</th>
+					<th style="width:15%;text-align:center;">Ação</th>							
+				</tr>
+			</thead>	
+			<tbody>	
+				{% for d in paginator.objs() %}
+				<tr>
+					<td>{{d.id}}</td>
+					<td>{{d.numero}}</td>
+					<td>{{d.resumo}}</td>
+					<td>{{d.dtcriacao|datetimeformat('%d/%m/%Y', "-")}}</td>
+					<td>{{d.dtdenuncia|datetimeformat('%d/%m/%Y', "-")}}</td>
+					<td>{{d.cidade}}</td>
+					<td>{{d.estado}}</td>
+					<td>{{d.status.status}}</td>
+					<td style="text-align:center;">					
+						<div class="large icon ui buttons">
+							<div class="ui button"><a href="{{url_for('denuncia_edit',denuncia_id=d.id)}}" title="Editar demanda"><i class="edit icon"></i></a></div>
+							<div class="or"></div>
+							<div class="ui button"><a href="{{url_for('timeline',denuncia_id=d.id)}}" title="Ver linha do tempo da denúncia"><i class="unordered list icon"></i></a></div>
+						</div>
+					</td>
+				</tr>
+				{% endfor %}  
+			</tbody>		
+			</table>
+			{{ paginator_footer(paginator) }}
+			
+			{% else %}
+				{% if paginator.num_pages > 0 %}
+				Página inválida.
+				{% else %}
+				Nenhum resultado encontrado.
+				{% endif %}
+			{% endif %}
+			{% else %}
+			Pesquisa não realizada.
+			{% endif %}				
+			</form>
+		</div>	
+	</div>	
+{% endblock %}

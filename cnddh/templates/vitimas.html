@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+
+
+{% block titulo %}Cadastrar vítima (denúncia nº {{d.numero}}){% endblock %}
+
+{% block paginatitulo %}Cadastrar vítima na denúncia (denúncia nº {{d.numero}}){% endblock %}
+
+{% block scripts %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='css/jquery-ui.css') }}">
+<script type="text/javascript" src="{{url_for('.static', filename='js/jquery-ui.js')}}"></script>
+<script type="text/javascript">
+$(function(){	
+
+	$('#nomenaoidentificado').on("click", function(){
+		if(this.checked ==true){
+			$("#nome").val("Não identificado");
+		}
+		else{
+			$("#nome").val("");
+		}
+		
+		$("#nome").prop('disabled', this.checked);
+	});	
+	
+    $("select#tipovitima").change(function(){		
+        var tipo = $(this).find(':selected').text();
+        if(tipo != "") {
+			$('#qtdevitimas').val("1");
+			if((tipo.indexOf("Grupo") >= 0) || (tipo.indexOf("Associação") >= 0) || (tipo.indexOf("Movimentos ") >= 0)){
+				$('#qtdevitimas').prop( "disabled", false );		
+
+				if($('#qtdenaoespecificado:checked').length > 0){
+					$('#qtdevitimas').prop( "disabled", true );					
+				}
+				else{
+					$('#qtdevitimas').prop( "disabled", false );		
+				}									
+				
+			}else{
+				$('#qtdevitimas').prop( "disabled", true );		
+				$('#qtdenaoespecificado').prop( "disabled", true );				
+			}
+        } 
+    });		
+	
+	$(document).ready(function() {
+		var tipo = $("select#tipovitima").find(':selected').text();
+        if(tipo != "") {
+			$('#qtdevitimas').val("1");
+			if((tipo.indexOf("Grupo") >= 0) || (tipo.indexOf("Associação") >= 0) || (tipo.indexOf("Movimentos ") >= 0)){
+				$('#qtdevitimas').prop( "disabled", false );
+				
+				if($('#qtdenaoespecificado:checked').length > 0){
+					$('#qtdevitimas').prop( "disabled", true );					
+				}
+				else{
+					$('#qtdevitimas').prop( "disabled", false );		
+				}	
+				
+			}else{
+				$('#qtdevitimas').prop( "disabled", true );		
+				$('#qtdenaoespecificado').prop( "disabled", true );	
+			}
+        } 
+	});
+
+	$('#qtdenaoespecificado').on("click", function(){
+		if(this.checked ==true){			
+			$('#qtdevitimas').prop( "disabled", true );					
+		}
+		else{
+			$('#qtdevitimas').prop( "disabled", false );		
+		}
+	});		
+
+
+	
+		
+});
+</script>
+<style type="text/css">
+.ui.left.floated.header{
+	margin-top: 0.5em;
+	margin-left: 0.5em;
+}
+#idade{
+	width: 75px;	
+}
+</style>
+{% endblock %}
+{% block header %}{% endblock %}
+
+{% block conteudo %}
+    <div class="main container">
+		<div class="ui five ordered steps">
+			<div class="completed step">
+				<a href="{{url_for('denuncia_edit',denuncia_id=f.denuncia_id.data)}}">
+					<div class="content">
+						<div class="title">Início</div>
+						<div class="description">Dados gerais</div>
+					</div>
+				</a>
+			</div>
+			<div class="active step">
+				<div class="content">
+					<div class="title">Vítimas</div>
+					<div class="description">Insira as vítimas</div>
+				</div>
+			</div>		  
+			<div class="disabled step">
+				<a href="{{url_for('suspeito_edit',denuncia_id=f.denuncia_id.data)}}">
+					<div class="content">
+						<div class="title">Suspeitos</div>
+						<div class="description">Insira os suspeitos</div>
+					</div>
+				</a>
+			</div>
+			<div class="disabled step">
+				<a href="{{url_for('relacionar_vitima_suspeito',denuncia_id=f.denuncia_id.data)}}">
+					<div class="content">
+						<div class="title">Violações</div>
+						<div class="description">Relate as violações</div>
+					</div>
+				</a>
+			</div>		
+			<div class="disabled step">
+				<a href="{{url_for('finalizar_denuncia',denuncia_id=f.denuncia_id.data)}}">
+					<div class="content">
+						<div class="title">Finalizar</div>
+						<div class="description">Insira os anexos</div>
+					</div>
+				</a>
+			</div>
+		</div>			
+		<div class="ui form segment">		
+			<form action="" method="post" id="cform" name="cform">
+			<h2 class="ui left floated header">Cadastrar vítima na denúncia nº {{d.numero}}</h2>
+			<div class="ui clearing divider"></div>	
+				{{f.denuncia_id}}{{f.vitima_id}}
+				<div class="field {% if f.tipovitima.errors %} error {% endif %}">					
+					  <label>{{f.tipovitima.label}}</label>
+						{{f.tipovitima}}
+						{% if f.tipovitima.errors %}<div class="ui red pointing left ui label">{{';'.join(f.tipovitima.errors)}}</div>{% endif %}
+				</div>	
+					
+				<div class="two fields">	
+					<div class="inline field">	{{f.qtdenaoespecificado}}{{f.qtdenaoespecificado.label}}</div>						
+					<div class="field {% if f.qtdevitimas.errors %} error {% endif %}">
+					  <label>{{f.qtdevitimas.label}}</label>
+						{{f.qtdevitimas}}									
+						{% if f.qtdevitimas.errors %}<div class="ui red pointing left ui label">{{';'.join(f.qtdevitimas.errors)}}</div>{% endif %}
+					</div>						
+				</div>					
+				<div class="two fields">	
+					<div class="inline field">	{{f.nomenaoidentificado}}{{f.nomenaoidentificado.label}}
+					</div>					
+					<div class="field {% if f.nome.errors %} error {% endif %}">
+					  <label>{{f.nome.label}}</label>
+						{{f.nome}}									
+						{% if f.nome.errors %}<div class="ui red pointing left ui label">{{';'.join(f.nome.errors)}}</div>{% endif %}
+					</div>			
+				</div>									
+				<div class="three fields">					
+					<div class="field {% if f.idade.errors %} error {% endif %}">
+					  <label>{{f.idade.label}}</label>
+						{{f.idade}}									
+						{% if f.idade.errors %}<div class="ui red pointing left ui label">{{';'.join(f.idade.errors)}}</div>{% endif %}
+					</div>			
+					<div class="field {% if f.sexo.errors %} error {% endif %}">
+					  <label>{{f.sexo.label}}</label>
+						{{f.sexo}}						
+						{% if f.sexo.errors %}<div class="ui red pointing left ui label">{{';'.join(f.sexo.errors)}}</div>{% endif %}
+					</div>						
+					<div class="field {% if f.cor.errors %} error {% endif %}">
+					  <label>{{f.cor.label}}</label>
+						{{f.cor}}							
+						{% if f.cor.errors %}<div class="ui red pointing left ui label">{{';'.join(f.cor.errors)}}</div>{% endif %}
+					</div>
+				</div>
+			{% if editar == True %}	
+				<input type="submit" class="ui small blue submit button" name="acao" id="acao" value="Alterar">
+			{% else %}
+				<input type="submit" class="ui small blue submit button" name="acao" id="acao" value="Adicionar">
+			{% endif %}
+			
+			<table class="ui small table segment" id="table-vitimas">
+			  <thead>
+				<tr>
+				<th>N</th>
+				<th>Nome</th>
+				<th>Categoria</th>
+				<th>Qtde</th>
+				<th>Idade</th>
+				<th>Sexo</th>
+				<th>Cor</th>
+				<th style="text-align: center;">Ação</th>
+			  </tr></thead>
+			  <tbody>
+			  {% if objs%}			  
+				{% for i,v in objs %}
+				<tr id="vitima-tr-{{v.id}}">
+					<td>{{i}}</td>
+					<td>{{v.nome}}</td>
+					<td>{{v.tipovitima.tipo}}</td>
+					<td>{% if v.qtdevitimas==0 %}-{% else %}{{v.qtdevitimas}}{%endif%}</td>
+					<td>{% if v.idade==0 %}-{% else %}{{v.idade}}{%endif%}</td>
+					<td>{{v.sexo}}</td>
+					<td>{{v.cor}}</td>
+					<td style="text-align: center;">
+						<div class="large icon ui buttons">	
+							<button type="submit" class="ui button" name="acao" id="acao" value="Editar_{{v.id}}">
+								<i class="edit icon"></i>
+							</button>																		
+							<div class="or"></div>
+							<button type="submit" class="ui button" name="acao" id="acao" value="Deletar_{{v.id}}">
+								<i class="trash icon"></i>
+							</button>																		
+						</div>									
+					</td>					
+				</tr>
+				{% endfor %}				
+				{% else%}
+					<tr id="sem-vitimas"><td colspan="5">Sem vítimas cadastradas</td>
+				{% endif%}
+			  </tbody>
+			</table>			
+			<input type="submit" class="ui small blue submit button" name="acao" id="acao" value="Continuar" />
+			</form>			
+			
+		</div>	
+	</div>	
+{% endblock %}

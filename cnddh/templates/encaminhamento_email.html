@@ -1,0 +1,112 @@
+﻿{% extends "base.html" %}
+
+{% block titulo %}Email{% endblock %}
+
+{% block paginatitulo %}Email{% endblock %}
+
+{% from '_macros.html' import paginator_footer %}
+
+{% block scripts %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='css/jquery-ui.css') }}">
+<script type="text/javascript" src="{{url_for('.static', filename='js/jquery-ui.js')}}"></script>
+<script type="text/javascript" src="{{url_for('.static', filename='js/jquery.ui.datepicker-pt-BR.js')}}"></script>
+<script type="text/javascript">
+$(function(){	
+
+    $.datepicker.setDefaults($.datepicker.regional['pt-BR']);
+    $('input[name$="dtenvio"]').datepicker( $.datepicker.regional[ 'pt-BR' ] );
+	$('input[name$="dtlimite"]').datepicker( $.datepicker.regional[ 'pt-BR' ] );
+});
+</script>
+<style type="text/css">
+#de, #para{
+	width: 500px;
+}
+#assunto, #texto{
+    width: 80%;
+}
+#dtenvio, #dtlimite{
+	width: 150px;
+}
+#orgao{
+	width: 400px;
+}
+.ui.left.floated.header{
+	margin-top: 0.5em;
+	margin-left: 0.5em;
+}
+</style>
+{% endblock %}
+{% block header %}{% endblock %}
+
+{% block conteudo %}
+    <div id="main" class="main container">
+		
+		<div class="ui form segment">		
+			<form action="" method="post" id="cform" name="cform" name="form" enctype="multipart/form-data">
+			<input type="hidden" name="pagina" value="1">
+			<h2 class="ui left floated header">Email</h2>		
+			
+			<div class="ui clearing divider"></div>			
+
+				{% if editar %}
+					{% include "encaminhamento_comum.html" %}			
+				{% endif %}					
+				
+				<div class="field {% if f.para.errors %} error {% endif %}">
+				<label>{{f.para.label}}</label>
+				{{f.para}}
+				{% if f.para.errors %}<div class="ui red pointing left ui label">{{';'.join(f.para.errors)}}</div>{% endif %}
+				</div>	
+
+				<div class="field {% if f.de.errors %} error {% endif %}">
+				<label>{{f.de.label}}</label>
+				{{f.de(readonly="readonly")}}
+				{% if f.de.errors %}<div class="ui red pointing left ui label">{{';'.join(f.de.errors)}}</div>{% endif %}
+				</div>
+				
+				<div class="field {% if f.assunto.errors %} error {% endif %}">
+				<label>{{f.assunto.label}}</label>
+				{{f.assunto}}
+				{% if f.assunto.errors %}<div class="ui red pointing left ui label">{{';'.join(f.assunto.errors)}}</div>{% endif %}
+				</div>				
+
+				<div class="field {% if f.texto.errors %} error {% endif %}">
+				<label>{{f.texto.label}}</label>
+				{{f.texto}}
+				{% if f.texto.errors %}<div class="ui red pointing left ui label">{{';'.join(f.texto.errors)}}</div>{% endif %}
+				</div>					
+				
+				{% if email.url %}	
+				<div class="two fields">					
+					<div class="ui buttons">
+					  <div class="ui labeled icon button">
+						<i class="download icon"></i>
+						<a href="{{email.url}}" target="_blank">Download</a>
+					  </div>
+					  <button class="ui labeled icon button" type="submit" name="acao" id="acao" value="Remover anexo">
+						<i class="trash icon"></i>
+						Excluir
+					  </button>
+					</div>
+					<div class="field {% if f.arquivo.errors %} error {% endif %}">
+						<label>Faça upload de um novo arquivo</label>
+						{{f.arquivo}}
+						{% if f.arquivo.errors %}<div class="ui red pointing left ui label">{{';'.join(f.arquivo.errors)}}</div>{% endif %}
+					</div>		
+				</div>						
+				{% else %}		
+					<div class="field {% if f.arquivo.errors %} error {% endif %}">
+					<label>{{f.arquivo.label}}</label>
+					{{f.arquivo}}
+					{% if f.arquivo.errors %}<div class="ui red pointing left ui label">{{';'.join(f.arquivo.errors)}}</div>{% endif %}
+					</div>
+				{% endif %}
+
+				</br>
+				<input type="submit" class="ui small blue submit button" name="acao" id="acao" value="Enviar" />						
+				
+			</form>
+		</div>	
+	</div>	
+{% endblock %}

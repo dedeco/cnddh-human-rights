@@ -1,0 +1,11 @@
+Mídia (digital; impressa; televisiva),,"Ex: Globo.com; (link da matéria); Jornal o Estado de São Paulo, etc."
+CNDDH,,"Ex: Agentes do CNDDH; Núcleo CNDDH (Fortaleza); Núcleo CNDDH (São Paulo)."
+Universidade,,Programa Pólos de Cidadania
+ONGs (Associações; Fundações; OSCIPs; Entidades e Institutos Beneficentes; etc.),,"Ex: Pastoral do Povo da Rua; Pastoral Carcerária"
+Movimentos Sociais,,"Ex: MNPR; MNCR"
+Pessoa,Denúncia enviada por pessoas,
+Fóruns; Comissões; Comitês e Conselhos,Espaços em que participam tanto membros da sociedade civil quanto do setor público.,Fórum Municipal da Política para a População em Situação de Rua
+Polícia Civil,,"Ex: Delegacia de Homicídios; Polícia Civil"
+Ministério Público,,Ministério Público de MG,
+Secretaria de Direitos Humanos - Disque 100,,
+Outros órgãos públicos,Denúncias enviadas por outros órgãos públicos não relacionados,

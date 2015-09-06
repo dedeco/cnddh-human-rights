@@ -1,0 +1,6 @@
+Abrir a denúncia, Altera a denúncia do status de RASCUNHO para ABERTA
+Fazer encaminhamento, Fazer algum tipo de encaminhamento seja um telefonema, ofício, reunião, email ou outro tipo não definido
+Cadastrar retorno, Cadastrar um retorno
+Cancelar a denuncia,  Cancela a denúncia para não contabilizar as violações
+Fechar a denúncia, Fechar a denúncia
+Reabrir a denúncia, Reabrir denúncia

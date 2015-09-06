@@ -1,0 +1,20 @@
+cria-usuario,Pode criar novos usuários
+altera-usuario,Pode criar alterar os dados dos usuários
+cria-perfil,Pode criar novos perfis
+altera-perfil,Pode alterar os perfis
+cria-permissoes,Pode criar novas permissões
+altera-permissoes,Pode alterar permissões e perfis
+cria-denuncia, Pode criar novas denúncias
+edita-denuncia, Pode editar denúncias
+cancela-denuncia, Pode cancelar denúncias
+fecha-denuncia, Pode fechar denúncias após todos os encaminhamentos e retornos
+pesquisa-denuncia, Pode pesquisar e filtrar as denúncias
+visualiza-denuncia, Pode visualizar e imprimir a denúncia
+edita-vitima, Pode registrar e editar vitimas de uma denúncia
+edita-suspeito, Pode registrar e editar suspeito de uma denúncia
+edita-violacoes, Pode registrar e editar violações de uma denúncia
+edita-anexos, Pode registrar e editar anexos de uma denúncia
+gerencia-workflow, Pode registrar ações no workflow 
+visualiza-timeline, Pode visualizar a timeline(histórico) de uma denúncia especifíca
+faz-encaminhamento, Pode fazer qualquer tipo de encaminhamento
+recebe-retorno, Pode registrar um retorno de um encaminhamento

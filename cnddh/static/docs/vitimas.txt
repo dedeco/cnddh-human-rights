@@ -1,0 +1,9 @@
+Pessoa em situação de rua,
+Catador de material reciclável,
+Pessoa em situação de rua e catador de material reciclável,Quando a pessoa está em situação de rua e exerce o trabalho de catação
+Associação/Cooperativa de Catadores,
+Grupo de pessoas em situação de rua,
+Grupo de pessoas em situação de rua e de catadores de materiais recicláveis,Quando uma denúncia diz respeito a um só coletivo composto por pessoas em situação de rua e catadores de materiais recicláveis
+Grupo de catadores (de lixões/não associados),Quando um coletivo de catadores trabalha em um lixão, ou sem se organizarem em torno de associações e cooperativas
+Movimentos sociais de Catadores de Materiais Recicláveis,
+Movimentos sociais da População em Situação de Rua,

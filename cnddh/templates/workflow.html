@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+
+{% block titulo %}Workflow{% endblock %}
+
+{% block paginatitulo %}Workflow{% endblock %}
+
+{% from '_macros.html' import paginator_footer %}
+
+{% block scripts %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='css/jquery-ui.css') }}">
+<script type="text/javascript" src="{{url_for('.static', filename='js/jquery-ui.js')}}"></script>
+<script type="text/javascript" src="{{url_for('.static', filename='js/jquery.ui.datepicker-pt-BR.js')}}"></script>
+
+<script type="text/javascript" charset="utf-8">
+function vencimento_ajuda(datafim, datainicio) {
+    $('#dtlimiteinicio').val(datainicio);
+    $('#dtlimitefim').val(datafim);
+    return false;
+}
+function Pagina(pagina)
+{	
+	if(pagina != '')
+	{
+	document.cform.pagina.value = pagina;
+	document.cform.submit();
+	}
+	return false;
+}
+$(function(){	
+
+    $.datepicker.setDefaults($.datepicker.regional['pt-BR']);
+    $('input[name^="dt"]').datepicker( $.datepicker.regional[ 'pt-BR' ] );
+
+    $("select#estado").change(function(){		
+        var estado = $(this).val();
+        if(estado != "") {
+            $("select#cidade").html("<option value=\"\">Carregando cidades...</option>");			
+            $.getJSON('{{url_for(".ajax_cidades")}}',{estado: estado, ajax: 'true'}, function(j){
+              var options = '';
+			  options += '<option value="0">Qualquer cidade</option>';
+              var r = j.result;
+              for (var i = 0; i < r.length; i++) {
+                options += '<option value="' + r[i][0] + '">' + r[i][1] + '</option>';
+              }
+              $("select#cidade").html(options);
+            })						
+        } else {
+            $("select#cidade").html('<option value="0">Qualquer cidade</option>');
+        }
+    });
+	
+	$("a#cancelar").click(function(e) {
+		e.preventDefault();
+		var targetUrl = $(this).attr("href");
+		
+		$('.small.modal#modalcancelar').modal('setting', {
+						closable  : true,
+						onDeny    : function(){
+							$(this).modal('hide');
+						},
+						onApprove : function() {
+							window.location.href = targetUrl;					  
+						}}).modal('show');
+		
+		
+	  });	
+	
+	
+	$("a#arquivar").click(function(e) {
+		e.preventDefault();
+		var targetUrl = $(this).attr("href");
+		
+		$('.small.modal#modalarquivar').modal('setting', {
+						closable  : true,
+						onDeny    : function(){
+							$(this).modal('hide');
+						},
+						onApprove : function() {
+							window.location.href = targetUrl;					  
+						}}).modal('show');
+		
+		
+	  });	
+	  
+
+});
+</script>
+<style type="text/css">
+#numerodenuncia, #dtcriacaoinicio, #dtcriacaofim, #dtocorinicio, #dtocorfim, #dtlimiteinicio, #dtlimitefim{
+	width: 150px;
+}
+.ui.left.floated.header{
+	margin-top: 0.5em;
+	margin-left: 0.5em;
+}
+</style>
+{% endblock %}
+{% block header %}{% endblock %}
+
+{% block conteudo %}
+    <div id="main" class="main container">
+	
+		<div class="ui form segment">		
+			<form action="" method="post" id="cform" name="cform">
+			
+			<div class="ui small modal transition hidden" style="margin-top: -110px;" id="modalcancelar">
+				<i class="close icon"></i>
+				<div class="header">
+				  Confirmação
+				</div>
+				<div class="content">
+				  <p>Deseja mesmo cancelar essa denúncia?</p>
+				</div>
+				<div class="actions">
+				  <div class="ui negative button">
+					Não
+				  </div>
+				  <div class="ui positive right labeled icon button">
+					Sim
+					<i class="checkmark icon"></i>
+				  </div>
+				</div>
+			</div>			
+			
+			<div class="ui small modal transition hidden" style="margin-top: -110px;" id="modalarquivar">
+				<i class="close icon"></i>
+				<div class="header">
+				  Confirmação
+				</div>
+				<div class="content">
+				  <p>Caso solucionado? Deseja mesmo arquivar essa denúncia?</p>
+				</div>
+				<div class="actions">
+				  <div class="ui negative button">
+					Não
+				  </div>
+				  <div class="ui positive right labeled icon button">
+					Sim
+					<i class="checkmark icon"></i>
+				  </div>
+				</div>
+			</div>
+		
+			<input type="hidden" name="pagina" value="1">
+			<h2 class="ui left floated header">Workflow</h2>
+
+			<div class="ui clearing divider"></div>			
+				
+				<div class="ui form">		
+					<h4 class="ui dividing header">Pesquise e filtre as denúncias, e escolha a ação ser tomada</h4>															
+						<div class="field">
+							{{f.numerodenuncia.label}}							 
+							{{f.numerodenuncia}}{% if f.numerodenuncia.errors %}<div class="ui red pointing left ui label">{{';'.join(f.numerodenuncia.errors)}}</div>{% endif %}
+						</div>		
+
+						<div class="two fields">						
+							<div class="field">
+								{{f.dtcriacaoinicio.label}}
+								{{f.dtcriacaoinicio}}{% if f.dtcriacaoinicio.errors %}<div class="ui red pointing left ui label">{{';'.join(f.dtcriacaoinicio.errors)}}</div>{% endif %} 
+								a {{f.dtcriacaofim}}{% if f.dtcriacaofim.errors %}<div class="ui red pointing left ui label">{{';'.join(f.dtcriacaofim.errors)}}</div>{% endif %}
+							</div>		
+							<div class="field">
+								{{f.dtocorinicio.label}}
+								{{f.dtocorinicio}}{% if f.dtocorinicio.errors %}<div class="ui red pointing left ui label">{{';'.join(f.dtocorinicio.errors)}}</div>{% endif %} 
+								a {{f.dtocorfim}}{% if f.dtocorfim.errors %}<div class="ui red pointing left ui label">{{';'.join(f.dtocorfim.errors)}}</div>{% endif %}
+							</div>
+						</div>
+						
+						<div class="two fields">
+							<div class="field">
+								{{f.estado.label}}
+								{{f.estado}}
+								{% if f.estado.errors %}<div class="ui red pointing left ui label">{{';'.join(f.estado.errors)}}</div>{% endif %}
+							</div>			
+							<div class="field">
+								{{f.cidade.label}}
+								{{f.cidade}}
+								{% if f.cidade.errors %}<div class="ui red pointing left ui label">{{';'.join(f.cidade.errors)}}</div>{% endif %}	
+							</div>
+						</div>
+						
+						<div class="two fields">						
+							<div class="field">
+								{{f.palavrachave.label}}
+								{{f.palavrachave}}
+									{% if f.palavrachave.errors %}<div class="ui red pointing left ui label">{{';'.join(f.palavrachave.errors)}}</div>{% endif %}
+							</div>					
+							<div class="field">
+								{{f.status.label}}
+								{{f.status}}
+									{% if f.status.errors %}<div class="ui red pointing left ui label">{{';'.join(f.status.errors)}}</div>{% endif %}					
+							</div>		
+						</div>						
+						
+						<div class="field">	
+							{{f.dtlimiteinicio.label}}
+							{{f.dtlimiteinicio}}{% if f.dtlimiteinicio.errors %}<div class="ui red pointing left ui label">{{';'.join(f.dtlimiteinicio.errors)}}</div>{% endif %} 
+							a {{f.dtlimitefim}}{% if f.dtlimitefim.errors %}<div class="ui red pointing left ui label">{{';'.join(f.dtlimitefim.errors)}}</div>{% endif %}
+							<a href="" onclick="return vencimento_ajuda('{{dtlimite|datetimeformat('%d/%m/%Y')}}', '{{dthoje|datetimeformat('%d/%m/%Y')}}')">(a vencer)</a> <a href="" onclick="return vencimento_ajuda('{{dtvencido|datetimeformat('%d/%m/%Y')}}', '')">(vencidos)</a>
+						</div>						
+						<input type="submit" class="ui small blue submit button" name="pesquisar" value="Pesquisar" />								
+				</div>
+				
+				<h4 class="ui horizontal header divider">
+					<i class="bar chart icon"></i>					
+				</h4>				
+
+				{% if paginator %}
+					{% if paginator.is_valid() %}	
+	
+					<table class="ui small table segment">
+						<thead>
+							<tr>
+								<th style="width:5%">ID</th>
+								<th style="width:5%">Número</th>
+								<th style="width:30%">Resumo</th>
+								<th style="width:10%">Cidade</th>
+								<th style="width:10%">Estado</th>
+								<th style="width:10%">Status</th>	
+								<th style="width:25%; text-align:center;">Ação</td>
+							</tr>
+						</thead>
+					<tbody>	
+					{% for d in paginator.objs() %}
+						
+					<tr  id="linhadenuncia_{{d.id}}">
+						<td>{{d.id}}</td>
+						<td>{{d.numero}}</td>
+						<td>{{d.resumo}}</td>
+						<td>{{d.cidade}}</td>
+						<td>{{d.estado}}</td>
+						<td>{{d.status.status}}</td>
+						<td style="text-align:center;">
+							{% if d.status.id == 1 %}
+							<div class="large icon ui buttons">
+								<div class="ui button">
+									<a href="{{url_for('workflow',denuncia_id=d.id, acao='abrir')}}" title="Abrir demanda"><i class="play icon"></i></a>
+								</div>			
+							</div>							
+							{% else %}
+									<div class="large icon ui buttons">
+									{% if d.status.id == 2 or d.status.id == 3 %}									
+										<div class="ui button">											
+											<a href="{{url_for('timeline',denuncia_id=d.id)}}" title="Ver linha do tempo da denúncia"><i class="unordered list icon"></i></a>
+										</div>		
+										<div class="ui button">											
+											<a href="{{url_for('fazer_encaminhamento',denuncia_id=d.id)}}" title="Fazer encaminhamento"><i class="arrow right icon"></i></a>
+										</div>		
+										<div class="ui button">																						
+											<a href="{{url_for('cancelar_denuncia',denuncia_id=d.id)}}" title="Cancelar" id="cancelar"><i class="ban icon"></i></a>
+										</div>		
+										<div class="ui button">																						
+											<a href="{{url_for('fechar_denuncia',denuncia_id=d.id)}}" title="Arquivar" id="arquivar"><i class="archive icon"></i></a>
+										</div>																							
+										{% else %}
+											{% if d.status.id == 4 or d.status.id == 5 %}
+												<div class="ui button">											
+													<a href="{{url_for('timeline',denuncia_id=d.id)}}" title="Ver linha do tempo da denúncia"><i class="unordered list icon"></i></a>
+												</div>	
+												<div class="ui button">											
+													<a href="{{url_for('workflow',denuncia_id=d.id, acao='reabrir')}}" title="Reabrir demanda"><i class="repeat icon"></i></a>
+												</div>																																			
+											{% endif %}
+										{% endif %}											
+									</div>
+							{% endif %}
+						</td>
+					</tr>
+					{% endfor %}  
+					</tbody>
+					</table>				
+					{{ paginator_footer(paginator) }}
+					{% else %}
+						{% if paginator.num_pages > 0 %}
+						<p>Página inválida.<p/>
+						{% else %}
+						<p>Nenhum resultado encontrado.</p>
+						{% endif %}
+					{% endif %}
+				{% else %}
+					<p>Pesquisa não realizada.</p>
+				{% endif %}						
+			</form>
+		</div>	
+	</div>	
+{% endblock %}

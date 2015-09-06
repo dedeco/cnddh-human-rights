@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block titulo %}Login{% endblock %}
+
+{% block paginatitulo %}Login{% endblock %}
+
+{% block scripts %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='css/jquery-ui.css') }}">
+<script type="text/javascript" src="{{url_for('.static', filename='js/jquery-ui.js')}}"></script>
+<script type="text/javascript" src="{{url_for('.static', filename='js/jquery.ui.datepicker-pt-BR.js')}}"></script>
+<style type="text/css">
+#login, #senha {
+    width: 200px;
+}
+.ui.left.floated.header{
+	margin-top: 0.5em;
+	margin-left: 0.5em;
+}
+</style>
+{% endblock %}
+{% block header %}{% endblock %}
+
+{% block conteudo %}
+    <div id="main" class="main container">	
+		<div class="ui form segment">					
+			<h2 class="ui left floated header">Login</h2>
+			<div class="ui clearing divider"></div>	
+
+			<p>Preencha o nome do usuário e sua senha no menu superior para efetuar o login.</p>
+	
+		</div>	
+	</div>	
+{% endblock %}
