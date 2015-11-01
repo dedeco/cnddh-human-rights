@@ -1,4 +1,4 @@
-# cnddh-denuncias
+# cnddh-human-rights
 This application was created for Human Rights Center in Brazil for reporting violations against people that live in streets
 
 * How do I get set up? Set up Install python 2.7. Create a virtualenv. After you need install the following packages: Flask, MySQL-python, SQLAlchemy, WTForms.
@@ -11,7 +11,7 @@ This application was created for Human Rights Center in Brazil for reporting vio
 
 * How to run tests: Log in using user/password adm/xpto123456 and test
 
-* Deployment instructions: Type hg archive [local], zip and copy to server. 
+* Deployment instructions: If you are using mercurial: type hg archive [local], zip and copy to server. 
 
 * Contribution guidelines: Create responsive layout for mobile and tablets, Update semantic Ui and reports
 
