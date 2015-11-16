@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="{{ url_for('.static', filename='css/homepage.css') }}" type="text/css" >
 
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
-  <script type="text/javascript" src="{{url_for('.static', filename='js/semantic.js')}}"></script>
+  <script type="text/javascript" src="{{url_for('.static', filename='js/semantic.min.js')}}"></script>
   <script type="text/javascript" src="{{url_for('.static', filename='js/homepage.js')}}"></script>
   {%- block scripts -%}{%- endblock %}  
 </head>
@@ -27,7 +27,7 @@
 		<div class="ui page grid">
 			<div class="column"> 
 			<div class="right menu">			
-				{% if g.user.is_authenticated() %}	
+				{% if g.user.is_authenticated %}	
 				<form action="{{url_for('.logout')}}" method="post" name="loginform">	
 				  <a class="item" href="{{url_for('.usuario_edit',usuario_id=g.user.id)}}">
 					<i class="user icon"></i> {{g.user.nome}} [{{g.user.login}}]
@@ -64,7 +64,7 @@
 		<div class="ui page grid">
 			<div class="column"><!--inicio da grid da base-->
 				
-				{% if g.user.is_authenticated() %}	
+				{% if g.user.is_authenticated %}	
 					<div class="ui inverted blue menu">
 					<div class="header item"><a href="{{url_for('.index')}}">CNDDH</a></div>
 						<div class="right menu">
