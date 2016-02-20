@@ -11,10 +11,11 @@ app.secret_key = '\x16\xc8?\xe2j\xce\x13\x89@<\xb52\x17XC\xc8\xa7\xa8\xba\xe1a\x
 from config import PROD, DEBUG
 app.config['DEBUG']=DEBUG
 
-from config import ECHO, DATABASE_URI
+from config import ECHO, DATABASE_URI, SQLALCHEMY_TRACK_MODIFICATIONS
 
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI
 app.config['SQLALCHEMY_ECHO'] = ECHO
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = SQLALCHEMY_TRACK_MODIFICATIONS
 
 login_manager = LoginManager()
 login_manager.init_app(app)

@@ -255,15 +255,21 @@ def envia_email_excecao(erro_id, excecao_texto):
     email_to = ['dedeco@gmail.com']
 
     if g.user:
-        login = g.user.login
-        nome =  g.user.nome.encode('latin-1')
-        telefone = '31 3071-4827'       
-        email = g.user.email
+        try:
+            login = g.user.login
+            nome =  g.user.nome.encode('latin-1')
+            telefone = '31 3071-4827'       
+            email = g.user.email
+        except AttributeError:
+            login = '-usuario desconhecido/nao logado-'
+            nome =  '-'               
+            telefone = '-'               
+            email = '-'
     else:
         login = '-usuario desconhecido/nao logado-'
         nome =  '-'               
         telefone = '-'               
-        email = '-'               
+        email = '-'           
 
     email_body = email_base.format(excecao_texto=excecao_texto, login=login, nome=nome, telefone=telefone, email=email)
     msg = MIMEText(email_body, 'plain')
