@@ -12,6 +12,7 @@ EMAIL_PORT = 587
 
 DATABASE_URI = 'mysql://root:senha@localhost/cnddh_db'
 ECHO = False
+SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 UPLOADS_DEFAULT_DEST = r'C:\Temp\upload'
 
