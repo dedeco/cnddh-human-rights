@@ -5,7 +5,7 @@ from flask import flash
 from flask import jsonify
 from flask import session
 from flask import abort, redirect, url_for
-from flask.ext.login import login_user , logout_user , current_user , login_required
+from flask_login import login_user , logout_user , current_user , login_required
 from cnddh.decoder import killgremlins
 from config import PROD, DEBUG
 
@@ -24,7 +24,7 @@ from database import db
 from cnddh.models import  Denuncia, Vitima, Suspeito, Usuario, Cidade, TipoVitima, TipoSuspeito, TipoViolacao, Violacao, Homicidio, TipoMeioUtilizado, HomicidioMeioUtilizado, TipoFonte, Anexo, Status, Acao, Historico, Usuario, Permissao, Perfil, PermissaoPerfil, PermissaoUsuario, PerfilUsuario, TipoLocal, Encaminhamento, TipoEncaminhamento, Orgao, Oficio, Telefonema, Reuniao, Email, Generico, Retorno, TipoRetorno, RetornoGenerico, RetornoPessoasassistidas, RetornoInquerito, RetornoProcesso, RetornoBO, RetornoRCO, RetornoREDS, RetornoPoliticaPSR
 from cnddh.forms import DenunciaForm, VitimaForm, SuspeitoForm, RelacionarForm, FinalizarForm, PesquisarForm, WorkflowForm, GraficoViolacaoForm, GraficoViolSuspForm, UsuarioForm, LoginForm, PermissaoForm, PesquisaUsuarioForm, EncaminhamentoForm, OficioForm, TelefonemaForm, ReuniaoForm, EmailForm, GenericoForm, RetornoForm, HomicidioForm, MotivoForm
 from cnddh.uploadsets import anexos_upload
-from flaskext.uploads import UploadNotAllowed
+from flask_uploads import UploadNotAllowed
 from cnddh.utils import Paginator, flash_errors, TlsSMTPHandler, shutdown_server, datestring_to_date, envia_email
 from decorators import checa_permissao
 

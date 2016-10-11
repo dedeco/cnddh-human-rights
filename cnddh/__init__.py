@@ -1,6 +1,6 @@
 ﻿from flask import Flask
 from database import db
-from flask.ext.login import LoginManager
+from flask_login import LoginManager
 import logging
 
 from werkzeug.contrib.sessions import FilesystemSessionStore
@@ -32,7 +32,7 @@ from config import UPLOADS_DEFAULT_DEST
 app.config['UPLOADS_DEFAULT_DEST'] = UPLOADS_DEFAULT_DEST
 app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024
 
-from flaskext.uploads import configure_uploads
+from flask_uploads import configure_uploads
 from uploadsets import anexos_upload
 
 configure_uploads(app, (anexos_upload,))
