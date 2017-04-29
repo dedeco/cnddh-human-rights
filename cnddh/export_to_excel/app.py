@@ -7,9 +7,7 @@ from jinja2 import TemplateNotFound
 import xlsxwriter
 
 from cnddh.database import db
-from cnddh.models import Denuncia
-
-
+from cnddh.models import Denuncia, Violacao
 
 
 export_app = Blueprint('exportar-dados', __name__,url_prefix='/exportar-dados',
@@ -30,6 +28,40 @@ def normalize_str(string):
             return str_to_unicode_utf8(str(string))
     else:
         return ""
+
+
+def _criar_cabecalho_violacoes(aba, negrito):
+    aba.write('A1', str_to_unicode_utf8('Violação ID'), negrito)
+    aba.write('B1', str_to_unicode_utf8('Tipo'), negrito)
+    aba.write('C1', str_to_unicode_utf8('Denúncia ID'), negrito)
+    aba.write('D1', str_to_unicode_utf8('Vítima ID'), negrito)
+    aba.write('E1', str_to_unicode_utf8('Suspeitos ID'), negrito)
+    
+    #Largura
+    aba.set_column('A:E', 13)
+
+    #Filtro
+    aba.autofilter('A1:E1')
+
+
+def _criar_aba_violacoes(planilha, filtros, negrito, date_format):
+    aba = planilha.add_worksheet(str_to_unicode_utf8('Violações'))
+    limit_quantidade = 0
+
+    _criar_cabecalho_violacoes(aba, negrito)
+
+    for index, violacao in enumerate(db.session.query(Violacao).all(), start=1):
+        if index > (LIMIT_ROW + limit_quantidade * LIMIT_ROW):
+            aba = planilha.add_worksheet(str_to_unicode_utf8('Violações_'+str(1+limit_quantidade)))
+            _criar_cabecalho_violacoes(aba, negrito)
+            limit_quantidade +=1
+
+        aba.write_number(index - limit_quantidade * LIMIT_ROW, 0, violacao.id)
+        aba.write_string(index - limit_quantidade * LIMIT_ROW, 1, normalize_str(violacao.tipo))
+        aba.write_number(index - limit_quantidade * LIMIT_ROW, 2, violacao.denuncia_id)
+        aba.write_number(index - limit_quantidade * LIMIT_ROW, 3, violacao.vitima_id)
+        aba.write_number(index - limit_quantidade * LIMIT_ROW, 4, violacao.suspeito_id)
+
 
 def _create_cabecalho_denuncia(aba, negrito):
     aba.write('A1', str_to_unicode_utf8('Denúncia ID'), negrito)
@@ -69,7 +101,7 @@ def _create_cabecalho_denuncia(aba, negrito):
     aba.autofilter('A1:V1')
 
 
-def _criar_aba_denuncia(planilha, filtros, negrito, date_format):
+def _criar_aba_denuncias(planilha, filtros, negrito, date_format):
     aba = planilha.add_worksheet(u'Denúncias')
     limit_quantidade = 0
 
@@ -117,7 +149,8 @@ def criar_planilha():
         date_format = workbook.add_format({'num_format': 'dd/mm/yyyy'})
         #Format
 
-        _criar_aba_denuncia(workbook, [], negrito, date_format)
+        _criar_aba_denuncias(workbook, [], negrito, date_format)
+        _criar_aba_violacoes(workbook, [], negrito, date_format)
         workbook.close()
 
         return "Gerada."
