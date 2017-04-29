@@ -7,7 +7,7 @@ from jinja2 import TemplateNotFound
 import xlsxwriter
 
 from cnddh.database import db
-from cnddh.models import Denuncia, Violacao, Vitima
+from cnddh.models import Denuncia, Violacao, Vitima, Suspeito
 
 
 export_app = Blueprint('exportar-dados', __name__,url_prefix='/exportar-dados',
@@ -175,7 +175,46 @@ def _criar_aba_vitimas(planilha, filtros, negrito, date_format):
         aba.write_string(index - limit_quantidade * LIMIT_ROW, 7, normalize_str(vitima.sexo))
         aba.write_string(index - limit_quantidade * LIMIT_ROW, 8, normalize_str(vitima.cor))
 
-       
+
+def _criar_cabecalho_suspeitos(aba, negrito):
+    aba.write('A1', str_to_unicode_utf8('Vítimas ID'), negrito)
+    aba.write('B1', str_to_unicode_utf8('Denúncia ID'), negrito)
+    aba.write('C1', str_to_unicode_utf8('Tipo de Suspeito ID'), negrito)
+    aba.write('D1', str_to_unicode_utf8('Quantidade de Suspeitos'), negrito)
+    aba.write('E1', str_to_unicode_utf8('Nome Instituição'), negrito)
+    aba.write('F1', str_to_unicode_utf8('Nome não identificado'), negrito)
+    aba.write('G1', str_to_unicode_utf8('Nome'), negrito)
+    aba.write('H1', str_to_unicode_utf8('Idade'), negrito)
+    aba.write('I1', str_to_unicode_utf8('Sexo'), negrito)
+    aba.write('J1', str_to_unicode_utf8('Cor'), negrito)
+    
+    #Largura
+    aba.set_column('A:J', 15)
+
+    #Filtro
+    aba.autofilter('A1:J1')
+
+def _criar_aba_suspeitos(planilha, filtros, negrito, date_format):
+    aba = planilha.add_worksheet(str_to_unicode_utf8('Suspeitos'))
+    limit_quantidade = 0
+
+    _criar_cabecalho_suspeitos(aba, negrito)  
+
+    for index, suspeito in enumerate(db.session.query(Suspeito).all(),start=1):
+        if index > (LIMIT_ROW + limit_quantidade * LIMIT_ROW):
+            aba = planilha.add_worksheet(str_to_unicode_utf8('Suspeitos'+str(1+limit_quantidade)))
+            _criar_cabecalho_suspeitos(aba, negrito)
+            limit_quantidade +=1
+        aba.write_number(index - limit_quantidade * LIMIT_ROW, 0, suspeito.id)
+        aba.write_number(index - limit_quantidade * LIMIT_ROW, 1, suspeito.denuncia_id)
+        aba.write_number(index - limit_quantidade * LIMIT_ROW, 2, suspeito.tiposuspeito_id)
+        aba.write_number(index - limit_quantidade * LIMIT_ROW, 3, suspeito.qtdesuspeitos)
+        aba.write_string(index - limit_quantidade * LIMIT_ROW, 4, normalize_str(suspeito.nomeinstituicao))
+        aba.write_string(index - limit_quantidade * LIMIT_ROW, 5, normalize_str(suspeito.nomenaoidentificado))
+        aba.write_string(index - limit_quantidade * LIMIT_ROW, 6, suspeito.nome)
+        aba.write_number(index - limit_quantidade * LIMIT_ROW, 7, suspeito.idade)
+        aba.write_string(index - limit_quantidade * LIMIT_ROW, 8, normalize_str(suspeito.sexo))
+        aba.write_string(index - limit_quantidade * LIMIT_ROW, 9, normalize_str(suspeito.cor))     
 
 @export_app.route('/criar-planilha')
 def criar_planilha():
@@ -191,6 +230,8 @@ def criar_planilha():
         _criar_aba_denuncias(workbook, [], negrito, date_format)
         _criar_aba_violacoes(workbook, [], negrito, date_format)
         _criar_aba_vitimas(workbook, [], negrito, date_format)
+        _criar_aba_suspeitos(workbook, [], negrito, date_format)
+
         workbook.close()
 
         return "Gerada."
