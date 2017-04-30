@@ -7,7 +7,10 @@ from jinja2 import TemplateNotFound
 import xlsxwriter
 
 from cnddh.database import db
-from cnddh.models import Denuncia, Violacao, Vitima, Suspeito
+from cnddh.models import Denuncia, Violacao, Vitima, Suspeito, Encaminhamento
+from cnddh.models import Oficio, Telefonema, Reuniao, Email, Generico
+from cnddh.models import RetornoGenerico, RetornoPessoasassistidas, RetornoInquerito
+from cnddh.models import RetornoProcesso, RetornoBO, RetornoRCO, RetornoREDS, RetornoPoliticaPSR
 
 
 export_app = Blueprint('exportar-dados', __name__,url_prefix='/exportar-dados',
@@ -71,7 +74,7 @@ def _create_cabecalho_denuncia(aba, negrito):
     aba.write('D1', str_to_unicode_utf8('Data Denúncia'), negrito)
     aba.write('E1', str_to_unicode_utf8('Status ID'), negrito)
     
-    # aba.write('F1', '', negrito)
+    aba.write('F1', str_to_unicode_utf8('Status'), negrito)
     aba.write('G1', str_to_unicode_utf8('Fonte ID'), negrito)
     aba.write('H1', str_to_unicode_utf8('Fonte'), negrito)
     aba.write('I1', str_to_unicode_utf8('Protocolo'), negrito)
@@ -102,7 +105,7 @@ def _create_cabecalho_denuncia(aba, negrito):
 
 
 def _criar_aba_denuncias(planilha, filtros, negrito, date_format):
-    aba = planilha.add_worksheet(u'Denúncias')
+    aba = planilha.add_worksheet(str_to_unicode_utf8('Denúncias'))
     limit_quantidade = 0
 
     _create_cabecalho_denuncia(aba, negrito)
@@ -117,7 +120,7 @@ def _criar_aba_denuncias(planilha, filtros, negrito, date_format):
         aba.write_datetime(index - limit_quantidade * LIMIT_ROW, 2, denuncia.dtcriacao, date_format)
         aba.write_datetime(index - limit_quantidade * LIMIT_ROW, 3, denuncia.dtdenuncia, date_format)
         aba.write(index - limit_quantidade * LIMIT_ROW, 4, denuncia.status_id)
-        # aba.write(index, 5, denuncia.status)
+        aba.write(index, 5, denuncia.status.status)
         
         aba.write(index - limit_quantidade * LIMIT_ROW, 6, denuncia.tipofonte_id)
         aba.write_string(index - limit_quantidade * LIMIT_ROW, 7, normalize_str(denuncia.fonte))
@@ -216,6 +219,131 @@ def _criar_aba_suspeitos(planilha, filtros, negrito, date_format):
         aba.write_string(index - limit_quantidade * LIMIT_ROW, 8, normalize_str(suspeito.sexo))
         aba.write_string(index - limit_quantidade * LIMIT_ROW, 9, normalize_str(suspeito.cor))     
 
+def _criar_cabecalho_encaminhamento(aba, negrito):
+    aba.write('A1', str_to_unicode_utf8('Encaminhamento ID'), negrito)
+    aba.write('B1', str_to_unicode_utf8('Data Envio ID'), negrito)
+    aba.write('C1', str_to_unicode_utf8('Data Limite'), negrito)
+    aba.write('D1', str_to_unicode_utf8('Data Retorno'), negrito)
+    aba.write('E1', str_to_unicode_utf8('Data Criação'), negrito)
+    aba.write('F1', str_to_unicode_utf8('Tipo'), negrito)
+    aba.write('G1', str_to_unicode_utf8('Orgão'), negrito)
+    aba.write('H1', str_to_unicode_utf8('Tipo de Encaminhamento'), negrito)
+    aba.write('I1', str_to_unicode_utf8('Ação'), negrito)
+    aba.write('J1', str_to_unicode_utf8('Denuncia ID'), negrito)
+    aba.write('J1', str_to_unicode_utf8('Tipo Encaminhamento'), negrito)
+    
+    #Largura
+    aba.set_column('A:J', 15)
+
+    #Filtro
+    aba.autofilter('A1:J1')
+
+
+def _criar_cabecalho_retorno(aba, negrito):
+    aba.write('A1', str_to_unicode_utf8('Encaminhamento ID'), negrito)
+    aba.write('B1', str_to_unicode_utf8('Tipo Retorno'), negrito)
+    aba.write('C1', str_to_unicode_utf8('Denúncia ID'), negrito)
+    aba.write('D1', str_to_unicode_utf8('Descrição'), negrito)
+    aba.write('E1', str_to_unicode_utf8('Data Retorno'), negrito)
+    aba.write('F1', str_to_unicode_utf8('Data Criação'), negrito)
+    aba.write('G1', str_to_unicode_utf8('Tipo Nome'), negrito)
+    
+    #Largura
+    aba.set_column('A:G', 20)
+
+    #Filtro
+    aba.autofilter('A1:G1')
+
+def _criar_aba_encaminhamento(planilha, filtros, negrito, date_format):
+    aba = planilha.add_worksheet(str_to_unicode_utf8('Encaminhamentos'))
+    aba_retorno = planilha.add_worksheet(str_to_unicode_utf8('Retornos'))
+    limit_quantidade = 0
+    limite_quantidade_retorno = 0
+    index_retorno_global = 1
+    _criar_cabecalho_encaminhamento(aba, negrito)  
+    _criar_cabecalho_retorno(aba_retorno, negrito)
+
+    for index, encaminhamento in enumerate(db.session.query(Encaminhamento).all(),start=1):
+        if index > (LIMIT_ROW + limit_quantidade * LIMIT_ROW):
+            aba = planilha.add_worksheet(str_to_unicode_utf8('Encaminhamentos'+str(1+limit_quantidade)))
+            _criar_cabecalho_encaminhamento(aba, negrito)
+            limit_quantidade +=1
+        aba.write(index - limit_quantidade * LIMIT_ROW, 0, encaminhamento.id)
+        aba.write(index - limit_quantidade * LIMIT_ROW, 1, encaminhamento.dtenvio)
+        if encaminhamento.dtlimite:
+            aba.write_datetime(index - limit_quantidade * LIMIT_ROW, 2, encaminhamento.dtlimite, date_format)
+        else:
+            aba.write(index - limit_quantidade * LIMIT_ROW, 2, encaminhamento.dtlimite)
+        if encaminhamento.dtretorno:
+            aba.write_datetime(index - limit_quantidade * LIMIT_ROW, 3, encaminhamento.dtretorno, date_format)
+        else:
+            aba.write(index - limit_quantidade * LIMIT_ROW, 3, encaminhamento.dtretorno)
+        if encaminhamento.dtcriacao:
+            aba.write_datetime(index - limit_quantidade * LIMIT_ROW, 4, encaminhamento.dtcriacao, date_format)
+        else:
+            aba.write(index - limit_quantidade * LIMIT_ROW, 4, encaminhamento.dtcriacao)
+        aba.write(index - limit_quantidade * LIMIT_ROW, 5, encaminhamento.tipo)
+        aba.write(index - limit_quantidade * LIMIT_ROW, 6, encaminhamento.orgao.orgao)
+        aba.write(index - limit_quantidade * LIMIT_ROW, 7, encaminhamento.tipo_encaminhamento.tipo)
+        aba.write(index - limit_quantidade * LIMIT_ROW, 8, encaminhamento.historico.acao.acao)
+        aba.write(index - limit_quantidade * LIMIT_ROW, 9, encaminhamento.historico.denuncia_id)
+
+        if isinstance(encaminhamento, Oficio):
+            aba.write(index - limit_quantidade * LIMIT_ROW, 10, 'Oficio.')
+        elif isinstance(encaminhamento, Telefonema):
+            aba.write(index - limit_quantidade * LIMIT_ROW, 10, 'Telefonema.')
+        elif isinstance(encaminhamento, Reuniao):
+            aba.write(index - limit_quantidade * LIMIT_ROW, 10, 'Reuniao.')
+        elif isinstance(encaminhamento, Email):
+            aba.write(index - limit_quantidade * LIMIT_ROW, 10, 'Email.')
+        elif isinstance(encaminhamento, Generico):
+            aba.write(index - limit_quantidade * LIMIT_ROW, 10, 'Generico.')
+        else:
+            aba.write(index - limit_quantidade * LIMIT_ROW, 10, 'Indefinido.')
+
+        for index_retorno, retorno in enumerate(encaminhamento.retorno):
+            if index > (LIMIT_ROW + limite_quantidade_retorno * LIMIT_ROW):
+                aba = planilha.add_worksheet(str_to_unicode_utf8('Retornos'+str(1+limite_quantidade_retorno)))
+                _criar_cabecalho_retorno(aba_retorno, negrito)
+                limite_quantidade_retorno +=1
+            aba_retorno.write(index_retorno_global - limite_quantidade_retorno * LIMIT_ROW, 0, retorno.encaminhamento_id)
+
+            if isinstance(retorno, RetornoGenerico):
+                aba_retorno.write(index_retorno_global - limite_quantidade_retorno * LIMIT_ROW, 1, 'Retorno Generico.')
+            elif isinstance(retorno, RetornoPessoasassistidas):
+                aba_retorno.write(index_retorno_global - limite_quantidade_retorno * LIMIT_ROW, 1, 'Retorno Pessoas Assistidas.')
+            elif isinstance(retorno, RetornoInquerito):
+                aba_retorno.write(index_retorno_global - limite_quantidade_retorno * LIMIT_ROW, 1, 'Retorno Inquerito.')
+            elif isinstance(retorno, RetornoProcesso):
+                aba_retorno.write(index_retorno_global - limite_quantidade_retorno * LIMIT_ROW, 1, 'Retorno Processo.')
+            elif isinstance(retorno, RetornoBO):
+                aba_retorno.write(index_retorno_global - limite_quantidade_retorno * LIMIT_ROW, 1, 'Retorno BO.')
+            elif isinstance(retorno, RetornoRCO):
+                aba_retorno.write(index_retorno_global - limite_quantidade_retorno * LIMIT_ROW, 1, 'Retorno RCO.')
+            elif isinstance(retorno, RetornoREDS):
+                aba_retorno.write(index_retorno_global - limite_quantidade_retorno * LIMIT_ROW, 1, 'Retorno REDS.')
+            elif isinstance(retorno, RetornoPoliticaPSR):
+                aba_retorno.write(index_retorno_global - limite_quantidade_retorno * LIMIT_ROW, 1, 'Retorno PoliticaPSR.')
+            else:
+                aba_retorno.write(index_retorno_global - limite_quantidade_retorno * LIMIT_ROW, 1, 'Indefinido.')
+            
+            aba_retorno.write(index_retorno_global - limite_quantidade_retorno * LIMIT_ROW, 2, encaminhamento.historico.denuncia_id)
+            aba_retorno.write(index_retorno_global - limite_quantidade_retorno * LIMIT_ROW, 3, retorno.descricao)
+            if retorno.dtretorno:
+                aba_retorno.write_datetime(index_retorno_global - limite_quantidade_retorno * LIMIT_ROW, 4, retorno.dtretorno, date_format)
+            else:
+                aba_retorno.write(index_retorno_global - limite_quantidade_retorno * LIMIT_ROW, 4, retorno.dtretorno)
+            if retorno.dtcriacao:
+                aba_retorno.write_datetime(index_retorno_global - limite_quantidade_retorno * LIMIT_ROW, 5, retorno.dtcriacao, date_format)
+            else:
+                aba_retorno.write(index_retorno_global - limite_quantidade_retorno * LIMIT_ROW, 5, retorno.dtcriacao)
+            aba_retorno.write(index_retorno_global - limite_quantidade_retorno * LIMIT_ROW, 6, retorno.tiporetorno.nome)
+
+            index_retorno_global += 1
+
+
+
+
 @export_app.route('/criar-planilha')
 def criar_planilha():
     try:
@@ -231,6 +359,7 @@ def criar_planilha():
         _criar_aba_violacoes(workbook, [], negrito, date_format)
         _criar_aba_vitimas(workbook, [], negrito, date_format)
         _criar_aba_suspeitos(workbook, [], negrito, date_format)
+        _criar_aba_encaminhamento(workbook, [], negrito, date_format) 
 
         workbook.close()
 
