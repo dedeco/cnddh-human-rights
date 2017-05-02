@@ -1,0 +1,43 @@
+{% macro render_field(label, field) %}
+<div class="four wide column">
+    <div class="field {% if field.errors %} error {% endif %}">
+        <label>{{label}}</label>
+        {{ field(**kwargs)|safe }}
+    </div>
+    {% if field.errors %}
+    <ul class=errors>
+        {% for error in field.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+{% endmacro %} 
+
+{% macro render_two_field(label_1, field_1, field_2) %}
+
+    <div class="four wide column">
+        <div class="field {% if field_1.errors %} error {% endif %}">
+            <label>{{label_1}}</label>
+            {{ field_1(**kwargs)|safe }}
+        </div>
+        {% if field_1.errors %}
+        <ul class=errors>
+            {% for error in field_1.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <div class="field {% if field_2.errors %} error {% endif %}">
+            <label>até</label>
+            {{ field_2(**kwargs)|safe }}
+        </div>
+    </div>
+    {% if field_2.errors %}
+    <ul class=errors>
+        {% for error in field_2.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %} 
+{% endmacro %}

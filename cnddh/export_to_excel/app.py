@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
-
-from flask import Blueprint, render_template, abort
+import StringIO
+from flask import Blueprint, render_template, abort, request, send_file
 from jinja2 import TemplateNotFound
-
+from flask_login import login_required
 import xlsxwriter
 
 from cnddh.database import db
@@ -11,12 +11,20 @@ from cnddh.models import Denuncia, Violacao, Vitima, Suspeito, Encaminhamento
 from cnddh.models import Oficio, Telefonema, Reuniao, Email, Generico
 from cnddh.models import RetornoGenerico, RetornoPessoasassistidas, RetornoInquerito
 from cnddh.models import RetornoProcesso, RetornoBO, RetornoRCO, RetornoREDS, RetornoPoliticaPSR
+from cnddh.models import Cidade, Status, TipoLocal, TipoViolacao
+from cnddh.models import TipoVitima, TipoSuspeito
+
+from cnddh.export_to_excel.forms import ExportToExcelFiltroForm
+
+from cnddh.decorators import checa_permissao
+from cnddh.mapeamentos import estados_choices
 
 export_app = Blueprint(
     'exportar-dados',
     __name__,
     url_prefix='/exportar-dados',
-    template_folder='templates')
+    template_folder='templates',
+    static_folder='../static')
 
 LIMIT_ROW = 1048576
 
@@ -56,7 +64,11 @@ def _criar_aba_violacoes(planilha, filtros, negrito, date_format):
     _criar_cabecalho_violacoes(aba, negrito)
 
     for index, violacao in enumerate(
-            db.session.query(Violacao).all(), start=1):
+            db.session.query(Violacao)
+            .join(Denuncia)
+            .join(TipoViolacao)
+            .filter(db.and_(*filtros))
+            , start=1):
         if index > (LIMIT_ROW + limit_quantidade * LIMIT_ROW):
             aba = planilha.add_worksheet(
                 str_to_unicode_utf8('Violações_' + str(1 + limit_quantidade)))
@@ -119,7 +131,14 @@ def _criar_aba_denuncias(planilha, filtros, negrito, date_format):
     _create_cabecalho_denuncia(aba, negrito)
 
     for index, denuncia in enumerate(
-            db.session.query(Denuncia).all(), start=1):
+            db.session
+                .query(Denuncia)
+                .join(Vitima)
+                .join(Suspeito)
+                .join(Violacao)
+                .join(TipoViolacao)
+                .join(TipoSuspeito)
+                .filter(db.and_(*filtros)), start=1):
         if index > (LIMIT_ROW + limit_quantidade * LIMIT_ROW):
             aba = planilha.add_worksheet(
                 str_to_unicode_utf8('Denúncias_' + str(1 + limit_quantidade)))
@@ -184,7 +203,12 @@ def _criar_aba_vitimas(planilha, filtros, negrito, date_format):
 
     _criar_cabecalho_vitimas(aba, negrito)
 
-    for index, vitima in enumerate(db.session.query(Vitima).all(), start=1):
+    for index, vitima in enumerate(
+            db.
+                session.
+                query(Vitima).
+                join(Denuncia).
+                filter(db.and_(*filtros)), start=1):
         if index > (LIMIT_ROW + limit_quantidade * LIMIT_ROW):
             aba = planilha.add_worksheet(
                 str_to_unicode_utf8('Vítimas_' + str(1 + limit_quantidade)))
@@ -226,7 +250,8 @@ def _criar_cabecalho_suspeitos(aba, negrito):
     #Filtro
     aba.autofilter('A1:J1')
 
-
+Denuncia.id == Suspeito.denuncia_id,
+Denuncia.id == Vitima.denuncia_id,
 def _criar_aba_suspeitos(planilha, filtros, negrito, date_format):
     aba = planilha.add_worksheet(str_to_unicode_utf8('Suspeitos'))
     limit_quantidade = 0
@@ -234,7 +259,11 @@ def _criar_aba_suspeitos(planilha, filtros, negrito, date_format):
     _criar_cabecalho_suspeitos(aba, negrito)
 
     for index, suspeito in enumerate(
-            db.session.query(Suspeito).all(), start=1):
+            db.session
+            .query(Suspeito)
+            .join(Denuncia)
+            .join(TipoSuspeito)
+            .filter(db.and_(*filtros)), start=1):
         if index > (LIMIT_ROW + limit_quantidade * LIMIT_ROW):
             aba = planilha.add_worksheet(
                 str_to_unicode_utf8('Suspeitos' + str(1 + limit_quantidade)))
@@ -437,26 +466,184 @@ def _criar_aba_encaminhamento(planilha, filtros, negrito, date_format):
             index_retorno_global += 1
 
 
-@export_app.route('/criar-planilha')
-def criar_planilha():
+
+def _criar_planilha(filtros_denuncia, filtro_vitima, filtro_suspeito, filtros_violacao, encaminhamento):
     try:
+
+        output = StringIO.StringIO()
         date_now = datetime.now().strftime("_%Y_%m_%d_%H_%M_%S")
-        workbook = xlsxwriter.Workbook('planilha_de_dados' + date_now +
-                                       '.xlsx')
+        workbook = xlsxwriter.Workbook(output)
 
         #Format
         negrito = workbook.add_format({'bold': 1})
         date_format = workbook.add_format({'num_format': 'dd/mm/yyyy'})
         #Format
 
-        _criar_aba_denuncias(workbook, [], negrito, date_format)
-        _criar_aba_violacoes(workbook, [], negrito, date_format)
-        _criar_aba_vitimas(workbook, [], negrito, date_format)
-        _criar_aba_suspeitos(workbook, [], negrito, date_format)
-        _criar_aba_encaminhamento(workbook, [], negrito, date_format)
+        _criar_aba_denuncias(workbook, filtros_denuncia, negrito, date_format)
+        _criar_aba_violacoes(workbook, filtros_violacao, negrito, date_format)
+        _criar_aba_vitimas(workbook, filtro_vitima, negrito, date_format)
+        _criar_aba_suspeitos(workbook, filtro_suspeito, negrito, date_format)
+        if encaminhamento:
+            _criar_aba_encaminhamento(workbook, [], negrito, date_format)
 
         workbook.close()
-
+        output.seek(0)
+        return send_file(output,
+                     attachment_filename='planilha_de_dados' + date_now +
+                                       '.xlsx', 
+                     as_attachment=True)       
         return "Gerada."
     except TemplateNotFound:
         abort(404)
+
+
+@export_app.route('/obter-cidades/<string:estado>')
+@login_required
+def obter_cidade(estado):
+    dict_estados = {estado: abrv for abrv, estado in estados_choices}
+    estados = map(lambda x: dict_estados.get(x, ''), filter(lambda x: len(x) > 0, estado.replace("_", " ").split("-")))
+    cidades = db.session.query(Cidade).filter(Cidade.estado.in_(estados))
+    return render_template('_form_cidades.html', cidades = cidades)
+
+
+@export_app.route('/obter-violacoes/<string:violacoes>')
+@login_required
+def obter_violacoes(violacoes):
+    violacoes = violacoes.replace("_", " ").split("-")
+    violacoes = db.session.query(TipoViolacao).filter(TipoViolacao.macrocategoria.in_(violacoes))
+    return render_template('_form_violacoes.html', violacoes = violacoes)
+
+
+@export_app.route('/obter-tipo-de-suspeitos/<string:suspeitos>')
+@login_required
+def obter_tipo_suspeitos(suspeitos):
+    suspeitos = suspeitos.replace("_", " ").split("-")
+    suspeitos = db.session.query(TipoSuspeito.instituicao).filter(TipoSuspeito.tipo.in_(suspeitos)).distinct()
+    return render_template('_form_suspeitos.html', suspeitos = suspeitos)
+
+
+@export_app.route('/', methods=['GET', 'POST'])
+@login_required
+@checa_permissao('exporta-dados')
+def criar_planilha():
+    form = ExportToExcelFiltroForm(request.form)
+
+    if request.method == 'POST' and form.validate():
+        filtros_denuncia = [Denuncia.id == Suspeito.denuncia_id,
+                          Denuncia.id == Vitima.denuncia_id
+                          # ,Violacao.tipoviolacoes_id == TipoViolacao.id
+                          ]
+        filtros_suspeito = []
+        filtros_vitima = []
+        filtros_violacao = [Violacao.tipoviolacoes_id == TipoViolacao.id]
+        if len(form.data['cidades']) > 0:
+            filtros_denuncia.append(Denuncia.cidade.in_(form.data['cidades']))
+
+        if len(form.data['estados']) > 0:
+            filtros_denuncia.append(Denuncia.estado.in_(form.data['estados']))
+
+        if len(form.data['status_denuncia']) > 0:
+            filtros_denuncia.append(Denuncia.status_id.in_(form.data['status_denuncia']))
+
+        
+        if form.data['data_criacao_inicio'] and form.data['data_criacao_fim']:
+            filtros_denuncia.append(Denuncia.dtcriacao.between(form.data['data_criacao_inicio'],form.data['data_criacao_fim']))
+        elif form.data['data_criacao_inicio']:
+            filtros_denuncia.append(Denuncia.dtcriacao >= form.data['data_criacao_inicio'])
+        elif form.data['data_criacao_fim']:
+            filtros_denuncia.append(Denuncia.dtcriacao <= form.data['data_criacao_fim'])
+
+
+        if form.data['data_denuncia_inicio'] and form.data['data_denuncia_fim']:
+            filtros_denuncia.append(Denuncia.dtcriacao.between(form.data['data_denuncia_inicio'],form.data['data_denuncia_fim']))
+        elif form.data['data_denuncia_inicio']:
+            filtros_denuncia.append(Denuncia.dtcriacao >= form.data['data_denuncia_inicio'])
+        elif form.data['data_denuncia_fim']:
+            filtros_denuncia.append(Denuncia.dtcriacao <= form.data['data_denuncia_fim'])
+
+
+        if len(form.data['tipo_de_locais']) > 0:
+            filtros_denuncia.append(Denuncia.tipolocal.in_(form.data['tipo_de_locais']))
+
+
+        if len(form.data['violacoes_macrocategoria']) > 0:
+            filtros_denuncia.append(TipoViolacao.macrocategoria.in_(form.data['violacoes_macrocategoria']))
+            filtros_violacao.append(TipoViolacao.macrocategoria.in_(form.data['violacoes_macrocategoria']))
+
+        if len(form.data['violacoes_microcategoria']) > 0:
+            filtros_denuncia.append(TipoViolacao.microcategoria.in_(form.data['violacoes_microcategoria']))
+            filtros_violacao.append(TipoViolacao.microcategoria.in_(form.data['violacoes_microcategoria']))
+
+        if len(form.data['tipo_de_vitimas']) > 0:
+            filtros_denuncia.append(Vitima.tipovitima_id.in_( form.data['tipo_de_vitimas']))
+            filtros_vitima.append(Vitima.tipovitima_id.in_(form.data['tipo_de_vitimas']))
+
+        if form.data['quantidade_de_vitimas_inicio'] and form.data['quantidade_de_vitimas_fim']:
+            filtros_denuncia.append(Vitima.qtdevitimas.between(form.data['quantidade_de_vitimas_inicio'],form.data['quantidade_de_vitimas_fim']))
+            filtros_vitima.append(Vitima.qtdevitimas.between(form.data['quantidade_de_vitimas_inicio'],form.data['quantidade_de_vitimas_fim']))
+        elif form.data['quantidade_de_vitimas_inicio']:
+            filtros_denuncia.append(Vitima.qtdevitimas >= form.data['quantidade_de_vitimas_inicio'])
+            filtros_vitima.append(Vitima.qtdevitimas >= form.data['quantidade_de_vitimas_inicio'])
+        elif form.data['quantidade_de_vitimas_fim']:
+            filtros_denuncia.append(Vitima.qtdevitimas <= form.data['quantidade_de_vitimas_fim'])
+            filtros_vitima.append(Vitima.qtdevitimas <= form.data['quantidade_de_vitimas_fim'])
+
+        if form.data['quantidade_de_suspeitos_inicio'] and form.data['quantidade_de_suspeitos_fim']:
+            filtros_denuncia.append(Suspeito.qtdesuspeitos.between(form.data['quantidade_de_suspeitos_inicio'],form.data['quantidade_de_suspeitos_fim']))
+            filtros_suspeito.append(Suspeito.qtdesuspeitos.between(form.data['quantidade_de_suspeitos_inicio'],form.data['quantidade_de_suspeitos_fim']))
+        elif form.data['quantidade_de_suspeitos_inicio']:
+            filtros_denuncia.append(Suspeito.qtdesuspeitos >= form.data['quantidade_de_suspeitos_inicio'])
+            filtros_suspeito.append(Suspeito.qtdesuspeitos >= form.data['quantidade_de_suspeitos_inicio'])
+        elif form.data['quantidade_de_suspeitos_fim']:
+            filtros_denuncia.append(Suspeito.qtdesuspeitos <= form.data['quantidade_de_suspeitos_fim'])
+            filtros_suspeito.append(Suspeito.qtdesuspeitos <= form.data['quantidade_de_suspeitos_fim'])
+
+        if len(form.data['tipo_de_suspeitos_tipo']) > 0:
+            filtros_denuncia.append(TipoSuspeito.tipo.in_(form.data['tipo_de_suspeitos_tipo']))
+            filtros_suspeito.append(TipoSuspeito.tipo.in_(form.data['tipo_de_suspeitos_tipo']))
+
+        if len(form.data['tipo_de_suspeitos_instituicao']) > 0:
+            filtros_denuncia.append(TipoSuspeito.instituicao.in_(form.data['tipo_de_suspeitos_instituicao']))
+            filtros_suspeito.append(TipoSuspeito.instituicao.in_(form.data['tipo_de_suspeitos_instituicao']))
+
+        if len(form.data['sexo_vitima']) > 0:
+            filtros_denuncia.append(Vitima.sexo.in_(form.data['sexo_vitima']))
+            filtros_vitima.append(Vitima.sexo.in_(form.data['sexo_vitima']))
+
+        if len(form.data['cor_vitima']) > 0:
+            filtros_denuncia.append(Vitima.cor.in_(form.data['cor_vitima']))
+            filtros_vitima.append(Vitima.cor.in_(form.data['cor_vitima']))
+
+        if form.data['vitima_idade_inicio'] and form.data['vitima_idade_fim']:
+            filtros_denuncia.append(Vitima.idade.between(form.data['vitima_idade_inicio'],form.data['vitima_idade_fim']))
+            filtros_vitima.append(Vitima.idade.between(form.data['vitima_idade_inicio'],form.data['vitima_idade_fim']))
+        elif form.data['vitima_idade_inicio']:
+            filtros_denuncia.append(Vitima.idade >= form.data['vitima_idade_inicio'])
+            filtros_vitima.append(Vitima.idade >= form.data['vitima_idade_inicio'])
+        elif form.data['vitima_idade_fim']:
+            filtros_denuncia.append(Vitima.idade <= form.data['vitima_idade_fim'])
+            filtros_vitima.append(Vitima.idade <= form.data['vitima_idade_fim'])
+
+        if len(form.data['sexo_suspeito']) > 0:
+            filtros_denuncia.append(Suspeito.sexo.in_(form.data['sexo_suspeito']))
+            filtros_suspeito.append(Suspeito.sexo.in_(form.data['sexo_suspeito']))
+
+        if len(form.data['cor_suspeito']) > 0:
+            filtros_denuncia.append(Suspeito.cor.in_(form.data['cor_suspeito']))
+            filtros_suspeito.append(Suspeito.cor.in_(form.data['cor_suspeito']))
+
+        if form.data['suspeito_idade_inicio'] and form.data['suspeito_idade_fim']:
+            filtros_denuncia.append(Suspeito.idade.between(form.data['suspeito_idade_inicio'],form.data['suspeito_idade_fim']))
+            filtros_suspeito.append(Suspeito.idade.between(form.data['suspeito_idade_inicio'],form.data['suspeito_idade_fim']))
+        elif form.data['suspeito_idade_inicio']:
+            filtros_denuncia.append(Suspeito.idade >= form.data['suspeito_idade_inicio'])
+            filtros_suspeito.append(Suspeito.idade >= form.data['suspeito_idade_inicio'])
+        elif form.data['suspeito_idade_fim']:
+            filtros_denuncia.append(Suspeito.idade <= form.data['suspeito_idade_fim'])
+            filtros_suspeito.append(Suspeito.idade <= form.data['suspeito_idade_fim'])
+
+        encaminhamento = form.data['recuperar_encaminhamentos']
+
+        return _criar_planilha(filtros_denuncia, filtros_denuncia+filtros_vitima, filtros_denuncia+filtros_suspeito, filtros_denuncia+filtros_violacao, encaminhamento)
+
+    return render_template('index.html', form=form)

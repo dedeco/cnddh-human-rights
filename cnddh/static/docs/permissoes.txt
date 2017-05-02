@@ -18,3 +18,4 @@ gerencia-workflow, Pode registrar ações no workflow
 visualiza-timeline, Pode visualizar a timeline(histórico) de uma denúncia especifíca
 faz-encaminhamento, Pode fazer qualquer tipo de encaminhamento
 recebe-retorno, Pode registrar um retorno de um encaminhamento
+exporta-dados, Pode exportar dados
