@@ -23,12 +23,9 @@ class ExportToExcelFiltroForm(Form):
         locales = ['pt_BR', 'pt']
     def __init__(self,  *args, **kwargs):
         super(ExportToExcelFiltroForm, self).__init__( *args, **kwargs)
-
-        # cidades = list(db.session.query(Cidade.cidade).order_by(Cidade.cidade).distinct())
-        
+      
         status = db.session.query(Status).order_by(Status.status).distinct()
 
-        # self.cidades.choices = map(lambda item: (item.cidade, item.cidade), cidades)
         self.status_denuncia.choices = map(lambda item: (str(item.id), item.status), status)
 
         tipo_de_locais = db.session.query(TipoLocal).order_by(TipoLocal.local).distinct()
@@ -37,17 +34,14 @@ class ExportToExcelFiltroForm(Form):
         violacoes_macrocategoria = db.session.query(TipoViolacao.macrocategoria).order_by(TipoViolacao.macrocategoria).distinct(TipoViolacao.macrocategoria)
         self.violacoes_macrocategoria.choices = map(lambda item: (item.macrocategoria, item.macrocategoria), violacoes_macrocategoria)
 
-        # violacoes_microcategoria = db.session.query(TipoViolacao.microcategoria).order_by(TipoViolacao.microcategoria).distinct(TipoViolacao.microcategoria)
-        # self.violacoes_microcategoria.choices = map(lambda item: (item.microcategoria, item.microcategoria), violacoes_microcategoria)
-
         tipo_de_vitimas = db.session.query(TipoVitima).order_by(TipoVitima.tipo).distinct()
         self.tipo_de_vitimas.choices = tipo_de_vitimas = map(lambda item: (str(item.id), item.tipo), tipo_de_vitimas)
 
         tipo_suspeito_tipo = db.session.query(TipoSuspeito.tipo).order_by(TipoSuspeito.tipo).distinct()
+        tipo_suspeito_instituicao = db.session.query(TipoSuspeito.instituicao).order_by(TipoSuspeito.instituicao).distinct()
+        #TOdo One Query for both
         self.tipo_de_suspeitos_tipo.choices = map(lambda item: (item.tipo, item.tipo), tipo_suspeito_tipo)
-
-        # tipo_suspeito_instituicao = db.session.query(TipoSuspeito.instituicao).order_by(TipoSuspeito.instituicao).distinct()
-        # self.tipo_de_suspeitos_instituicao.choices = map(lambda item: (item.instituicao, item.instituicao), tipo_suspeito_instituicao)
+        self.tipo_de_suspeitos_instituicao.choices = map(lambda item: (item.instituicao, item.instituicao), tipo_suspeito_instituicao)
 
     cidades = SelectMultipleField(u"Cidades",[], choices=[])
     estados = SelectMultipleField(u"Estados",[], choices=estados_choices)

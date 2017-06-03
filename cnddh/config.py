@@ -1,5 +1,5 @@
  
-AMBIENTE = u'windows'
+AMBIENTE = u'linux'
 PROD = False
 DEBUG = True
 LOG = False
@@ -10,7 +10,7 @@ EMAIL_LOGIN = 'xxxxxxxx@cnddh.org.br'
 EMAIL_PASSWORD = 'senha'
 EMAIL_PORT = 587
 
-DATABASE_URI = 'mysql://root:senha@localhost/cnddh_db'
+DATABASE_URI = 'mysql://root:123456@localhost/cnddh_db'
 ECHO = False
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
