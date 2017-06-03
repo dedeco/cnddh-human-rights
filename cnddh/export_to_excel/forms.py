@@ -35,7 +35,9 @@ class ExportToExcelFiltroForm(Form):
         self.tipo_de_locais.choices = map(lambda item: (str(item.id), item.local), tipo_de_locais)
 
         violacoes_macrocategoria = db.session.query(TipoViolacao.macrocategoria).order_by(TipoViolacao.macrocategoria).distinct(TipoViolacao.macrocategoria)
+        violacoes_microcategoria = db.session.query(TipoViolacao.microcategoria).order_by(TipoViolacao.microcategoria).distinct(TipoViolacao.microcategoria)
         self.violacoes_macrocategoria.choices = map(lambda item: (item.macrocategoria, item.macrocategoria), violacoes_macrocategoria)
+        self.violacoes_microcategoria.choices = map(lambda item: (item.microcategoria, item.microcategoria), violacoes_microcategoria)
 
         tipo_de_vitimas = db.session.query(TipoVitima).order_by(TipoVitima.tipo).distinct()
         self.tipo_de_vitimas.choices = tipo_de_vitimas = map(lambda item: (str(item.id), item.tipo), tipo_de_vitimas)
