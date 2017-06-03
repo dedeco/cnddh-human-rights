@@ -26,6 +26,9 @@ class ExportToExcelFiltroForm(Form):
       
         status = db.session.query(Status).order_by(Status.status).distinct()
 
+        cidades = db.session.query(Cidade.cidade).order_by(Cidade.cidade).distinct()
+        self.cidades.choices = map(lambda item: (item.cidade, item.cidade), cidades)
+
         self.status_denuncia.choices = map(lambda item: (str(item.id), item.status), status)
 
         tipo_de_locais = db.session.query(TipoLocal).order_by(TipoLocal.local).distinct()
