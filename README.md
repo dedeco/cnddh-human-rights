@@ -16,3 +16,13 @@ This application was created for Human Rights Center in Brazil for reporting vio
 * Contribution guidelines: Create responsive layout for mobile and tablets, Update semantic Ui and reports
 
 * Who do I talk to? Repo owner or admin dedeco@gmail.com ou andre@sousaaraujoti.com.br
+
+
+
+## Instalation
+
+### Linux
+For install mysql need some libs:
+
+sudo apt-get install mysql-server
+sudo apt-get install libmysqlclient-dev
