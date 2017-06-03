@@ -613,23 +613,22 @@ def criar_planilha():
             query_vitima = query_vitima.filter(Denuncia.tipolocal.in_(form.data['tipo_de_locais']))
             query_suspeitos = query_suspeitos.filter(Denuncia.tipolocal.in_(form.data['tipo_de_locais']))
             query_violacoes = query_violacoes.filter(Denuncia.tipolocal.in_(form.data['tipo_de_locais']))
-        #FIM Denuncias
+
 
         if form.data['data_criacao_inicio'] and form.data['data_criacao_fim']:
-            filtros_denuncia.append(Denuncia.dtcriacao.between(form.data['data_criacao_inicio'],form.data['data_criacao_fim']))
+            query = query.filter(Denuncia.dtcriacao.between(form.data['data_criacao_inicio'],form.data['data_criacao_fim']))
         elif form.data['data_criacao_inicio']:
-            filtros_denuncia.append(Denuncia.dtcriacao >= form.data['data_criacao_inicio'])
+            query = query.filter(Denuncia.dtcriacao >= form.data['data_criacao_inicio'])
         elif form.data['data_criacao_fim']:
-            filtros_denuncia.append(Denuncia.dtcriacao <= form.data['data_criacao_fim'])
-
+            query = query.filter(Denuncia.dtcriacao <= form.data['data_criacao_fim'])
 
         if form.data['data_denuncia_inicio'] and form.data['data_denuncia_fim']:
-            filtros_denuncia.append(Denuncia.dtcriacao.between(form.data['data_denuncia_inicio'],form.data['data_denuncia_fim']))
+            query = query.filter(Denuncia.dtcriacao.between(form.data['data_denuncia_inicio'],form.data['data_denuncia_fim']))
         elif form.data['data_denuncia_inicio']:
-            filtros_denuncia.append(Denuncia.dtcriacao >= form.data['data_denuncia_inicio'])
+            query = query.filter(Denuncia.dtcriacao >= form.data['data_denuncia_inicio'])
         elif form.data['data_denuncia_fim']:
-            filtros_denuncia.append(Denuncia.dtcriacao <= form.data['data_denuncia_fim'])
-
+            query = query.filter(Denuncia.dtcriacao <= form.data['data_denuncia_fim'])
+        #FIM Denuncias
         #Violacoes
         if len(form.data['violacoes_macrocategoria']) > 0:
             query = query.filter(TipoViolacao.macrocategoria.in_(form.data['violacoes_macrocategoria']))
