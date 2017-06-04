@@ -51,7 +51,7 @@ def _criar_cabecalho_violacoes(aba, negrito):
     aba.write('E1', str_to_unicode_utf8('Suspeitos ID'), negrito)
 
     #Largura
-    aba.set_column('A:E', 13)
+    aba.set_column('A:E', 20)
 
     #Filtro
     aba.autofilter('A1:E1')
@@ -174,19 +174,20 @@ def _criar_aba_denuncias(planilha, negrito, date_format, query):
 def _criar_cabecalho_vitimas(aba, negrito):
     aba.write('A1', str_to_unicode_utf8('Vítimas ID'), negrito)
     aba.write('B1', str_to_unicode_utf8('Denúncia ID'), negrito)
-    aba.write('C1', str_to_unicode_utf8('Tipo Vítima ID'), negrito)
-    aba.write('D1', str_to_unicode_utf8('Quantidade De Vítimas'), negrito)
-    aba.write('E1', str_to_unicode_utf8('Nome não identificado'), negrito)
-    aba.write('F1', str_to_unicode_utf8('Nome'), negrito)
-    aba.write('G1', str_to_unicode_utf8('Idade'), negrito)
-    aba.write('H1', str_to_unicode_utf8('Sexo'), negrito)
-    aba.write('I1', str_to_unicode_utf8('Cor'), negrito)
+    aba.write('C1', str_to_unicode_utf8('Numero da denuncia'), negrito)
+    aba.write('D1', str_to_unicode_utf8('Tipo Vítima ID'), negrito)
+    aba.write('E1', str_to_unicode_utf8('Quantidade De Vítimas'), negrito)
+    aba.write('F1', str_to_unicode_utf8('Nome não identificado'), negrito)
+    aba.write('G1', str_to_unicode_utf8('Nome'), negrito)
+    aba.write('H1', str_to_unicode_utf8('Idade'), negrito)
+    aba.write('I1', str_to_unicode_utf8('Sexo'), negrito)
+    aba.write('J1', str_to_unicode_utf8('Cor'), negrito)
 
     #Largura
-    aba.set_column('A:I', 13)
+    aba.set_column('A:J', 20)
 
     #Filtro
-    aba.autofilter('A1:I1')
+    aba.autofilter('A1:J1')
 
 
 def _criar_aba_vitimas(planilha, negrito, date_format, qr_vitima):
@@ -205,37 +206,44 @@ def _criar_aba_vitimas(planilha, negrito, date_format, qr_vitima):
         aba.write_number(index - limit_quantidade * LIMIT_ROW, 1,
                          vitima.denuncia_id)
         aba.write_number(index - limit_quantidade * LIMIT_ROW, 2,
-                         vitima.tipovitima_id)
+                         vitima.denuncia.numero)
         aba.write_number(index - limit_quantidade * LIMIT_ROW, 3,
+                         vitima.tipovitima_id)
+        aba.write_number(index - limit_quantidade * LIMIT_ROW, 4,
                          vitima.qtdevitimas)
-        aba.write_string(index - limit_quantidade * LIMIT_ROW, 4,
-                         normalize_str(vitima.nomenaoidentificado))
-        aba.write_string(index - limit_quantidade * LIMIT_ROW, 5,
+        if vitima.nomenaoidentificado == u'0':
+            aba.write_string(index - limit_quantidade * LIMIT_ROW, 5,
+                            normalize_str(u"Não"))
+        else:
+            aba.write_string(index - limit_quantidade * LIMIT_ROW, 5,
+                            normalize_str(u"Sim"))
+        aba.write_string(index - limit_quantidade * LIMIT_ROW, 6,
                          normalize_str(vitima.nome))
-        aba.write_number(index - limit_quantidade * LIMIT_ROW, 6, vitima.idade)
-        aba.write_string(index - limit_quantidade * LIMIT_ROW, 7,
-                         normalize_str(vitima.sexo))
+        aba.write_number(index - limit_quantidade * LIMIT_ROW, 7, vitima.idade)
         aba.write_string(index - limit_quantidade * LIMIT_ROW, 8,
+                         normalize_str(vitima.sexo))
+        aba.write_string(index - limit_quantidade * LIMIT_ROW, 9,
                          normalize_str(vitima.cor))
 
 
 def _criar_cabecalho_suspeitos(aba, negrito):
     aba.write('A1', str_to_unicode_utf8('Vítimas ID'), negrito)
     aba.write('B1', str_to_unicode_utf8('Denúncia ID'), negrito)
-    aba.write('C1', str_to_unicode_utf8('Tipo de Suspeito ID'), negrito)
-    aba.write('D1', str_to_unicode_utf8('Quantidade de Suspeitos'), negrito)
-    aba.write('E1', str_to_unicode_utf8('Nome Instituição'), negrito)
-    aba.write('F1', str_to_unicode_utf8('Nome não identificado'), negrito)
-    aba.write('G1', str_to_unicode_utf8('Nome'), negrito)
-    aba.write('H1', str_to_unicode_utf8('Idade'), negrito)
-    aba.write('I1', str_to_unicode_utf8('Sexo'), negrito)
-    aba.write('J1', str_to_unicode_utf8('Cor'), negrito)
+    aba.write('C1', str_to_unicode_utf8('Numero da denuncia'), negrito)
+    aba.write('D1', str_to_unicode_utf8('Tipo de Suspeito ID'), negrito)
+    aba.write('E1', str_to_unicode_utf8('Quantidade de Suspeitos'), negrito)
+    aba.write('F1', str_to_unicode_utf8('Nome Instituição'), negrito)
+    aba.write('G1', str_to_unicode_utf8('Nome não identificado'), negrito)
+    aba.write('H1', str_to_unicode_utf8('Nome'), negrito)
+    aba.write('I1', str_to_unicode_utf8('Idade'), negrito)
+    aba.write('J1', str_to_unicode_utf8('Sexo'), negrito)
+    aba.write('K1', str_to_unicode_utf8('Cor'), negrito)
 
     #Largura
-    aba.set_column('A:J', 15)
+    aba.set_column('A:K', 20)
 
     #Filtro
-    aba.autofilter('A1:J1')
+    aba.autofilter('A1:K1')
 
 Denuncia.id == Suspeito.denuncia_id,
 Denuncia.id == Vitima.denuncia_id,
@@ -251,24 +259,31 @@ def _criar_aba_suspeitos(planilha, negrito, date_format, qr_suspeitos):
                 str_to_unicode_utf8('Suspeitos' + str(1 + limit_quantidade)))
             _criar_cabecalho_suspeitos(aba, negrito)
             limit_quantidade += 1
+
         aba.write_number(index - limit_quantidade * LIMIT_ROW, 0, suspeito.id)
         aba.write_number(index - limit_quantidade * LIMIT_ROW, 1,
                          suspeito.denuncia_id)
         aba.write_number(index - limit_quantidade * LIMIT_ROW, 2,
-                         suspeito.tiposuspeito_id)
+                         suspeito.denuncia.numero)
         aba.write_number(index - limit_quantidade * LIMIT_ROW, 3,
+                         suspeito.tiposuspeito_id)
+        aba.write_number(index - limit_quantidade * LIMIT_ROW, 4,
                          suspeito.qtdesuspeitos)
-        aba.write_string(index - limit_quantidade * LIMIT_ROW, 4,
-                         normalize_str(suspeito.nomeinstituicao))
         aba.write_string(index - limit_quantidade * LIMIT_ROW, 5,
-                         normalize_str(suspeito.nomenaoidentificado))
-        aba.write_string(index - limit_quantidade * LIMIT_ROW, 6,
+                         normalize_str(suspeito.nomeinstituicao))
+        if suspeito.nomenaoidentificado == u"0":                          
+            aba.write_string(index - limit_quantidade * LIMIT_ROW, 6,
+                            normalize_str(u"Não"))
+        else:
+            aba.write_string(index - limit_quantidade * LIMIT_ROW, 6,
+                            normalize_str(u"Sim"))
+        aba.write_string(index - limit_quantidade * LIMIT_ROW, 7,
                          suspeito.nome)
-        aba.write_number(index - limit_quantidade * LIMIT_ROW, 7,
+        aba.write_number(index - limit_quantidade * LIMIT_ROW, 8,
                          suspeito.idade)
-        aba.write_string(index - limit_quantidade * LIMIT_ROW, 8,
-                         normalize_str(suspeito.sexo))
         aba.write_string(index - limit_quantidade * LIMIT_ROW, 9,
+                         normalize_str(suspeito.sexo))
+        aba.write_string(index - limit_quantidade * LIMIT_ROW, 10,
                          normalize_str(suspeito.cor))
 
 
@@ -286,7 +301,7 @@ def _criar_cabecalho_encaminhamento(aba, negrito):
     aba.write('J1', str_to_unicode_utf8('Tipo Encaminhamento'), negrito)
 
     #Largura
-    aba.set_column('A:J', 15)
+    aba.set_column('A:J', 20)
 
     #Filtro
     aba.autofilter('A1:J1')
@@ -491,7 +506,7 @@ def obter_cidade(estado):
 @export_app.route('/obter-violacoes/<string:violacoes>')
 @login_required
 def obter_violacoes(violacoes):
-    violacoes = violacoes.replace("_", " ").split("-")
+    violacoes = violacoes.replace("_", " ").replace("@","/").split("-")
     violacoes = db.session.query(TipoViolacao).filter(TipoViolacao.macrocategoria.in_(violacoes))
     return render_template('_form_violacoes.html', violacoes = violacoes)
 
@@ -512,15 +527,6 @@ def criar_planilha():
 
     if request.method == 'POST' and form.validate():
         filtro_suspeito_tipo_adicionado = False
-        filtros_denuncia = [
-
-                          # Denuncia.id == Suspeito.denuncia_id,
-                          # Denuncia.id == Vitima.denuncia_id
-                          # ,Violacao.tipoviolacoes_id == TipoViolacao.id
-                          ]
-        filtros_suspeito = []
-        filtros_vitima = []
-        filtros_violacao = [Violacao.tipoviolacoes_id == TipoViolacao.id]
 
         query = db.session.\
                 query(Denuncia).\
