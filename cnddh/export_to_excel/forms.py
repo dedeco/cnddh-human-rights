@@ -3,7 +3,7 @@
 from wtforms import Form
 from wtforms import validators
 from wtforms_components import DateRange
-from wtforms import  SelectMultipleField#, DateField
+from wtforms import  SelectMultipleField, SelectField#, DateField
 from wtforms.fields.html5 import DateField
 from wtforms.fields import IntegerField, BooleanField
 from cnddh.database import db
@@ -75,10 +75,10 @@ class ExportToExcelFiltroForm(Form):
     sexo_suspeito = SelectMultipleField(u"Sexo", [], choices=sexo_choices)
     cor_suspeito = SelectMultipleField(u"Cor", [], choices=cor_choices)
     
-
     suspeito_idade_inicio = IntegerField(u"Idade", [validators.optional()])
     suspeito_idade_fim = IntegerField(u"Idade", [validators.optional()])
 
     recuperar_encaminhamentos = BooleanField(u"Recuperar Encaminhamentos", [])
+    data_formato = SelectField(u'Data Formato', choices=[('dd/mm/yyyy', 'Normal'), ('yyyy', 'Ano')])
     #TODO FIltro encaminhamento e retorno?
 

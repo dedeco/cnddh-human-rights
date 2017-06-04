@@ -106,11 +106,15 @@ $(function(){
         {{formhelps.render_field('Cor', form.cor_suspeito)}}
         {{formhelps.render_two_field('Idade', form.suspeito_idade_inicio, form.suspeito_idade_fim)}}   
     </div>
-    <h4 class="ui dividing header">Outros</h4>
+<!--     <h4 class="ui dividing header">Outros</h4>
     <div class="ui grid">
        {{formhelps.render_field('Recuperar encaminhamentos', form.recuperar_encaminhamentos)}}
+    </div> -->
+    <h4 class="ui dividing header">Opções</h4>
+    <div class="ui grid">
+       {{formhelps.render_field('Formato da data', form.data_formato)}}
     </div>
-    <button class="ui button" type="submit">Gerar relatório</button>
+    <button style="margin-top:10px;" class="ui button" type="submit">Gerar relatório</button>
 </form>
 
 

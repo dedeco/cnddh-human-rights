@@ -510,7 +510,7 @@ def _criar_aba_encaminhamento(planilha, filtros, negrito, date_format):
             index_retorno_global += 1
 
 
-def _criar_planilha(encaminhamento, query, qr_vitima, qr_suspeitos, qr_violacoes, qr_homicidios):
+def _criar_planilha(encaminhamento, query, qr_vitima, qr_suspeitos, qr_violacoes, qr_homicidios, formatos):
     try:
 
         output = StringIO.StringIO()
@@ -519,7 +519,7 @@ def _criar_planilha(encaminhamento, query, qr_vitima, qr_suspeitos, qr_violacoes
 
         #Format
         negrito = workbook.add_format({'bold': 1})
-        date_format = workbook.add_format({'num_format': 'dd/mm/yyyy'})
+        date_format = workbook.add_format({'num_format': formatos['data']})
         #Format
 
         _criar_aba_denuncias(workbook, negrito, date_format, query)
@@ -758,9 +758,11 @@ def criar_planilha():
 
         #FIM Suspeitos
 
-        encaminhamento = form.data['recuperar_encaminhamentos']
+        # encaminhamento = form.data['recuperar_encaminhamentos']
+        encaminhamento = False
         query, query_vitima, query_suspeitos, query_violacoes, query_homicidios = querys
-
-        return _criar_planilha(encaminhamento, query, query_vitima, query_suspeitos, query_violacoes, query_homicidios)
+        formatos = {}
+        formatos['data'] = form.data['data_formato']
+        return _criar_planilha(encaminhamento, query, query_vitima, query_suspeitos, query_violacoes, query_homicidios, formatos)
 
     return render_template('index.html', form=form)
