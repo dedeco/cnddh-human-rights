@@ -140,10 +140,10 @@ def _create_cabecalho_denuncia(aba, negrito):
     aba.write('C1', str_to_unicode_utf8('Data Criação'), negrito)
 
     aba.write('D1', str_to_unicode_utf8('Data Denúncia'), negrito)
-    aba.write('E1', str_to_unicode_utf8('Status ID'), negrito)
+    # aba.write('E1', str_to_unicode_utf8('Status ID'), negrito)
 
     aba.write('F1', str_to_unicode_utf8('Status'), negrito)
-    aba.write('G1', str_to_unicode_utf8('Fonte ID'), negrito)
+    # aba.write('G1', str_to_unicode_utf8('Fonte ID'), negrito)
     aba.write('H1', str_to_unicode_utf8('Fonte'), negrito)
     aba.write('I1', str_to_unicode_utf8('Protocolo'), negrito)
     aba.write('J1', str_to_unicode_utf8('Resumo'), negrito)
@@ -176,6 +176,11 @@ def _criar_aba_denuncias(planilha, negrito, date_format, query):
     aba = planilha.add_worksheet(str_to_unicode_utf8('Denúncias'))
     limit_quantidade = 0
     _create_cabecalho_denuncia(aba, negrito)
+    tipos_de_locais = db.session.query(TipoLocal).all()
+    dict_tipos_de_locais = {}
+    for local in tipos_de_locais:
+        dict_tipos_de_locais[local.id] = local.local
+
     for index, denuncia in enumerate(query, start=1):
 
         if index > (LIMIT_ROW + limit_quantidade * LIMIT_ROW):
@@ -189,11 +194,7 @@ def _criar_aba_denuncias(planilha, negrito, date_format, query):
                            denuncia.dtcriacao, date_format)
         aba.write_datetime(index - limit_quantidade * LIMIT_ROW, 3,
                            denuncia.dtdenuncia, date_format)
-        aba.write(index - limit_quantidade * LIMIT_ROW, 4, denuncia.status_id)
         aba.write(index, 5, denuncia.status.status)
-
-        aba.write(index - limit_quantidade * LIMIT_ROW, 6,
-                  denuncia.tipofonte_id)
         aba.write_string(index - limit_quantidade * LIMIT_ROW, 7,
                          normalize_str(denuncia.fonte))
         aba.write_string(index - limit_quantidade * LIMIT_ROW, 8,
@@ -204,7 +205,8 @@ def _criar_aba_denuncias(planilha, negrito, date_format, query):
                          normalize_str(denuncia.descricao))
         aba.write_string(index - limit_quantidade * LIMIT_ROW, 11,
                          normalize_str(denuncia.observacao))
-        aba.write(index - limit_quantidade * LIMIT_ROW, 12, denuncia.tipolocal)
+
+        aba.write_string(index - limit_quantidade * LIMIT_ROW, 12, normalize_str(dict_tipos_de_locais[int(denuncia.tipolocal)]))
         aba.write(index - limit_quantidade * LIMIT_ROW, 13, denuncia.endereco)
         aba.write(index - limit_quantidade * LIMIT_ROW, 14, denuncia.num)
         aba.write(index - limit_quantidade * LIMIT_ROW, 15,
