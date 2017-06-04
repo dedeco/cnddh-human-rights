@@ -566,6 +566,16 @@ def obter_tipo_suspeitos(suspeitos):
     return render_template('_form_suspeitos.html', suspeitos = suspeitos)
 
 
+def _add_filter_to_queries(querys, filter_):
+    # querys -> list
+    # filter -> sqlalchemy filter
+    def add_filter(query):
+        query = query.filter(filter_)
+        return query
+
+    return list(map(add_filter, querys))
+
+
 @export_app.route('/', methods=['GET', 'POST'])
 @login_required
 @checa_permissao('exporta-dados')
@@ -593,11 +603,12 @@ def criar_planilha():
 
         query_homicidios = db.session.\
                          query(Homicidio, TipoMeioUtilizado).\
-                         join(Violacao).\
-                         join(Denuncia).\
-                         outerjoin(HomicidioMeioUtilizado).\
+                         join(Violacao, Homicidio.id == Violacao.id).\
+                         join(Denuncia, Denuncia.id == Violacao.denuncia_id).\
+                         outerjoin(HomicidioMeioUtilizado, Homicidio.id == HomicidioMeioUtilizado.homicidio_id).\
                          outerjoin(TipoMeioUtilizado, HomicidioMeioUtilizado.tipomeioutilizado_id == TipoMeioUtilizado.id )
 
+        # _add_filter_to_queries(querys, )
         if form.data['suspeito_idade_inicio'] or\
             form.data['suspeito_idade_fim'] or\
             len(form.data['cor_suspeito']) > 0 or\
@@ -606,10 +617,10 @@ def criar_planilha():
             form.data['quantidade_de_suspeitos_inicio'] or\
             form.data['quantidade_de_suspeitos_fim'] or\
             len(form.data['tipo_de_suspeitos_instituicao']) > 0:
-                query = query.join(Suspeito)
-                query_vitima = query_vitima.join(Suspeito)
-                query_violacoes = query_violacoes.join(Suspeito)
-                query_homicidios = query_homicidios.join(Suspeito)
+                query = query.join(Suspeito, Suspeito.denuncia_id == Denuncia.id)
+                query_vitima = query_vitima.join(Suspeito, Suspeito.denuncia_id == Denuncia.id)
+                query_violacoes = query_violacoes.join(Suspeito, Suspeito.denuncia_id == Denuncia.id)
+                query_homicidios = query_homicidios.join(Suspeito, Suspeito.denuncia_id == Denuncia.id)
 
 
         if len(form.data['tipo_de_vitimas']) > 0 or\
@@ -619,10 +630,10 @@ def criar_planilha():
              form.data['vitima_idade_fim'] or\
              len(form.data['sexo_vitima']) > 0 or\
              form.data['cor_vitima']:
-            query = query.join(Vitima)
-            query_suspeitos = query_suspeitos.join(Vitima)
-            query_violacoes = query_violacoes.join(Vitima)
-            query_homicidios = query_homicidios.join(Vitima)
+            query = query.join(Vitima, Vitima.denuncia_id == Denuncia.id)
+            query_suspeitos = query_suspeitos.join(Vitima, Vitima.denuncia_id == Denuncia.id)
+            query_violacoes = query_violacoes.join(Vitima, Vitima.denuncia_id == Denuncia.id)
+            query_homicidios = query_homicidios.join(Vitima, Vitima.denuncia_id == Denuncia.id)
 
         if len(form.data['violacoes_macrocategoria']) > 0 or\
            len(form.data['violacoes_microcategoria']) > 0:
@@ -635,256 +646,121 @@ def criar_planilha():
             query_suspeitos = query_suspeitos.\
                         join(Violacao, Denuncia.id == Violacao.denuncia_id).\
                         join(TipoViolacao, Violacao.tipoviolacoes_id == TipoViolacao.id)
-            # query_violacoes = query_violacoes.\
-            #             join(Violacao, Denuncia.id == Violacao.denuncia_id).\
-            #             join(TipoViolacao, Violacao.tipoviolacoes_id == TipoViolacao.id)
 
-        #Denuncias
+        querys = [query, query_vitima, query_suspeitos, query_violacoes, query_homicidios]
+        # Denuncias
 
         if len(form.data['cidades']) > 0:
-            query = query.filter(Denuncia.cidade.in_(form.data['cidades']))
-            query_vitima = query_vitima.filter(Denuncia.cidade.in_(form.data['cidades']))
-            query_suspeitos = query_suspeitos.filter(Denuncia.cidade.in_(form.data['cidades']))
-            query_violacoes = query_violacoes.filter(Denuncia.cidade.in_(form.data['cidades']))
-            query_homicidios = query_homicidios.filter(Denuncia.cidade.in_(form.data['cidades']))
+            querys = _add_filter_to_queries(querys, Denuncia.cidade.in_(form.data['cidades']))
 
         if len(form.data['estados']) > 0:
-            query = query.filter(Denuncia.estado.in_(form.data['estados']))
-            query_vitima = query_vitima.filter(Denuncia.estado.in_(form.data['estados']))
-            query_suspeitos = query_suspeitos.filter(Denuncia.estado.in_(form.data['estados']))
-            query_violacoes = query_violacoes.filter(Denuncia.estado.in_(form.data['estados']))
-            query_homicidios = query_homicidios.filter(Denuncia.estado.in_(form.data['estados']))
+            querys = _add_filter_to_queries(querys, Denuncia.estado.in_(form.data['estados']))
 
         if len(form.data['status_denuncia']) > 0:
-            query = query.filter(Denuncia.status_id.in_(form.data['status_denuncia']))
-            query_vitima = query_vitima.filter(Denuncia.status_id.in_(form.data['status_denuncia']))
-            query_suspeitos = query_suspeitos.filter(Denuncia.status_id.in_(form.data['status_denuncia']))
-            query_violacoes = query_violacoes.filter(Denuncia.status_id.in_(form.data['status_denuncia']))
-            query_homicidios = query_homicidios.filter(Denuncia.status_id.in_(form.data['status_denuncia']))
+            querys = _add_filter_to_queries(querys, Denuncia.status_id.in_(form.data['status_denuncia']))
         
         if len(form.data['tipo_de_locais']) > 0:
-            query = query.filter(Denuncia.tipolocal.in_(form.data['tipo_de_locais']))
-            query_vitima = query_vitima.filter(Denuncia.tipolocal.in_(form.data['tipo_de_locais']))
-            query_suspeitos = query_suspeitos.filter(Denuncia.tipolocal.in_(form.data['tipo_de_locais']))
-            query_violacoes = query_violacoes.filter(Denuncia.tipolocal.in_(form.data['tipo_de_locais']))
-            query_homicidios = query_homicidios.filter(Denuncia.tipolocal.in_(form.data['tipo_de_locais']))
-
+            querys = _add_filter_to_queries(querys, Denuncia.tipolocal.in_(form.data['tipo_de_locais']))
 
         if form.data['data_criacao_inicio'] and form.data['data_criacao_fim']:
-            query = query.filter(Denuncia.dtcriacao.between(form.data['data_criacao_inicio'],form.data['data_criacao_fim']))
-            query_vitima = query_vitima.filter(Denuncia.dtcriacao.between(form.data['data_criacao_inicio'],form.data['data_criacao_fim']))
-            query_suspeitos = query_suspeitos.filter(Denuncia.dtcriacao.between(form.data['data_criacao_inicio'],form.data['data_criacao_fim']))
-            query_violacoes = query_violacoes.filter(Denuncia.dtcriacao.between(form.data['data_criacao_inicio'],form.data['data_criacao_fim']))
-            query_homicidios = query_homicidios.filter(Denuncia.dtcriacao.between(form.data['data_criacao_inicio'],form.data['data_criacao_fim']))
+            querys = _add_filter_to_queries(querys, Denuncia.dtcriacao.between(form.data['data_criacao_inicio'],form.data['data_criacao_fim']))
         elif form.data['data_criacao_inicio']:
-            query = query.filter(Denuncia.dtcriacao >= form.data['data_criacao_inicio'])
-            query_vitima = query_vitima.filter(Denuncia.dtcriacao >= form.data['data_criacao_inicio'])
-            query_suspeitos = query_suspeitos.filter(Denuncia.dtcriacao >= form.data['data_criacao_inicio'])
-            query_violacoes = query_violacoes.filter(Denuncia.dtcriacao >= form.data['data_criacao_inicio'])
-            query_homicidios = query_homicidios.filter(Denuncia.dtcriacao >= form.data['data_criacao_inicio'])
+            querys = _add_filter_to_queries(querys, Denuncia.dtcriacao >= form.data['data_criacao_inicio'])
         elif form.data['data_criacao_fim']:
-            query = query.filter(Denuncia.dtcriacao <= form.data['data_criacao_fim'])
-            query_vitima = query_vitima.filter(Denuncia.dtcriacao <= form.data['data_criacao_fim'])
-            query_suspeitos = query_suspeitos.filter(Denuncia.dtcriacao <= form.data['data_criacao_fim'])
-            query_violacoes = query_violacoes.filter(Denuncia.dtcriacao <= form.data['data_criacao_fim'])
-            query_homicidios = query_homicidios.filter(Denuncia.dtcriacao <= form.data['data_criacao_fim'])
+            querys = _add_filter_to_queries(querys, Denuncia.dtcriacao <= form.data['data_criacao_fim'])
 
         if form.data['data_denuncia_inicio'] and form.data['data_denuncia_fim']:
-            query = query.filter(Denuncia.dtcriacao.between(form.data['data_denuncia_inicio'],form.data['data_denuncia_fim']))
-            query_vitima = query_vitima.filter(Denuncia.dtcriacao.between(form.data['data_denuncia_inicio'],form.data['data_denuncia_fim']))
-            query_suspeitos = query_suspeitos.filter(Denuncia.dtcriacao.between(form.data['data_denuncia_inicio'],form.data['data_denuncia_fim']))
-            query_violacoes = query_violacoes.filter(Denuncia.dtcriacao.between(form.data['data_denuncia_inicio'],form.data['data_denuncia_fim']))
-            query_homicidios = query_homicidios.filter(Denuncia.dtcriacao.between(form.data['data_denuncia_inicio'],form.data['data_denuncia_fim']))
+            querys = _add_filter_to_queries(querys, Denuncia.dtcriacao.between(form.data['data_denuncia_inicio'],form.data['data_denuncia_fim']))
         elif form.data['data_denuncia_inicio']:
-            query = query.filter(Denuncia.dtcriacao >= form.data['data_denuncia_inicio'])
-            query_vitima = query_vitima.filter(Denuncia.dtcriacao >= form.data['data_denuncia_inicio'])
-            query_suspeitos = query_suspeitos.filter(Denuncia.dtcriacao >= form.data['data_denuncia_inicio'])
-            query_violacoes = query_violacoes.filter(Denuncia.dtcriacao >= form.data['data_denuncia_inicio'])
-            query_homicidios = query_homicidios.filter(Denuncia.dtcriacao >= form.data['data_denuncia_inicio'])
+            querys = _add_filter_to_queries(querys, Denuncia.dtcriacao >= form.data['data_denuncia_inicio'])
         elif form.data['data_denuncia_fim']:
-            query = query.filter(Denuncia.dtcriacao <= form.data['data_denuncia_fim'])
-            query_vitima = query_vitima.filter(Denuncia.dtcriacao <= form.data['data_denuncia_fim'])
-            query_suspeitos = query_suspeitos.filter(Denuncia.dtcriacao <= form.data['data_denuncia_fim'])
-            query_violacoes = query_violacoes.filter(Denuncia.dtcriacao <= form.data['data_denuncia_fim'])
-            query_homicidios = query_homicidios.filter(Denuncia.dtcriacao <= form.data['data_denuncia_fim'])
-        #FIM Denuncias
-        #Violacoes
+            querys = _add_filter_to_queries(querys, Denuncia.dtcriacao <= form.data['data_denuncia_fim'])
+        # FIM Denuncias
+        # Violacoes
         if len(form.data['violacoes_macrocategoria']) > 0:
-            query = query.filter(TipoViolacao.macrocategoria.in_(form.data['violacoes_macrocategoria']))
-            query_vitima = query_vitima.filter(TipoViolacao.macrocategoria.in_(form.data['violacoes_macrocategoria']))
-            query_suspeitos = query_suspeitos.filter(TipoViolacao.macrocategoria.in_(form.data['violacoes_macrocategoria']))
-            query_violacoes = query_violacoes.filter(TipoViolacao.macrocategoria.in_(form.data['violacoes_macrocategoria']))
-            query_homicidios = query_homicidios.filter(TipoViolacao.macrocategoria.in_(form.data['violacoes_macrocategoria']))
+            querys = _add_filter_to_queries(querys, TipoViolacao.macrocategoria.in_(form.data['violacoes_macrocategoria']))
 
         if len(form.data['violacoes_microcategoria']) > 0:
-            query = query.filter(TipoViolacao.microcategoria.in_(form.data['violacoes_microcategoria']))
-            query_vitima = query_vitima.filter(TipoViolacao.microcategoria.in_(form.data['violacoes_microcategoria']))
-            query_suspeitos = query_suspeitos.filter(TipoViolacao.microcategoria.in_(form.data['violacoes_microcategoria']))
-            query_violacoes = query_violacoes.filter(TipoViolacao.microcategoria.in_(form.data['violacoes_microcategoria']))
-            query_homicidios = query_homicidios.filter(TipoViolacao.microcategoria.in_(form.data['violacoes_microcategoria']))
+            querys = _add_filter_to_queries(querys, TipoViolacao.microcategoria.in_(form.data['violacoes_microcategoria']))
         #Fim Violacoes
 
         # Vitimas
         if len(form.data['tipo_de_vitimas']) > 0:
-            query = query.filter(Vitima.tipovitima_id.in_( form.data['tipo_de_vitimas']))
-            query_vitima = query_vitima.filter(Vitima.tipovitima_id.in_( form.data['tipo_de_vitimas']))
-            query_suspeitos = query_suspeitos.filter(Vitima.tipovitima_id.in_( form.data['tipo_de_vitimas']))
-            query_violacoes = query_violacoes.filter(Vitima.tipovitima_id.in_( form.data['tipo_de_vitimas']))
-            query_homicidios = query_homicidios.filter(Vitima.tipovitima_id.in_( form.data['tipo_de_vitimas']))
+            querys = _add_filter_to_queries(querys, Vitima.tipovitima_id.in_( form.data['tipo_de_vitimas']))
 
         if form.data['quantidade_de_vitimas_inicio'] and form.data['quantidade_de_vitimas_fim']:
-            query = query.filter(Vitima.qtdevitimas.between(form.data['quantidade_de_vitimas_inicio'],form.data['quantidade_de_vitimas_fim']))
-            query_vitima = query_vitima.filter(Vitima.qtdevitimas.between(form.data['quantidade_de_vitimas_inicio'],form.data['quantidade_de_vitimas_fim']))
-            query_suspeitos = query_suspeitos.filter(Vitima.qtdevitimas.between(form.data['quantidade_de_vitimas_inicio'],form.data['quantidade_de_vitimas_fim']))
-            query_violacoes = query_violacoes.filter(Vitima.qtdevitimas.between(form.data['quantidade_de_vitimas_inicio'],form.data['quantidade_de_vitimas_fim']))
-            query_homicidios = query_homicidios.filter(Vitima.qtdevitimas.between(form.data['quantidade_de_vitimas_inicio'],form.data['quantidade_de_vitimas_fim']))
+            querys = _add_filter_to_queries(querys, Vitima.qtdevitimas.between(form.data['quantidade_de_vitimas_inicio'],form.data['quantidade_de_vitimas_fim']))
         elif form.data['quantidade_de_vitimas_inicio']:
-            query = query.filter(Vitima.qtdevitimas >= form.data['quantidade_de_vitimas_inicio'])
-            query_vitima = query_vitima.filter(Vitima.qtdevitimas >= form.data['quantidade_de_vitimas_inicio'])
-            query_suspeitos = query_suspeitos.filter(Vitima.qtdevitimas >= form.data['quantidade_de_vitimas_inicio'])
-            query_violacoes = query_violacoes.filter(Vitima.qtdevitimas >= form.data['quantidade_de_vitimas_inicio'])
-            query_homicidios = query_homicidios.filter(Vitima.qtdevitimas >= form.data['quantidade_de_vitimas_inicio'])
+            querys = _add_filter_to_queries(querys, Vitima.qtdevitimas >= form.data['quantidade_de_vitimas_inicio'])
         elif form.data['quantidade_de_vitimas_fim']:
-            query = query.filter(Vitima.qtdevitimas <= form.data['quantidade_de_vitimas_fim'])      
-            query_vitima = query_vitima.filter(Vitima.qtdevitimas <= form.data['quantidade_de_vitimas_fim'])      
-            query_suspeitos = query_suspeitos.filter(Vitima.qtdevitimas <= form.data['quantidade_de_vitimas_fim'])      
-            query_violacoes = query_violacoes.filter(Vitima.qtdevitimas <= form.data['quantidade_de_vitimas_fim'])      
-            query_homicidios = query_homicidios.filter(Vitima.qtdevitimas <= form.data['quantidade_de_vitimas_fim'])      
+            querys = _add_filter_to_queries(querys, Vitima.qtdevitimas <= form.data['quantidade_de_vitimas_fim'])
 
         if form.data['vitima_idade_inicio'] and form.data['vitima_idade_fim']:
-            query = query.filter(Vitima.idade.between(form.data['vitima_idade_inicio'],form.data['vitima_idade_fim']))
-            query_vitima = query_vitima.filter(Vitima.idade.between(form.data['vitima_idade_inicio'],form.data['vitima_idade_fim']))
-            query_suspeitos = query_suspeitos.filter(Vitima.idade.between(form.data['vitima_idade_inicio'],form.data['vitima_idade_fim']))
-            query_violacoes = query_violacoes.filter(Vitima.idade.between(form.data['vitima_idade_inicio'],form.data['vitima_idade_fim']))
-            query_homicidios = query_homicidios.filter(Vitima.idade.between(form.data['vitima_idade_inicio'],form.data['vitima_idade_fim']))
+            querys = _add_filter_to_queries(querys, Vitima.idade.between(form.data['vitima_idade_inicio'],form.data['vitima_idade_fim']))
         elif form.data['vitima_idade_inicio']:
-            query = query.filter(Vitima.idade >= form.data['vitima_idade_inicio'])
-            query_vitima = query_vitima.filter(Vitima.idade >= form.data['vitima_idade_inicio'])
-            query_suspeitos = query_suspeitos.filter(Vitima.idade >= form.data['vitima_idade_inicio'])
-            query_violacoes = query_violacoes.filter(Vitima.idade >= form.data['vitima_idade_inicio'])
-            query_homicidios = query_homicidios.filter(Vitima.idade >= form.data['vitima_idade_inicio'])
+            querys = _add_filter_to_queries(querys, Vitima.idade >= form.data['vitima_idade_inicio'])
         elif form.data['vitima_idade_fim']:
-            query = query.filter(Vitima.idade <= form.data['vitima_idade_fim'])
-            query_vitima = query_vitima.filter(Vitima.idade <= form.data['vitima_idade_fim'])
-            query_suspeitos = query_suspeitos.filter(Vitima.idade <= form.data['vitima_idade_fim'])
-            query_violacoes = query_violacoes.filter(Vitima.idade <= form.data['vitima_idade_fim'])
-            query_homicidios = query_homicidios.filter(Vitima.idade <= form.data['vitima_idade_fim'])
+            querys = _add_filter_to_queries(querys, Vitima.idade <= form.data['vitima_idade_fim'])
 
         if len(form.data['sexo_vitima']) > 0:
-            query = query.filter(Vitima.sexo.in_(form.data['sexo_vitima']))
-            query_vitima = query_vitima.filter(Vitima.sexo.in_(form.data['sexo_vitima']))
-            query_suspeitos = query_suspeitos.filter(Vitima.sexo.in_(form.data['sexo_vitima']))
-            query_violacoes = query_violacoes.filter(Vitima.sexo.in_(form.data['sexo_vitima']))
-            query_homicidios = query_homicidios.filter(Vitima.sexo.in_(form.data['sexo_vitima']))
+            querys = _add_filter_to_queries(querys, Vitima.sexo.in_(form.data['sexo_vitima']))
 
         if len(form.data['cor_vitima']) > 0:
-            query = query.filter(Vitima.cor.in_(form.data['cor_vitima']))
-            query_vitima = query_vitima.filter(Vitima.cor.in_(form.data['cor_vitima']))
-            query_suspeitos = query_suspeitos.filter(Vitima.cor.in_(form.data['cor_vitima']))
-            query_violacoes = query_violacoes.filter(Vitima.cor.in_(form.data['cor_vitima']))
-            query_homicidios = query_homicidios.filter(Vitima.cor.in_(form.data['cor_vitima']))
-
+            querys = _add_filter_to_queries(querys, Vitima.cor.in_(form.data['cor_vitima']))
         # Fim Vitimas
 
         # Suspeitos
 
         if form.data['quantidade_de_suspeitos_inicio'] and form.data['quantidade_de_suspeitos_fim']:
-            query = query.filter(Suspeito.qtdesuspeitos.between(form.data['quantidade_de_suspeitos_inicio'],form.data['quantidade_de_suspeitos_fim']))
-            query_vitima = query_vitima.filter(Suspeito.qtdesuspeitos.between(form.data['quantidade_de_suspeitos_inicio'],form.data['quantidade_de_suspeitos_fim']))
-            query_suspeitos = query_suspeitos.filter(Suspeito.qtdesuspeitos.between(form.data['quantidade_de_suspeitos_inicio'],form.data['quantidade_de_suspeitos_fim']))
-            query_violacoes = query_violacoes.filter(Suspeito.qtdesuspeitos.between(form.data['quantidade_de_suspeitos_inicio'],form.data['quantidade_de_suspeitos_fim']))
-            query_homicidios = query_homicidios.filter(Suspeito.qtdesuspeitos.between(form.data['quantidade_de_suspeitos_inicio'],form.data['quantidade_de_suspeitos_fim']))
+            querys = _add_filter_to_queries(querys, Suspeito.qtdesuspeitos.between(form.data['quantidade_de_suspeitos_inicio'],form.data['quantidade_de_suspeitos_fim']))
         elif form.data['quantidade_de_suspeitos_inicio']:
-            query = query.filter(Suspeito.qtdesuspeitos >= form.data['quantidade_de_suspeitos_inicio'])
-            query_vitima = query_vitima.filter(Suspeito.qtdesuspeitos >= form.data['quantidade_de_suspeitos_inicio'])
-            query_suspeitos = query_suspeitos.filter(Suspeito.qtdesuspeitos >= form.data['quantidade_de_suspeitos_inicio'])
-            query_violacoes = query_violacoes.filter(Suspeito.qtdesuspeitos >= form.data['quantidade_de_suspeitos_inicio'])
-            query_homicidios = query_homicidios.filter(Suspeito.qtdesuspeitos >= form.data['quantidade_de_suspeitos_inicio'])
+            querys = _add_filter_to_queries(querys, Suspeito.qtdesuspeitos >= form.data['quantidade_de_suspeitos_inicio'])
         elif form.data['quantidade_de_suspeitos_fim']:
-            query = query.filter(Suspeito.qtdesuspeitos <= form.data['quantidade_de_suspeitos_fim'])
-            query_vitima = query_vitima.filter(Suspeito.qtdesuspeitos <= form.data['quantidade_de_suspeitos_fim'])
-            query_suspeitos = query_suspeitos.filter(Suspeito.qtdesuspeitos <= form.data['quantidade_de_suspeitos_fim'])
-            query_violacoes = query_violacoes.filter(Suspeito.qtdesuspeitos <= form.data['quantidade_de_suspeitos_fim'])
-            query_homicidios = query_homicidios.filter(Suspeito.qtdesuspeitos <= form.data['quantidade_de_suspeitos_fim'])
+            querys = _add_filter_to_queries(querys, Suspeito.qtdesuspeitos <= form.data['quantidade_de_suspeitos_fim'])
 
         if len(form.data['tipo_de_suspeitos_tipo']) > 0:
             if not filtro_suspeito_tipo_adicionado:
                 filtro_suspeito_tipo_adicionado = True
-                query = query.join(TipoSuspeito, Suspeito.tiposuspeito_id == TipoSuspeito.id).\
-                        filter(TipoSuspeito.tipo.in_(form.data['tipo_de_suspeitos_tipo']))
-                query_vitima = query_vitima.join(TipoSuspeito, Suspeito.tiposuspeito_id == TipoSuspeito.id).\
-                        filter(TipoSuspeito.tipo.in_(form.data['tipo_de_suspeitos_tipo']))
-                query_suspeitos = query_suspeitos.join(TipoSuspeito, Suspeito.tiposuspeito_id == TipoSuspeito.id).\
-                        filter(TipoSuspeito.tipo.in_(form.data['tipo_de_suspeitos_tipo']))
-                query_violacoes = query_violacoes.join(TipoSuspeito, Suspeito.tiposuspeito_id == TipoSuspeito.id).\
-                        filter(TipoSuspeito.tipo.in_(form.data['tipo_de_suspeitos_tipo']))                
-                query_homicidios = query_homicidios.join(TipoSuspeito, Suspeito.tiposuspeito_id == TipoSuspeito.id).\
-                        filter(TipoSuspeito.tipo.in_(form.data['tipo_de_suspeitos_tipo']))
+
+                def _do_join(query_):
+                    return query_.join(TipoSuspeito, Suspeito.tiposuspeito_id == TipoSuspeito.id)
+
+                querys = list(map(_do_join, querys))
+                querys = _add_filter_to_queries(querys, TipoSuspeito.tipo.in_(form.data['tipo_de_suspeitos_tipo']))
             else:
-                query = query.filter(TipoSuspeito.tipo.in_(form.data['tipo_de_suspeitos_tipo']))
-                query_vitima = query_vitima.filter(TipoSuspeito.tipo.in_(form.data['tipo_de_suspeitos_tipo']))
-                query_suspeitos = query_suspeitos.filter(TipoSuspeito.tipo.in_(form.data['tipo_de_suspeitos_tipo']))
-                query_violacoes = query_violacoes.filter(TipoSuspeito.tipo.in_(form.data['tipo_de_suspeitos_tipo']))
-                query_homicidios = query_homicidios.filter(TipoSuspeito.tipo.in_(form.data['tipo_de_suspeitos_tipo']))
+                querys = _add_filter_to_queries(querys, TipoSuspeito.tipo.in_(form.data['tipo_de_suspeitos_tipo']))
 
         if len(form.data['tipo_de_suspeitos_instituicao']) > 0:
             if not filtro_suspeito_tipo_adicionado:
                 filtro_suspeito_tipo_adicionado = True
-                query = query.join(TipoSuspeito, Suspeito.tiposuspeito_id == TipoSuspeito.id).\
-                        filter(TipoSuspeito.instituicao.in_(form.data['tipo_de_suspeitos_instituicao']))
-                query_vitima = query_vitima.join(TipoSuspeito, Suspeito.tiposuspeito_id == TipoSuspeito.id).\
-                        filter(TipoSuspeito.instituicao.in_(form.data['tipo_de_suspeitos_instituicao']))                
-                query_suspeitos = query_suspeitos.join(TipoSuspeito, Suspeito.tiposuspeito_id == TipoSuspeito.id).\
-                        filter(TipoSuspeito.instituicao.in_(form.data['tipo_de_suspeitos_instituicao']))
-                query_violacoes = query_violacoes.join(TipoSuspeito, Suspeito.tiposuspeito_id == TipoSuspeito.id).\
-                        filter(TipoSuspeito.instituicao.in_(form.data['tipo_de_suspeitos_instituicao']))
-                query_homicidios = query_homicidios.join(TipoSuspeito, Suspeito.tiposuspeito_id == TipoSuspeito.id).\
-                        filter(TipoSuspeito.instituicao.in_(form.data['tipo_de_suspeitos_instituicao']))
+
+                def _do_join(query_):
+                    return query_.join(TipoSuspeito, Suspeito.tiposuspeito_id == TipoSuspeito.id)
+
+                querys = list(map(_do_join, querys))
+                querys = _add_filter_to_queries(querys, TipoSuspeito.instituicao.in_(form.data['tipo_de_suspeitos_instituicao']))
             else:
-                query = query.filter(TipoSuspeito.instituicao.in_(form.data['tipo_de_suspeitos_instituicao']))
-                query_vitima = query_vitima.filter(TipoSuspeito.instituicao.in_(form.data['tipo_de_suspeitos_instituicao']))
-                query_suspeitos = query_suspeitos.filter(TipoSuspeito.instituicao.in_(form.data['tipo_de_suspeitos_instituicao']))
-                query_violacoes = query_violacoes.filter(TipoSuspeito.instituicao.in_(form.data['tipo_de_suspeitos_instituicao']))
-                query_homicidios = query_homicidios.filter(TipoSuspeito.instituicao.in_(form.data['tipo_de_suspeitos_instituicao']))
+                querys = _add_filter_to_queries(querys, TipoSuspeito.instituicao.in_(form.data['tipo_de_suspeitos_instituicao']))
 
         if len(form.data['sexo_suspeito']) > 0:
-            query = query.filter(Suspeito.sexo.in_(form.data['sexo_suspeito']))
-            query_vitima = query_vitima.filter(Suspeito.sexo.in_(form.data['sexo_suspeito']))
-            query_suspeitos = query_suspeitos.filter(Suspeito.sexo.in_(form.data['sexo_suspeito']))
-            query_violacoes = query_violacoes.filter(Suspeito.sexo.in_(form.data['sexo_suspeito']))
-            query_homicidios = query_homicidios.filter(Suspeito.sexo.in_(form.data['sexo_suspeito']))
+            querys = _add_filter_to_queries(querys, Suspeito.sexo.in_(form.data['sexo_suspeito']))
 
         if len(form.data['cor_suspeito']) > 0:
-            query = query.filter(Suspeito.cor.in_(form.data['cor_suspeito']))
-            query_vitima = query_vitima.filter(Suspeito.cor.in_(form.data['cor_suspeito']))
-            query_suspeitos = query_suspeitos.filter(Suspeito.cor.in_(form.data['cor_suspeito']))
-            query_violacoes = query_violacoes.filter(Suspeito.cor.in_(form.data['cor_suspeito']))
-            query_homicidios = query_homicidios.filter(Suspeito.cor.in_(form.data['cor_suspeito']))
+            querys = _add_filter_to_queries(querys, Suspeito.cor.in_(form.data['cor_suspeito']))
 
         if form.data['suspeito_idade_inicio'] and form.data['suspeito_idade_fim']:
-            query = query.filter(Suspeito.idade.between(form.data['suspeito_idade_inicio'],form.data['suspeito_idade_fim']))
-            query_vitima = query_vitima.filter(Suspeito.idade.between(form.data['suspeito_idade_inicio'],form.data['suspeito_idade_fim']))
-            query_suspeitos = query_suspeitos.filter(Suspeito.idade.between(form.data['suspeito_idade_inicio'],form.data['suspeito_idade_fim']))
-            query_violacoes = query_violacoes.filter(Suspeito.idade.between(form.data['suspeito_idade_inicio'],form.data['suspeito_idade_fim']))
-            query_homicidios = query_homicidios.filter(Suspeito.idade.between(form.data['suspeito_idade_inicio'],form.data['suspeito_idade_fim']))
-
+            querys = _add_filter_to_queries(querys, Suspeito.idade.between(form.data['suspeito_idade_inicio'],form.data['suspeito_idade_fim']))
         elif form.data['suspeito_idade_inicio']:
-            query = query.filter(Suspeito.idade >= form.data['suspeito_idade_inicio'])
-            query_vitima = query_vitima.filter(Suspeito.idade >= form.data['suspeito_idade_inicio'])
-            query_suspeitos = query_suspeitos.filter(Suspeito.idade >= form.data['suspeito_idade_inicio'])
-            query_violacoes = query_violacoes.filter(Suspeito.idade >= form.data['suspeito_idade_inicio'])
-            query_homicidios = query_homicidios.filter(Suspeito.idade >= form.data['suspeito_idade_inicio'])
-
+            querys = _add_filter_to_queries(querys, Suspeito.idade >= form.data['suspeito_idade_inicio'])
         elif form.data['suspeito_idade_fim']:
-            query = query.filter(Suspeito.idade <= form.data['suspeito_idade_fim'])
-            query_vitima = query_vitima.filter(Suspeito.idade <= form.data['suspeito_idade_fim'])
-            query_suspeitos = query_suspeitos.filter(Suspeito.idade <= form.data['suspeito_idade_fim'])
-            query_violacoes = query_violacoes.filter(Suspeito.idade <= form.data['suspeito_idade_fim'])
-            query_homicidios = query_homicidios.filter(Suspeito.idade <= form.data['suspeito_idade_fim'])
+            querys = _add_filter_to_queries(querys, Suspeito.idade <= form.data['suspeito_idade_fim'])
+
 
         #FIM Suspeitos
 
         encaminhamento = form.data['recuperar_encaminhamentos']
+        query, query_vitima, query_suspeitos, query_violacoes, query_homicidios = querys
+
         return _criar_planilha(encaminhamento, query, query_vitima, query_suspeitos, query_violacoes, query_homicidios)
 
     return render_template('index.html', form=form)
