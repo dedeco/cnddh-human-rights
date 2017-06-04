@@ -17,7 +17,11 @@ $(function(){
       estados += $(selected).text() + "-";
     });
     var url = "{{url_for('exportar-dados.obter_cidade', estado='-1')}}";
-    url = url.replace("-1", estados).replace(" ","_");
+    
+    var patt_ = new RegExp('/', 'g');
+    var patt = new RegExp(' ', 'g');
+    estados = estados.replace(patt,"_").replace(patt_,"@");
+    url = url.replace("-1", estados);
     $.get( url, function( data ) {
       $( "#cidades" ).html( data );
     });
@@ -30,7 +34,11 @@ $(function(){
       violacoes += $(selected).text() + "-";
     });
     var url = "{{url_for('exportar-dados.obter_violacoes', violacoes='-1')}}";
-    url = url.replace("-1", violacoes).replace(" ","_");
+    var patt_ = new RegExp('/', 'g');
+    var patt = new RegExp(' ', 'g');
+    violacoes = violacoes.replace(patt,"_").replace(patt_,"@");
+    url = url.replace("-1", violacoes);
+
     $.get( url, function( data ) {
       $( "#violacoes_microcategoria" ).html( data );
     });
@@ -43,7 +51,10 @@ $(function(){
       suspeitos += $(selected).text() + "-";
     });
     var url = "{{url_for('exportar-dados.obter_tipo_suspeitos', suspeitos='-1')}}";
-    url = url.replace("-1", suspeitos).replace(" ","_");
+    var patt_ = new RegExp('/', 'g');
+    var patt = new RegExp(' ', 'g');
+    suspeitos = suspeitos.replace(patt,"_").replace(patt_,"@");
+    url = url.replace("-1", suspeitos);
     $.get( url, function( data ) {
       $( "#tipo_de_suspeitos_instituicao" ).html( data );
     });
