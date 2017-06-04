@@ -65,6 +65,7 @@ $(function(){
       .find('option')
       .remove()
       .end();
+    $(".btn-info").click(function(ev){ $('.ui.modal').modal("show"); });
 });
 
 </script>
@@ -72,7 +73,7 @@ $(function(){
 {% block header %}{% endblock %}
 
 {% block conteudo %}
-<h2>Exportar dados</h2>
+<h2>Exportar dados   <button class="ui button btn-info"><i class="info icon"></i></button></h2>
 <form class="ui form" method="POST">
     <h4 class="ui dividing header">Denúncia</h4>
     <div class="ui grid">
@@ -118,4 +119,17 @@ $(function(){
 </form>
 
 
+
+<div class="ui modal">
+  <i class="close icon"></i>
+  <div class="header">
+    Informações sobre a planilha.
+  </div>
+  <div class="content">
+    <div class="description">
+      <p>Essa ferramenta recupera os dados do banco de dados e cria uma planilha separando os dados por abas.</p>
+      <p>Uma denúncia tem uma entrada na aba denúncia. Na aba vítimas ou qualquer uma aba pode ter uma ou mais entradas para a denúncia. Ex: Denúncia X possui dois suspeitos e três vítimas o que equivale uma entrada na denúncia, duas na suspeito e três na vítima.</p>
+    </div>
+  </div>
+</div>
 {% endblock %}
