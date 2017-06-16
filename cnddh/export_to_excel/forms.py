@@ -7,9 +7,10 @@ from wtforms.fields.html5 import DateField
 from wtforms.fields import IntegerField, BooleanField
 from cnddh.database import db
 from cnddh.models import Cidade, Status, TipoLocal, TipoViolacao
-from cnddh.models import TipoVitima, TipoSuspeito, TipoFonte
+from cnddh.models import TipoVitima, TipoSuspeito, TipoFonte, TipoMeioUtilizado
 
-from cnddh.mapeamentos import estados_choices, sexo_choices, cor_choices, periodo_choices
+from cnddh.mapeamentos import (estados_choices, sexo_choices, cor_choices,
+                               periodo_choices)
 
 
 class ExportToExcelFiltroForm(Form):
@@ -77,6 +78,11 @@ class ExportToExcelFiltroForm(Form):
         self.tipo_de_fontes.choices = map(
             lambda item: (str(item.id), item.tipofonte), tipo_de_fontes)
 
+        tipo_de_meio = db.session.query(TipoMeioUtilizado).order_by(
+            TipoMeioUtilizado.meio)
+        self.meio_utilizado.choices = map(
+            lambda item: (str(item.id), item.meio), tipo_de_meio)
+
     cidades = SelectMultipleField(u"Cidades", [], choices=[])
     estados = SelectMultipleField(u"Estados", [], choices=estados_choices)
     status_denuncia = SelectMultipleField(u"Status Denúncia", [], choices=[])
@@ -125,7 +131,9 @@ class ExportToExcelFiltroForm(Form):
     suspeito_idade_inicio = IntegerField(u"Idade", [validators.optional()])
     suspeito_idade_fim = IntegerField(u"Idade", [validators.optional()])
 
-    homicidio_periodo = SelectMultipleField(u"Homicídio período", [], choices=periodo_choices)
+    homicidio_periodo = SelectMultipleField(
+        u"Homicídio período", [], choices=periodo_choices)
+    meio_utilizado = SelectMultipleField(u"Meio utilizado", [], choices=[])
 
     recuperar_encaminhamentos = BooleanField(u"Recuperar Encaminhamentos", [])
     data_formato = SelectField(

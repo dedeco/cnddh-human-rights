@@ -598,27 +598,27 @@ def criar_planilha():
         filtro_suspeito_tipo_adicionado = False
 
         query = db.session.\
-                query(Denuncia).\
-                order_by(Denuncia.id)
+            query(Denuncia).\
+            order_by(Denuncia.id)
 
         query_vitima = db.session.\
-                        query(Vitima).\
-                        join(Denuncia)
+            query(Vitima).\
+            join(Denuncia)
 
         query_suspeitos = db.session.\
-                        query(Suspeito).\
-                        join(Denuncia)
+            query(Suspeito).\
+            join(Denuncia)
 
         query_violacoes = db.session.\
-                        query(Violacao, Homicidio).\
-                        join(Denuncia)
+            query(Violacao, Homicidio).\
+            join(Denuncia)
 
         query_homicidios = db.session.\
-                         query(Homicidio, TipoMeioUtilizado).\
-                         join(Violacao, Homicidio.id == Violacao.id).\
-                         join(Denuncia, Denuncia.id == Violacao.denuncia_id).\
-                         outerjoin(HomicidioMeioUtilizado, Homicidio.id == HomicidioMeioUtilizado.homicidio_id).\
-                         outerjoin(TipoMeioUtilizado, HomicidioMeioUtilizado.tipomeioutilizado_id == TipoMeioUtilizado.id )
+            query(Homicidio, TipoMeioUtilizado).\
+            join(Violacao, Homicidio.id == Violacao.id).\
+            join(Denuncia, Denuncia.id == Violacao.denuncia_id).\
+            outerjoin(HomicidioMeioUtilizado, Homicidio.id == HomicidioMeioUtilizado.homicidio_id).\
+            outerjoin(TipoMeioUtilizado, HomicidioMeioUtilizado.tipomeioutilizado_id == TipoMeioUtilizado.id )
 
         # _add_filter_to_queries(querys, )
         if form.data['suspeito_idade_inicio'] or\
@@ -629,6 +629,7 @@ def criar_planilha():
             form.data['quantidade_de_suspeitos_inicio'] or\
             form.data['quantidade_de_suspeitos_fim'] or\
             len(form.data['tipo_de_suspeitos_instituicao']) > 0:
+
             query = query.join(Suspeito, Suspeito.denuncia_id == Denuncia.id)
             query_vitima = query_vitima.join(
                 Suspeito, Suspeito.denuncia_id == Denuncia.id)
@@ -637,14 +638,14 @@ def criar_planilha():
             query_homicidios = query_homicidios.join(
                 Suspeito, Suspeito.denuncia_id == Denuncia.id)
 
-
         if len(form.data['tipo_de_vitimas']) > 0 or\
-             form.data['quantidade_de_vitimas_inicio'] or\
-             form.data['quantidade_de_vitimas_fim'] or\
-             form.data['vitima_idade_inicio'] or\
-             form.data['vitima_idade_fim'] or\
-             len(form.data['sexo_vitima']) > 0 or\
-             form.data['cor_vitima']:
+            form.data['quantidade_de_vitimas_inicio'] or\
+            form.data['quantidade_de_vitimas_fim'] or\
+            form.data['vitima_idade_inicio'] or\
+            form.data['vitima_idade_fim'] or\
+            len(form.data['sexo_vitima']) > 0 or\
+            form.data['cor_vitima']:
+
             query = query.join(Vitima, Vitima.denuncia_id == Denuncia.id)
             query_suspeitos = query_suspeitos.join(
                 Vitima, Vitima.denuncia_id == Denuncia.id)
@@ -656,22 +657,33 @@ def criar_planilha():
         if len(form.data['violacoes_macrocategoria']) > 0 or\
            len(form.data['violacoes_microcategoria']) > 0:
             query = query.\
-                        join(Violacao, Denuncia.id == Violacao.denuncia_id).\
-                        join(TipoViolacao, Violacao.tipoviolacoes_id == TipoViolacao.id)
+                join(Violacao, Denuncia.id == Violacao.denuncia_id).\
+                join(TipoViolacao, Violacao.tipoviolacoes_id == TipoViolacao.id)
             query_vitima = query_vitima.\
-                        join(Violacao, Denuncia.id == Violacao.denuncia_id).\
-                        join(TipoViolacao, Violacao.tipoviolacoes_id == TipoViolacao.id)
+                join(Violacao, Denuncia.id == Violacao.denuncia_id).\
+                join(TipoViolacao, Violacao.tipoviolacoes_id == TipoViolacao.id)
             query_suspeitos = query_suspeitos.\
-                        join(Violacao, Denuncia.id == Violacao.denuncia_id).\
-                        join(TipoViolacao, Violacao.tipoviolacoes_id == TipoViolacao.id)
+                join(Violacao, Denuncia.id == Violacao.denuncia_id).\
+                join(TipoViolacao, Violacao.tipoviolacoes_id == TipoViolacao.id)
 
-        if len(form.data['homicidio_periodo']) > 0:
+        if len(form.data['homicidio_periodo']) > 0 or len(form.data['meio_utilizado']) > 0:
             query = query.\
-                        join(Violacao, Denuncia.id == Violacao.denuncia_id)
+                join(Violacao, Denuncia.id == Violacao.denuncia_id)
             query_vitima = query_vitima.\
-                        join(Violacao, Denuncia.id == Violacao.denuncia_id)
+                join(Violacao, Denuncia.id == Violacao.denuncia_id)
             query_suspeitos = query_suspeitos.\
-                        join(Violacao, Denuncia.id == Violacao.denuncia_id)
+                join(Violacao, Denuncia.id == Violacao.denuncia_id)
+        if len(form.data['meio_utilizado']) > 0:
+            query = query.\
+                outerjoin(HomicidioMeioUtilizado, Homicidio.id == HomicidioMeioUtilizado.homicidio_id)
+
+            query_vitima = query_vitima.\
+                outerjoin(HomicidioMeioUtilizado, Homicidio.id == HomicidioMeioUtilizado.homicidio_id)
+            query_suspeitos = query_suspeitos.\
+                outerjoin(HomicidioMeioUtilizado, Homicidio.id == HomicidioMeioUtilizado.homicidio_id)
+
+            query_violacoes = query_violacoes.\
+                outerjoin(HomicidioMeioUtilizado, Homicidio.id == HomicidioMeioUtilizado.homicidio_id)
 
         querys = [
             query, query_vitima, query_suspeitos, query_violacoes,
@@ -859,6 +871,10 @@ def criar_planilha():
         if len(form.data['homicidio_periodo']) > 0:
             querys = _add_filter_to_queries(
                 querys, Homicidio.prfato.in_(form.data['homicidio_periodo']))
+
+        if len(form.data['meio_utilizado']) > 0:
+            querys = _add_filter_to_queries(
+                querys, HomicidioMeioUtilizado.tipomeioutilizado_id.in_(form.data['meio_utilizado']))            
 
         # encaminhamento = form.data['recuperar_encaminhamentos']
         encaminhamento = False
