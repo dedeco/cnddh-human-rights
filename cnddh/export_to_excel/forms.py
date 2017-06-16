@@ -9,7 +9,7 @@ from cnddh.database import db
 from cnddh.models import Cidade, Status, TipoLocal, TipoViolacao
 from cnddh.models import TipoVitima, TipoSuspeito, TipoFonte
 
-from cnddh.mapeamentos import estados_choices, sexo_choices, cor_choices
+from cnddh.mapeamentos import estados_choices, sexo_choices, cor_choices, periodo_choices
 
 
 class ExportToExcelFiltroForm(Form):
@@ -124,6 +124,8 @@ class ExportToExcelFiltroForm(Form):
 
     suspeito_idade_inicio = IntegerField(u"Idade", [validators.optional()])
     suspeito_idade_fim = IntegerField(u"Idade", [validators.optional()])
+
+    homicidio_periodo = SelectMultipleField(u"Homicídio período", [], choices=periodo_choices)
 
     recuperar_encaminhamentos = BooleanField(u"Recuperar Encaminhamentos", [])
     data_formato = SelectField(
