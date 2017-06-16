@@ -1,6 +1,0 @@
-XlsxWriter supports Excels worksheet limits of 1,048,576 rows by 16,384 columns.
-
-
-worksheet.set_paper()
-
-worksheet.set_footer()

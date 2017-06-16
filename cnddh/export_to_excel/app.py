@@ -677,6 +677,9 @@ def criar_planilha():
             querys = _add_filter_to_queries(querys, Denuncia.dtcriacao >= form.data['data_denuncia_inicio'])
         elif form.data['data_denuncia_fim']:
             querys = _add_filter_to_queries(querys, Denuncia.dtcriacao <= form.data['data_denuncia_fim'])
+
+        if len(form.data['tipo_de_fontes']) > 0:
+            querys = _add_filter_to_queries(querys, Denuncia.tipofonte_id.in_(form.data['tipo_de_fontes']))
         # FIM Denuncias
         # Violacoes
         if len(form.data['violacoes_macrocategoria']) > 0:
