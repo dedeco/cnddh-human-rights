@@ -1,0 +1,5 @@
+<select id="violacoes_microcategoria" multiple="" name="violacoes_microcategoria">
+	{%for violacao in violacoes%}
+		<option value="{{violacao.microcategoria}}">{{violacao.microcategoria}}</option>
+	{%endfor%}
+</select>

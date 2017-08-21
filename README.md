@@ -1,12 +1,12 @@
 # Cnddh-human-rights Brasil site
-This application was created for Human Rights Center in Brazil for reporting violations against people that live in streets. is running in production on [http://www.cnddh.org.br](http://www.cnddh.org.br). 
+This application was created for Human Rights Center in Brazil for reporting violations against people that live in streets. is running in production on [http://www.cnddh.org.br](http://www.cnddh.org.br).
 
 1. How do I get set up? Set up Install python 2.7 and Create a virtualenv:
 [See here how to](http://python-guide-pt-br.readthedocs.io/en/latest/dev/virtualenvs/)
 
 2. Install all requeriments to use:
 	```
-	user@server:~$ pip install -r requirements.txt 
+	user@server:~$ pip install -r requirements.txt
 	```
 
 3.  Install mysql and some related libs:
@@ -31,7 +31,7 @@ This application was created for Human Rights Center in Brazil for reporting vio
 	mysql > create user cnddh_u;
 	```
 	Step 5: Grant privileges while assigning the password
-	```	
+	```
 	mysql > grant all privileges on cnddh_db.* to cnddh_u@localhost identified by "password";
 	mysql > flush privileges;
 	```
@@ -46,9 +46,17 @@ This application was created for Human Rights Center in Brazil for reporting vio
 	```
 6. You access in any browser on [http://127.0.0.1:5000](http://127.0.0.1:5000). Log in using user/password adm/xpto123456 and test
 
-7. Deployment instructions: If you are using mercurial: type hg archive [local], zip and copy to server. 
+7. Deployment instructions: If you are using mercurial: type hg archive [local], zip and copy to server.
 
-8. Contribution guidelines: Create responsive layout for mobile and tablets, Update semantic Ui and reports. Update Semantic UI. Help us!! 
+8. Contribution guidelines: Create responsive layout for mobile and tablets, Update semantic Ui and reports. Update Semantic UI. Help us!!
 
 9. Who do I talk to? Repo owner or admin dedeco@gmail.com ou andre@sousaaraujoti.com.br
+
+## Instalation
+
+### Linux
+For install mysql need some libs:
+
+sudo apt-get install mysql-server
+sudo apt-get install libmysqlclient-dev
 

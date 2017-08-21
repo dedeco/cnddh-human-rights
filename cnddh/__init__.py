@@ -5,7 +5,10 @@ import logging
 
 from werkzeug.contrib.sessions import FilesystemSessionStore
 
+from export_to_excel.app import export_app
 app = Flask(__name__)
+app.register_blueprint(export_app)
+
 app.secret_key = '\x16\xc8?\xe2j\xce\x13\x89@<\xb52\x17XC\xc8\xa7\xa8\xba\xe1a\xcar:'
 
 from config import PROD, DEBUG

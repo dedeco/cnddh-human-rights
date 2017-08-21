@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% import "_formhelpers.html" as formhelps %}
+
+{% block titulo %}Exportar dados{% endblock %}
+
+{% block paginatitulo %}Exportar dados{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+  
+$(function(){
+
+  
+  $("#estados").change(function(){
+    var estados = "";
+    $('#estados :selected').each(function(i, selected){ 
+      estados += $(selected).text() + "-";
+    });
+    var url = "{{url_for('exportar-dados.obter_cidade', estado='-1')}}";
+    
+    var patt_ = new RegExp('/', 'g');
+    var patt = new RegExp(' ', 'g');
+    estados = estados.replace(patt,"_").replace(patt_,"@");
+    url = url.replace("-1", estados);
+    $.get( url, function( data ) {
+      $( "#cidades" ).html( data );
+    });
+
+  });
+
+  $("#violacoes_macrocategoria").change(function(){
+    var violacoes = "";
+    $('#violacoes_macrocategoria :selected').each(function(i, selected){ 
+      violacoes += $(selected).text() + "-";
+    });
+    var url = "{{url_for('exportar-dados.obter_violacoes', violacoes='-1')}}";
+    var patt_ = new RegExp('/', 'g');
+    var patt = new RegExp(' ', 'g');
+    violacoes = violacoes.replace(patt,"_").replace(patt_,"@");
+    url = url.replace("-1", violacoes);
+
+    $.get( url, function( data ) {
+      $( "#violacoes_microcategoria" ).html( data );
+    });
+
+  });
+
+    $("#tipo_de_suspeitos_tipo").change(function(){
+    var suspeitos = "";
+    $('#tipo_de_suspeitos_tipo :selected').each(function(i, selected){ 
+      suspeitos += $(selected).text() + "-";
+    });
+    var url = "{{url_for('exportar-dados.obter_tipo_suspeitos', suspeitos='-1')}}";
+    var patt_ = new RegExp('/', 'g');
+    var patt = new RegExp(' ', 'g');
+    suspeitos = suspeitos.replace(patt,"_").replace(patt_,"@");
+    url = url.replace("-1", suspeitos);
+    $.get( url, function( data ) {
+      $( "#tipo_de_suspeitos_instituicao" ).html( data );
+    });
+
+  });
+
+    $( "#cidades, #violacoes_microcategoria, #tipo_de_suspeitos_instituicao" )
+      .find('option')
+      .remove()
+      .end();
+    $(".btn-info").click(function(ev){ $('.ui.modal').modal("show"); });
+});
+
+</script>
+{% endblock %}
+{% block header %}{% endblock %}
+
+{% block conteudo %}
+<h2>Exportar dados   <button class="ui button btn-info"><i class="info icon"></i></button></h2>
+<form class="ui form" method="POST">
+    <h4 class="ui dividing header">Denúncia</h4>
+    <div class="ui grid">
+        {{formhelps.render_field('Estados', form.estados)}}
+        {{formhelps.render_field('Cidades', form.cidades)}}
+        {{formhelps.render_two_field('Data de criação', form.data_criacao_inicio, form.data_criacao_fim)}}   
+        {{formhelps.render_two_field('Data de denúncia', form.data_denuncia_inicio, form.data_denuncia_fim)}}   
+        {{formhelps.render_field('Status da denúncia', form.status_denuncia)}}
+        {{formhelps.render_field('Tipo de locais', form.tipo_de_locais)}}
+        {{formhelps.render_field('Tipo de fontes', form.tipo_de_fontes)}}
+    </div>
+    <h4 class="ui dividing header">Violações</h4>
+    <div class="ui grid">
+         {{formhelps.render_field('Macro categoria', form.violacoes_macrocategoria)}}
+         {{formhelps.render_field('Micro categoria', form.violacoes_microcategoria)}}
+    </div>
+    <h4 class="ui dividing header">Vítimas</h4>
+    <div class="ui grid">
+          {{formhelps.render_field('Tipo de vítimas', form.tipo_de_vitimas)}}
+          {{formhelps.render_two_field('Quantidade de vítimas', form.quantidade_de_vitimas_inicio, form.quantidade_de_vitimas_fim)}}   
+          {{formhelps.render_field('Sexo', form.sexo_vitima)}}
+          {{formhelps.render_field('Cor', form.cor_vitima)}}
+          {{formhelps.render_two_field('Idade', form.vitima_idade_inicio, form.vitima_idade_fim)}}   
+    </div>
+    <h4 class="ui dividing header">Suspeitos</h4>
+    <div class="ui grid">
+        {{formhelps.render_field('Tipo de suspeitos (Tipo)', form.tipo_de_suspeitos_tipo)}}
+        {{formhelps.render_field('Tipo de suspeitos (Instituição)', form.tipo_de_suspeitos_instituicao)}}
+        {{formhelps.render_two_field('Quantidade de suspeitos', form.quantidade_de_suspeitos_inicio, form.quantidade_de_suspeitos_fim)}}   
+
+        {{formhelps.render_field('Sexo', form.sexo_suspeito)}}
+        {{formhelps.render_field('Cor', form.cor_suspeito)}}
+        {{formhelps.render_two_field('Idade', form.suspeito_idade_inicio, form.suspeito_idade_fim)}}   
+    </div>
+    <h4 class="ui dividing header">Homicídos</h4>
+    <div class="ui grid">
+        {{formhelps.render_field('Periodo', form.homicidio_periodo)}} 
+        {{formhelps.render_field('Meio utilizado', form.meio_utilizado)}} 
+    </div>
+
+
+<!--     <h4 class="ui dividing header">Outros</h4>
+    <div class="ui grid">
+       {{formhelps.render_field('Recuperar encaminhamentos', form.recuperar_encaminhamentos)}}
+    </div> -->
+    <h4 class="ui dividing header">Opções</h4>
+    <div class="ui grid">
+       {{formhelps.render_field('Formato da data', form.data_formato)}}
+    </div>
+    <button style="margin-top:10px;" class="ui button" type="submit">Gerar relatório</button>
+</form>
+
+
+
+<div class="ui modal">
+  <i class="close icon"></i>
+  <div class="header">
+    Informações sobre a planilha.
+  </div>
+  <div class="content">
+    <div class="description">
+      <p>Essa ferramenta recupera os dados do banco de dados e cria uma planilha separando os dados por abas.</p>
+      <p>Uma denúncia tem uma entrada na aba denúncia. Na aba vítimas ou qualquer uma aba pode ter uma ou mais entradas para a denúncia. Ex: Denúncia X possui dois suspeitos e três vítimas o que equivale uma entrada na denúncia, duas na suspeito e três na vítima.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -28,8 +28,8 @@
 			<div class="column"> 
 			<div class="right menu">			
 				{% if g.user.is_authenticated %}	
-				<form action="{{url_for('.logout')}}" method="post" name="loginform">	
-				  <a class="item" href="{{url_for('.usuario_edit',usuario_id=g.user.id)}}">
+				<form action="{{url_for('logout')}}" method="post" name="loginform">	
+				  <a class="item" href="{{url_for('usuario_edit',usuario_id=g.user.id)}}">
 					<i class="user icon"></i> {{g.user.nome}} [{{g.user.login}}]
 				  </a>			
 				 <div class="item">
@@ -37,7 +37,7 @@
 				 </div>			
 				</form>
 				{% else %}			
-				<form action="{{url_for('.login')}}" method="post" name="loginform">
+				<form action="{{url_for('login')}}" method="post" name="loginform">
 				<div class="item">
 					<div class="ui icon input">
 						<input id="login" name="login" type="text" value="" placeholder="Usuário"> 
@@ -66,7 +66,7 @@
 				
 				{% if g.user.is_authenticated %}	
 					<div class="ui inverted blue menu">
-					<div class="header item"><a href="{{url_for('.index')}}">CNDDH</a></div>
+					<div class="header item"><a href="{{url_for('index')}}">CNDDH</a></div>
 						<div class="right menu">
 						  <div class="ui mobile dropdown link item">
 							Denúncia
@@ -88,7 +88,7 @@
 							Relatórios
 							<i class="dropdown icon"></i>
 								<div class="menu">
-									<a href="#" class="item">Exportar</a>								  
+									<a href="{{url_for('exportar-dados.criar_planilha')}}" class="item">Exportar</a>								  
 								</div>				
 						  </div>	
 						  <div class="ui dropdown link item">
@@ -123,7 +123,7 @@
 					</div> 				
 				{% else %}	
 					<div class="ui inverted blue menu">
-					<div class="header item"><a href="{{url_for('.index')}}">Centro Nacional de Defesa dos Direitos Humanos da População em Situação de Rua e dos Catadores de Materiais Recicláveis</a></div>
+					<div class="header item"><a href="{{url_for('index')}}">Centro Nacional de Defesa dos Direitos Humanos da População em Situação de Rua e dos Catadores de Materiais Recicláveis</a></div>
 					</div> 				
 				{% endif %}
 

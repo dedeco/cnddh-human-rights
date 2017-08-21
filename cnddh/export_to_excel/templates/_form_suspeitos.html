@@ -1,0 +1,5 @@
+<select id="tipo_de_suspeitos_instituicao" multiple="" name="tipo_de_suspeitos_instituicao">
+	{%for suspeito in suspeitos%}
+		<option value="{{suspeito.instituicao}}">{{suspeito.instituicao}}</option>
+	{%endfor%}
+</select>

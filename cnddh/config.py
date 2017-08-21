@@ -1,5 +1,5 @@
- 
-AMBIENTE = u'windows'
+
+AMBIENTE = u'linux'
 PROD = False
 DEBUG = True
 LOG = False

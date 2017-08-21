@@ -1,0 +1,1 @@
+insert into cnddh_db.permissoes (nome, descricao )values ('exporta-dados', 'Pode exportar planilhas com dados' )
