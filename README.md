@@ -39,11 +39,11 @@ This application was created for Human Rights Center in Brazil for reporting vio
 4. hange the string DATABASE_URI on config.py editing for mysql://[user]:[password]localhost/[name fo database] After that just type:
     ```
 	user@server:~$ python create_tables.py
-	```
+    ```
 5. Just fun!
     ```
 	user@server:~$ python runserver.py
-	```
+    ```
 6. You access in any browser on [http://127.0.0.1:5000](http://127.0.0.1:5000). Log in using user/password adm/xpto123456 and test
 
 7. Deployment instructions: If you are using mercurial: type hg archive [local], zip and copy to server.
@@ -57,6 +57,8 @@ This application was created for Human Rights Center in Brazil for reporting vio
 ### Linux
 For install mysql need some libs:
 
-sudo apt-get install mysql-server
-sudo apt-get install libmysqlclient-dev
+ ```
+ sudo apt-get install mysql-server
+ sudo apt-get install libmysqlclient-dev
+ ```
 
